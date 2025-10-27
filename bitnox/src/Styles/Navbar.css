@@ -87,8 +87,8 @@ width: 100px;
 .navbar-link {
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 0.8rem;
+  font-weight: 400;
   transition: var(--transition);
   position: relative;
   padding: 0.5rem 0;
