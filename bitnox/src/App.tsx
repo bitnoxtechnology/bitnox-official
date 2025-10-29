@@ -1,4 +1,5 @@
 import './App.css'
+import Herosection from './Components/Herosection'
 import Navbar from './Components/Navbar'
 function App() {
 
@@ -6,6 +7,7 @@ function App() {
     <>
       <div>
 <Navbar />
+<Herosection />
 
       </div>
     </>
