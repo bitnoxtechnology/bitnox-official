@@ -7,9 +7,9 @@ function Testimonial() {
   const testimonials = [
     {
       id: 1,
-      name: "Sarah Johnson",
-      position: "CEO, TechFlow Inc",
-      company: "TechFlow",
+      name: "Ameena Akhtar",
+      position: "Director, Provision",
+      company: "Provision Support Services CIC",
       image:
         "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
       text: "Bitnox Solution has been instrumental in transforming our online presence. Their team developed a dynamic website and web application that perfectly showcases our services and improves user experience. We highly recommend Bitnox Solution for their expertise in web development!",
