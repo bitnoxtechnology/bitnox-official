@@ -1,217 +1,292 @@
-"use client"
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { 
+  Mail, 
+  Phone, 
+  MapPin, 
+  Facebook, 
+  Twitter, 
+  Linkedin, 
+  Instagram,
+  Github,
+  ArrowUpRight,
+  Send
+} from "lucide-react";
+import "../Styles/Footer.css";
 
-import { useEffect, useRef } from "react"
-import gsap from "gsap"
-import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram, ArrowRight } from "lucide-react"
-import "../Styles/Footer.css"
+gsap.registerPlugin(ScrollTrigger);
 
 function Footer() {
-  const footerRef = useRef<HTMLDivElement>(null)
-  const linksRef = useRef<HTMLDivElement>(null)
-  const contactRef = useRef<HTMLDivElement>(null)
-  const socialRef = useRef<HTMLDivElement>(null)
+  const footerRef = useRef<HTMLElement>(null);
+  const sectionsRef = useRef<HTMLDivElement[]>([]);
+  const ctaRef = useRef<HTMLDivElement>(null);
+  const [email, setEmail] = useState("");
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Subscribing email:", email);
+    setEmail("");
+  };
 
   useEffect(() => {
-    if (!footerRef.current) return
+    const ctx = gsap.context(() => {
+      // Animate sections on scroll
+      sectionsRef.current.forEach((section, index) => {
+        if (section) {
+          gsap.from(section, {
+            scrollTrigger: {
+              trigger: section,
+              start: "top 90%",
+              end: "top 70%",
+              scrub: 1,
+            },
+            opacity: 0,
+            y: 60,
+            duration: 0.8,
+            delay: index * 0.1,
+          });
+        }
+      });
 
-    // Animate footer on mount
-    gsap.from(footerRef.current, {
-      opacity: 1,
-      y: 50,
-      duration: 0.8,
-      ease: "power2.out",
-    })
+      // Animate CTA
+      if (ctaRef.current) {
+        gsap.from(ctaRef.current, {
+          scrollTrigger: {
+            trigger: ctaRef.current,
+            start: "top 90%",
+            end: "top 70%",
+            scrub: 1,
+          },
+          opacity: 0,
+          scale: 0.95,
+          duration: 1,
+        });
+      }
+    }, footerRef);
 
-    // Animate links
-    if (linksRef.current) {
-      const links = linksRef.current.querySelectorAll(".footer-link")
-      gsap.from(links, {
-        opacity: 1,
-        y: 20,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: "power2.out",
-        delay: 0.2,
-      })
-    }
-
-    // Animate contact items
-    if (contactRef.current) {
-      const items = contactRef.current.querySelectorAll(".contact-item")
-      gsap.from(items, {
-        opacity: 1,
-        x: -20,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: "power2.out",
-        delay: 0.3,
-      })
-    }
-
-    // Animate social icons
-    if (socialRef.current) {
-      const icons = socialRef.current.querySelectorAll(".social-icon")
-      gsap.from(icons, {
-        opacity: 1,
-        scale: 0.5,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: "back.out",
-        delay: 0.4,
-      })
-    }
-  }, [])
+    return () => ctx.revert();
+  }, []);
 
   return (
     <footer ref={footerRef} className="footer">
       <div className="footer-container">
-        {/* Main Footer Content */}
-        <div className="footer-content">
-          {/* Company Info */}
-          <div className="footer-section">
-            <h3 className="footer-title">Bitnox Solution</h3>
-            <p className="footer-description">
-              Transforming businesses with comprehensive IT support and innovative digital solutions.
+        {/* Newsletter */}
+        <div className="footer-newsletter" ref={ctaRef}>
+          <div className="newsletter-content">
+            <h3 className="newsletter-title">Stay Updated</h3>
+            <p className="newsletter-description">
+              Subscribe to our newsletter for the latest updates, tech insights, and exclusive offers.
             </p>
-            <p className="footer-tagline">Delivering excellence since 2016</p>
+          </div>
+          <div className="newsletter-form" onSubmit={handleSubscribe}>
+            <div className="newsletter-input-wrapper">
+              <Mail className="newsletter-icon" size={20} />
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="newsletter-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <button type="button" className="newsletter-button" onClick={handleSubscribe}>
+              <span>Subscribe</span>
+              <Send size={18} />
+            </button>
+          </div>
+        </div>
+
+        {/* Main Footer Grid */}
+        <div className="footer-grid">
+          {/* Company Column */}
+          <div
+            className="footer-column"
+            ref={(el) => { if (el) sectionsRef.current[0] = el; }}
+          >
+            <div className="footer-brand">
+              <h3 className="footer-brand-name">Bitnox Solution</h3>
+              <p className="footer-brand-tagline">Innovate. Transform. Excel.</p>
+            </div>
+            <p className="footer-description">
+              Transforming businesses with cutting-edge IT solutions, comprehensive tech education, and reliable support services since 2016.
+            </p>
+            <div className="footer-stats">
+              <div className="stat-item">
+                <span className="stat-number">180+</span>
+                <span className="stat-label">Projects</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-number">100+</span>
+                <span className="stat-label">Clients</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-number">8+</span>
+                <span className="stat-label">Years</span>
+              </div>
+            </div>
           </div>
 
           {/* Quick Links */}
-          <div className="footer-section" ref={linksRef}>
-            <h4 className="footer-heading">Quick Links</h4>
+          <div
+            className="footer-column"
+            ref={(el) => { if (el) sectionsRef.current[1] = el; }}
+          >
+            <h4 className="footer-heading">Company</h4>
             <ul className="footer-links">
               <li>
-                <a href="#services" className="footer-link">
-                  Services
+                <a href="#about" className="footer-link">
+                  <span>About Us</span>
+                  <ArrowUpRight size={16} />
                 </a>
               </li>
               <li>
-                <a href="#about" className="footer-link">
-                  About Us
+                <a href="#services" className="footer-link">
+                  <span>Our Services</span>
+                  <ArrowUpRight size={16} />
                 </a>
               </li>
               <li>
                 <a href="#portfolio" className="footer-link">
-                  Portfolio
+                  <span>Portfolio</span>
+                  <ArrowUpRight size={16} />
                 </a>
               </li>
               <li>
                 <a href="#team" className="footer-link">
-                  Our Team
+                  <span>Our Team</span>
+                  <ArrowUpRight size={16} />
                 </a>
               </li>
               <li>
-                <a href="#blog" className="footer-link">
-                  Blog
+                <a href="#careers" className="footer-link">
+                  <span>Careers</span>
+                  <ArrowUpRight size={16} />
                 </a>
               </li>
             </ul>
           </div>
 
           {/* Services */}
-          <div className="footer-section" ref={linksRef}>
+          <div
+            className="footer-column"
+            ref={(el) => { if (el) sectionsRef.current[2] = el; }}
+          >
             <h4 className="footer-heading">Services</h4>
             <ul className="footer-links">
               <li>
-                <a href="#software" className="footer-link">
-                  Software Solutions
+                <a href="#web-dev" className="footer-link">
+                  <span>Web Development</span>
+                  <ArrowUpRight size={16} />
                 </a>
               </li>
               <li>
-                <a href="#education" className="footer-link">
-                  Tech Education
+                <a href="#mobile-dev" className="footer-link">
+                  <span>Mobile Apps</span>
+                  <ArrowUpRight size={16} />
                 </a>
               </li>
               <li>
-                <a href="#cleaning" className="footer-link">
-                  Cleaning Services
+                <a href="https://edu.bitnoxsolution.com" className="footer-link">
+                  <span>Tech Education</span>
+                  <ArrowUpRight size={16} />
                 </a>
               </li>
               <li>
                 <a href="#consulting" className="footer-link">
-                  Consulting
+                  <span>IT Consulting</span>
+                  <ArrowUpRight size={16} />
                 </a>
               </li>
               <li>
                 <a href="#support" className="footer-link">
-                  24/7 Support
+                  <span>24/7 Support</span>
+                  <ArrowUpRight size={16} />
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Contact Info */}
-          <div className="footer-section" ref={contactRef}>
-            <h4 className="footer-heading">Contact Us</h4>
-            <div className="contact-items">
+          {/* Contact */}
+          <div
+            className="footer-column"
+            ref={(el) => { if (el) sectionsRef.current[3] = el; }}
+          >
+            <h4 className="footer-heading">Get in Touch</h4>
+            <div className="footer-contact">
+              <a href="tel:+2348137192766" className="contact-item">
+                <div className="contact-icon-wrapper">
+                  <Phone size={18} />
+                </div>
+                <div className="contact-info">
+                  <span className="contact-label">Call us</span>
+                  <span className="contact-value">+234 813 719 2766</span>
+                </div>
+              </a>
+
+              <a href="mailto:info@bitnoxsolution.com" className="contact-item">
+                <div className="contact-icon-wrapper">
+                  <Mail size={18} />
+                </div>
+                <div className="contact-info">
+                  <span className="contact-label">Email us</span>
+                  <span className="contact-value">info@bitnoxsolution.com</span>
+                </div>
+              </a>
+
               <div className="contact-item">
-                <Phone size={20} className="contact-icon" />
-                <div>
-                  <p className="contact-label">Phone</p>
-                  <a href="tel:+2348137192766" className="contact-link">
-                    +234 813 719 2766
-                  </a>
+                <div className="contact-icon-wrapper">
+                  <MapPin size={18} />
+                </div>
+                <div className="contact-info">
+                  <span className="contact-label">Visit us</span>
+                  <span className="contact-value">Abeokuta, Nigeria</span>
                 </div>
               </div>
-              <div className="contact-item">
-                <Mail size={20} className="contact-icon" />
-                <div>
-                  <p className="contact-label">Email</p>
-                  <a href="mailto:info@bitnoxsolution.com" className="contact-link">
-                    info@bitnoxsolution.com
-                  </a>
-                </div>
-              </div>
-              <div className="contact-item">
-                <MapPin size={20} className="contact-icon" />
-                <div>
-                  <p className="contact-label">Address</p>
-                  <p className="contact-link">Lagos, Nigeria</p>
-                </div>
-              </div>
+            </div>
+
+            <div className="footer-social">
+              <a href="https://www.facebook.com/bitnoxsolution" className="social-link" aria-label="Facebook">
+                <Facebook size={20} />
+              </a>
+              <a href="https://x.com/bitnoxsolution" className="social-link" aria-label="Twitter">
+                <Twitter size={20} />
+              </a>
+              <a href="https://linkedin.com" className="social-link" aria-label="LinkedIn">
+                <Linkedin size={20} />
+              </a>
+              <a href="https://instagram.com" className="social-link" aria-label="Instagram">
+                <Instagram size={20} />
+              </a>
+              <a href="https://github.com" className="social-link" aria-label="GitHub">
+                <Github size={20} />
+              </a>
             </div>
           </div>
         </div>
 
-        {/* Social Media */}
-        <div className="footer-social" ref={socialRef}>
-          <h4 className="footer-heading">Follow Us</h4>
-          <div className="social-icons">
-            <a href="https://facebook.com" className="social-icon" aria-label="Facebook">
-              <Facebook size={24} />
-            </a>
-            <a href="https://twitter.com" className="social-icon" aria-label="Twitter">
-              <Twitter size={24} />
-            </a>
-            <a href="https://linkedin.com" className="social-icon" aria-label="LinkedIn">
-              <Linkedin size={24} />
-            </a>
-            <a href="https://instagram.com" className="social-icon" aria-label="Instagram">
-              <Instagram size={24} />
-            </a>
+        {/* Bottom Bar */}
+        <div className="footer-bottom">
+          <div className="footer-bottom-content">
+            <p className="footer-copyright">
+              © {new Date().getFullYear()} Bitnox Solution. All rights reserved.
+            </p>
+            <div className="footer-legal">
+              <a href="#privacy">Privacy Policy</a>
+              <span className="separator">•</span>
+              <a href="#terms">Terms of Service</a>
+              <span className="separator">•</span>
+              <a href="#cookies">Cookies</a>
+            </div>
           </div>
         </div>
-
-        {/* CTA Section */}
-        <div className="footer-cta">
-          <h3>Ready to start your project?</h3>
-          <a href="#contact" className="cta-button">
-            Get Started <ArrowRight size={20} />
-          </a>
-        </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="footer-bottom">
-        <p>&copy; 2025 Bitnox Solution. All rights reserved.</p>
-        <div className="footer-bottom-links">
-          <a href="#privacy">Privacy Policy</a>
-          <a href="#terms">Terms of Service</a>
-          <a href="#cookies">Cookie Policy</a>
-        </div>
-      </div>
+      {/* Decorative Elements */}
+      <div className="footer-decoration"></div>
     </footer>
-  )
+  );
 }
 
-export default Footer
+export default Footer;

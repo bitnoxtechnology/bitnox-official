@@ -6,7 +6,7 @@ import Navbar from './Components/Navbar'
 import Portfolio from './Components/Portfolio'
 import Testimonial from './Components/Testimonial'
 import WhyUs from './Components/WhyUs'
-// import Footer from './Components/Footer'
+import Footer from './Components/Footer'
 function App() {
 
   return (
@@ -19,7 +19,7 @@ function App() {
 <Portfolio />
 <Testimonial/>
 <Conclusion/>
-{/* <Footer /> */}
+<Footer />
       </div>
     </>
   )

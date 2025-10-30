@@ -277,7 +277,7 @@ const Conclusion = () => {
               <MapPin size={32} />
             </div>
             <h3>Address</h3>
-            <p>Lagos, Nigeria</p>
+            <p>Abeokuta, Nigeria</p>
           </div>
 
           <div className="contact-card">
