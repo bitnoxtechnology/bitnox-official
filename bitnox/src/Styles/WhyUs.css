@@ -1,0 +1,324 @@
+/* Why Us Section */
+.whyus-section {
+  padding: 8rem 0;
+  position: relative;
+  overflow: hidden;
+  background: var(--dark-bg);
+}
+
+.whyus-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* Section Title */
+.whyus-title {
+  text-align: center;
+  margin-bottom: 5rem;
+  position: relative;
+}
+
+.whyus-label {
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  background: linear-gradient(135deg, rgba(0, 45, 67, 0.3), rgba(5, 228, 252, 0.2));
+  border: 1px solid var(--secondary-color);
+  border-radius: 50px;
+  color: var(--secondary-color);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  margin-bottom: 2rem;
+}
+
+.section-heading {
+  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  font-weight: 500;
+  background: var(--text-primary);
+  margin: 0 0 1.5rem 0;
+  line-height: 1.2;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-subheading {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Reasons Grid */
+.reasons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+  perspective: 1000px;
+}
+
+/* Reason Cards */
+.reason-card {
+  position: relative;
+  padding: 3rem 2rem;
+  background: rgba(26, 26, 26, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  backdrop-filter: blur(20px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.reason-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--card-color), var(--secondary-color));
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.reason-card:hover::before {
+  opacity: 1;
+}
+
+.reason-card:hover {
+  border-color: var(--card-color);
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.5),
+    0 0 40px var(--card-color);
+  transform: translateY(-10px) translateZ(20px);
+}
+
+
+
+.reason-card:hover .card-glow {
+  opacity: 0.3;
+}
+
+/* Card Shine Effect */
+.card-shine {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg);
+  transition: all 0.6s;
+  pointer-events: none;
+}
+
+.reason-card:hover .card-shine {
+  left: 100%;
+}
+
+/* Card Content */
+.card-content {
+  position: relative;
+  z-index: 2;
+}
+
+.reason-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, rgba(0, 45, 67, 0.5), rgba(5, 228, 252, 0.2));
+  border: 2px solid var(--card-color);
+  border-radius: 20px;
+  color: var(--card-color);
+  margin-bottom: 1.5rem;
+  transition: all 0.4s;
+}
+
+.reason-card:hover .reason-icon {
+  transform: rotateY(360deg) scale(1.1);
+  box-shadow: 0 10px 30px var(--card-color);
+}
+
+.reason-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 1rem 0;
+  letter-spacing: 1px;
+}
+
+.reason-description {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Decorative Grid */
+.decorative-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(5, 228, 252, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(5, 228, 252, 0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Animated Background */
+.whyus-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bg-gradient-orb-1 {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(0, 45, 67, 0.4) 0%, transparent 70%);
+  top: -200px;
+  left: -200px;
+  filter: blur(100px);
+  animation: float-orb 15s ease-in-out infinite;
+}
+
+.bg-gradient-orb-2 {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(5, 228, 252, 0.3) 0%, transparent 70%);
+  bottom: -150px;
+  right: -150px;
+  filter: blur(100px);
+  animation: float-orb 18s ease-in-out infinite reverse;
+}
+
+.bg-gradient-orb-3 {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(0, 45, 67, 0.3) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(80px);
+  animation: float-orb 20s ease-in-out infinite;
+}
+
+@keyframes float-orb {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(50px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-30px, 30px) scale(0.9);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .whyus-section {
+    padding: 6rem 0;
+  }
+
+  .whyus-title {
+    margin-bottom: 4rem;
+  }
+
+  .reasons-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .whyus-section {
+    padding: 4rem 0;
+  }
+
+  .whyus-container {
+    padding: 0 1.5rem;
+  }
+
+  .whyus-title {
+    margin-bottom: 3rem;
+  }
+
+  .whyus-label {
+    font-size: 0.75rem;
+    padding: 0.4rem 1.2rem;
+  }
+
+  .section-heading {
+    font-size: 2rem;
+  }
+
+  .section-subheading {
+    font-size: 1rem;
+  }
+
+  .reasons-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .reason-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .reason-icon {
+    width: 70px;
+    height: 70px;
+  }
+
+  .reason-icon svg {
+    width: 35px;
+    height: 35px;
+  }
+
+  .visual-1,
+  .visual-2,
+  .visual-3 {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .reason-card {
+    padding: 1.5rem;
+  }
+
+  .reason-title {
+    font-size: 1.1rem;
+  }
+
+  .reason-description {
+    font-size: 0.9rem;
+  }
+}
