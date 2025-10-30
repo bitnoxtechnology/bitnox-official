@@ -152,7 +152,6 @@ function About() {
             laundry to commercial cleaning, Bitnox delivers convenience and
             cleanliness you can count on.
           </p>
-
         </div>
 
         {/* Service Cards */}
@@ -177,9 +176,7 @@ function About() {
             );
           })}
         </div>
-
       </div>
-
     </section>
   );
 }
