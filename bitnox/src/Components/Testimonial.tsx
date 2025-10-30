@@ -1,18 +1,9 @@
 "use client"
 
-import { useEffect, useRef } from "react"
 import { Quote } from "lucide-react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
 import "../styles/testimonial.css"
 
-gsap.registerPlugin(ScrollTrigger)
-
 function Testimonial() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
-
   const testimonials = [
     {
       id: 1,
@@ -61,90 +52,50 @@ function Testimonial() {
     },
   ]
 
-  useEffect(() => {
-    const section = sectionRef.current
-    const scrollContainer = scrollContainerRef.current
-
-    if (!section || !scrollContainer) return
-
-    const scrollWidth = scrollContainer.scrollWidth
-    const viewportWidth = window.innerWidth
-    const scrollDistance = scrollWidth - viewportWidth
-
-    const horizontalScroll = gsap.to(scrollContainer, {
-      x: -scrollDistance,
-      ease: "none",
-      scrollTrigger: {
-        trigger: section,
-        start: "top top",
-        end: () => `+=${scrollDistance}`,
-        scrub: 1,
-        pin: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-      },
-    })
-
-    const cards = scrollContainer.querySelectorAll(".testimonial-card")
-    cards.forEach((card) => {
-      gsap.from(card, {
-        scrollTrigger: {
-          trigger: section,
-          start: "top center",
-          end: "bottom center",
-          scrub: 1,
-          containerAnimation: horizontalScroll,
-        },
-        opacity: 0.6,
-        scale: 0.9,
-        duration: 1,
-      })
-    })
-
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
-    }
-  }, [])
+  // Duplicate testimonials for infinite loop effect
+  const duplicatedTestimonials = [...testimonials, ...testimonials]
 
   return (
-    <section className="testimonial-section" ref={sectionRef}>
-      <div className="testimonial-wrapper" ref={containerRef}>
+    <section className="testimonial-section">
+      <div className="testimonial-wrapper">
         <div className="testimonial-intro">
           <h2 className="testimonial-title">What Our Clients Say</h2>
           <p className="testimonial-subtitle">We love our clients and our clients love to work with us</p>
         </div>
 
-        <div className="testimonial-scroll-container" ref={scrollContainerRef}>
-          {testimonials.map((testimonial) => (
-            <div key={testimonial.id} className="testimonial-card">
-              <div className="testimonial-quote-icon">
-                <Quote size={40} />
-              </div>
+        <div className="testimonial-scroll-container">
+          <div className="testimonial-track">
+            {duplicatedTestimonials.map((testimonial, index) => (
+              <div key={`${testimonial.id}-${index}`} className="testimonial-card">
+                <div className="testimonial-quote-icon">
+                  <Quote size={40} />
+                </div>
 
-              <div className="testimonial-rating">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <span key={i} className="star">
-                    ★
-                  </span>
-                ))}
-              </div>
+                <div className="testimonial-rating">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <span key={i} className="star">
+                      ★
+                    </span>
+                  ))}
+                </div>
 
-              <p className="testimonial-text">{testimonial.text}</p>
+                <p className="testimonial-text">{testimonial.text}</p>
 
-              <div className="testimonial-author">
-                <img
-                  src={testimonial.image || "/placeholder.svg"}
-                  alt={testimonial.name}
-                  className="testimonial-avatar"
-                />
-                <div className="testimonial-author-info">
-                  <h4 className="testimonial-name">{testimonial.name}</h4>
-                  <p className="testimonial-position">{testimonial.position}</p>
-                  <p className="testimonial-company">{testimonial.company}</p>
+                <div className="testimonial-author">
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    className="testimonial-avatar"
+                  />
+                  <div className="testimonial-author-info">
+                    <h4 className="testimonial-name">{testimonial.name}</h4>
+                    <p className="testimonial-position">{testimonial.position}</p>
+                    <p className="testimonial-company">{testimonial.company}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
