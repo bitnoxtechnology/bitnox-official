@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import "../Styles/Herosection.css";
-import HeroImage from "../Assets/HeroImage.svg";
+import HeroImage from "../assets/HeroImage.svg";
 
 function Herosection() {
   const heroRef = useRef<HTMLElement>(null);
@@ -115,7 +115,12 @@ function Herosection() {
   };
 
   const metrics = [
-    { number: "200", suffix: "+", label: "Projects Completed", isSymbol: false },
+    {
+      number: "200",
+      suffix: "+",
+      label: "Projects Completed",
+      isSymbol: false,
+    },
     { number: "150", suffix: "+", label: "Happy Clients", isSymbol: false },
     { number: "∞", suffix: "", label: "Innovative Solutions", isSymbol: true },
   ];
@@ -141,9 +146,7 @@ function Herosection() {
 
           <div ref={buttonsRef} className="hero-buttons">
             <button className="hero-button primary">Get Started</button>
-            <button className="hero-button secondary">
-            Consultation
-            </button>
+            <button className="hero-button secondary">Consultation</button>
           </div>
 
           <div ref={metricsRef} className="hero-metrics">
@@ -168,10 +171,8 @@ function Herosection() {
         {/* Right Image */}
         <div ref={imageRef} className="hero-image-container">
           <img src={HeroImage} alt="Bitnox Solutions" className="hero-image" />
-      
         </div>
       </div>
-  
     </section>
   );
 }
