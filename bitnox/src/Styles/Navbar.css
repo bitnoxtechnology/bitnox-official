@@ -1,6 +1,6 @@
 :root {
   --primary-color: #05e4fc;
-  --secondary-color: #05E4FC;
+  --secondary-color: #002D43;
   --dark-bg: #0a0a0a;
   --dark-surface: #1a1a1a;
   --text-primary: #ffffff;
@@ -120,7 +120,7 @@ width: 100px;
   align-items: center;
 }
 
-.cta-button {
+.nav-cta-button {
   padding: 0.75rem 1.75rem;
   background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   color: var(--text-primary);
@@ -135,7 +135,7 @@ width: 100px;
   box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);
 }
 
-.cta-button::before {
+.nav-cta-button::before {
   content: '';
   position: absolute;
   top: 0;
@@ -146,16 +146,16 @@ width: 100px;
   transition: left 0.5s;
 }
 
-.cta-button:hover::before {
+.nav-cta-button:hover::before {
   left: 100%;
 }
 
-.cta-button:hover {
+.nav-cta-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 25px rgba(0, 102, 255, 0.5);
 }
 
-.cta-button:active {
+.nav-cta-button:active {
   transform: translateY(0);
 }
 

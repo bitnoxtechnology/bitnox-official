@@ -146,7 +146,7 @@ function Navbar() {
             }}
             className="navbar-cta"
           >
-            <button className="cta-button">Get Started</button>
+            <button className="nav-cta-button">Get Started</button>
           </div>
 
           {/* Hamburger Menu */}

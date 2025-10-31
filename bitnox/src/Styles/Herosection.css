@@ -147,12 +147,12 @@
   gap: 0.25rem;
   font-size: 2rem;
   font-weight: 700;
-  color: var(--secondary-color);
+  color: var(--primary-color);
   line-height: 1;
 }
 
 .metric-number {
-  background:var(--secondary-color);
+  background:var(--primary-color);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

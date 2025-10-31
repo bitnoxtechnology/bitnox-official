@@ -109,9 +109,9 @@
   font-size: 0.75rem;
   padding: 6px 12px;
   background: #05e3fc1b;
-  color: var(--secondary-color);
+  color: var(--primary-color);
   border-radius: 20px;
-  border: 1px solid var(--secondary-color);
+  border: 1px solid var(--primary-color);
   font-weight: 450;
 }
 
@@ -166,7 +166,7 @@
 
 .portfolio-card-link:hover {
   background: #05e3fc55;
-  border-color: var(--secondary-color);
+  border-color: var(--primary-color);
   transform: translateX(4px);
   color: #ffffff;
 }
