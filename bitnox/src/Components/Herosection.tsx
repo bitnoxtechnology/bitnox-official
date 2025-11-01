@@ -145,8 +145,12 @@ function Herosection() {
           </p>
 
           <div ref={buttonsRef} className="hero-buttons">
-            <button className="hero-button primary">Get Started</button>
-            <button className="hero-button secondary">Consultation</button>
+           <a href="/contact">
+             <button className="hero-button primary">Get Started</button>
+           </a>
+           <a href="https://wa.me/2348137192766">
+             <button className="hero-button secondary">Consultation</button>
+           </a>
           </div>
 
           <div ref={metricsRef} className="hero-metrics">
