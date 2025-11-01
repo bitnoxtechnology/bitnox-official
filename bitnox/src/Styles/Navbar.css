@@ -179,6 +179,36 @@ width: 100px;
   transition: var(--transition);
 }
 
+.navbar-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 400;
+  transition: var(--transition);
+  position: relative;
+  padding: 0.5rem 0;
+  display: block;
+}
+
+.navbar-link.active {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.navbar-link.active::after {
+  width: 100%;
+}
+
+.navbar-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
 /* Mobile Menu */
 .mobile-menu {
   position: fixed;

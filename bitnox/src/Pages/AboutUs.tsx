@@ -5,7 +5,7 @@ import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { ArrowRight, Zap, Shield, Users, Award } from "lucide-react"
 import "../Styles/AboutPage.css"
-// import Team1 from "../assets/Team1.jpg"
+import Team1 from "../assets/Team1.jpg"
 import Team2 from "../assets/Team2.jpg"
 import Team3 from "../assets/Team3.jpg"
 import Team4 from "../assets/Team4.jpg"
@@ -252,9 +252,9 @@ export default function AboutUs() {
         <h2 className="aboutpage-section-title">Our Leadership Team</h2>
         <div className="aboutpage-team-grid">
           {[
-            { name: "Oluwafemi Faleye", role: "Founder & CEO" , photo:Team2 },
-            { name: "Adefemi Sanyaolu", role: "Cloud Engineer", photo:Team2 },
-            { name: "Flix Adepoju", role: "Lead Developer", photo:Team3},
+            { name: "Oluwafemi Faleye", role: "Founder & CEO" , photo:Team1 },
+            { name: "Adefemi Sanyaolu", role: "Cloud & Data Engineer", photo:Team2 },
+            { name: "Bello Oladimeji Samuel", role: "Lead Developer", photo:Team3},
             { name: "Tobiloba David", role: "Product Designer" , photo:Team4},
           ].map((member, index) => (
             <div key={index} className="aboutpage-team-card">

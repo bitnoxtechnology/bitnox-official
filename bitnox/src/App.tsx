@@ -10,7 +10,7 @@ import Conclusion from "./Components/Conclusion"
 import Footer from "./Components/Footer"
 import AboutUs from "./Pages/AboutUs"
 import Cleaning from "./Pages/Cleaning"
-// import Contact from "./Pages/Contact"
+import Contact from "./Pages/Contact"
 
 function App() {
   return (
@@ -32,7 +32,7 @@ function App() {
         />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/cleaning" element={<Cleaning />} />
-        {/* <Route path="/contact" element={<Contact />} /> */}
+        <Route path="/contact" element={<Contact />} />
       </Routes>
       <Footer />
     </Router>

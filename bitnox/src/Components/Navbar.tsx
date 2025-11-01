@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { gsap } from "gsap"
 import "../Styles/Navbar.css"
 import SecondaryLogo from "../assets/Logo.svg"
@@ -9,6 +9,7 @@ import SecondaryLogo from "../assets/Logo.svg"
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const location = useLocation()
   const navRef = useRef<HTMLElement>(null)
   const logoRef = useRef<HTMLDivElement>(null)
   const menuItemsRef = useRef<(HTMLElement | null)[]>([])
@@ -105,11 +106,17 @@ function Navbar() {
     { name: "Contact", href: "/contact" },
   ]
 
+  const isActiveLink = (href: string) => {
+    if (href === "/" && location.pathname === "/") return true
+    if (href !== "/" && location.pathname === href) return true
+    if (href.startsWith("#") && location.hash === href) return true
+    return false
+  }
+
   return (
     <>
       <nav ref={navRef} className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
         <div className="navbar-container">
-          {/* Logo */}
           <div ref={logoRef} className="navbar-logo">
             <Link to="/">
               <img src={SecondaryLogo || "/placeholder.svg"} alt="Logo" />
@@ -131,7 +138,7 @@ function Navbar() {
                     {item.name}
                   </a>
                 ) : (
-                  <Link to={item.href} className="navbar-link">
+                  <Link to={item.href} className={`navbar-link ${isActiveLink(item.href) ? "active" : ""}`}>
                     {item.name}
                   </Link>
                 )}
@@ -149,7 +156,7 @@ function Navbar() {
             <button className="nav-cta-button">Get Started</button>
           </div>
 
-          {/* Hamburger Menu */}
+          {/* Menu */}
           <button ref={hamburgerRef} className="hamburger" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
             <span className="hamburger-line"></span>
             <span className="hamburger-line"></span>
@@ -174,7 +181,11 @@ function Navbar() {
                   {item.name}
                 </a>
               ) : (
-                <Link to={item.href} className="mobile-nav-link" onClick={() => setIsOpen(false)}>
+                <Link 
+                  to={item.href} 
+                  className={`mobile-nav-link ${isActiveLink(item.href) ? "active" : ""}`}
+                  onClick={() => setIsOpen(false)}
+                >
                   {item.name}
                 </Link>
               )}
