@@ -95,6 +95,6 @@ export const faqs = [
   {
     question: "How can I contact Bitnox Technology Solutions?",
     answer:
-      "You can contact us via email, phone, or through our website’s contact form. We’re always happy to discuss your ideas or answer any questions.",
+      "You can contact us via email, phone, whatsapp, or through our website’s contact form. We’re always happy to discuss your ideas or answer any questions.",
   },
 ];

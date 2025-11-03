@@ -113,15 +113,12 @@ function Footer() {
             }}
           >
             <div className="footer-brand">
-              <h3 className="footer-brand-name">Bitnox Solution</h3>
-              <p className="footer-brand-tagline">
-                Innovate. Transform. Excel.
-              </p>
+              <h3 className="footer-brand-name">Bitnox Technology</h3>
+              <p className="footer-brand-tagline">Shaping Tomorrow, Today.</p>
             </div>
             <p className="footer-description">
               Transforming businesses with cutting-edge IT solutions,
-              comprehensive tech education, and reliable support services since
-              2016.
+              comprehensive tech education, and reliable cleaning services.
             </p>
             <div className="footer-stats">
               <div className="stat-item">
