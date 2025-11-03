@@ -1,33 +1,34 @@
-"use client"
+"use client";
 
-import { useEffect, useRef, useState } from "react"
-import { gsap } from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { ArrowRight, Zap, Shield, Users, Award } from "lucide-react"
-import "../Styles/AboutPage.css"
-import Team1 from "../assets/Team1.jpg"
-import Team2 from "../assets/Team2.jpg"
-import Team3 from "../assets/Team3.jpg"
-import Team4 from "../assets/Team4.jpg"
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ArrowRight, Zap, Shield, Users, Award } from "lucide-react";
+import "../Styles/AboutPage.css";
+import Team1 from "../assets/Team1.jpg";
+import Team2 from "../assets/Team2.jpg";
+import Team3 from "../assets/Team3.jpg";
+import Team4 from "../assets/Team4.jpg";
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger);
 
 export default function AboutUs() {
-  const containerRef = useRef(null)
-  const [isDark, setIsDark] = useState(false)
+  const containerRef = useRef(null);
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
     // Check for dark mode preference
     if (typeof window !== "undefined") {
       const isDarkMode =
-        localStorage.getItem("darkMode") === "true" || window.matchMedia("(prefers-color-scheme: dark)").matches
-      setIsDark(isDarkMode)
-      if (isDarkMode) document.documentElement.classList.add("dark")
+        localStorage.getItem("darkMode") === "true" ||
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+      setIsDark(isDarkMode);
+      if (isDarkMode) document.documentElement.classList.add("dark");
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    if (!containerRef.current) return
+    if (!containerRef.current) return;
 
     const ctx = gsap.context(() => {
       // Hero animations
@@ -36,7 +37,7 @@ export default function AboutUs() {
         y: 60,
         duration: 1,
         ease: "power3.out",
-      })
+      });
 
       gsap.from(".aboutpage-hero-subtitle", {
         opacity: 1,
@@ -44,7 +45,7 @@ export default function AboutUs() {
         duration: 1,
         delay: 0.2,
         ease: "power3.out",
-      })
+      });
 
       gsap.from(".aboutpage-hero-cta", {
         opacity: 1,
@@ -52,7 +53,7 @@ export default function AboutUs() {
         duration: 1,
         delay: 0.4,
         ease: "power3.out",
-      })
+      });
 
       // Service cards animation
       gsap.from(".aboutpage-service-card", {
@@ -65,7 +66,7 @@ export default function AboutUs() {
           start: "top center",
         },
         ease: "power2.out",
-      })
+      });
 
       // Values section animation
       gsap.from(".aboutpage-value-item", {
@@ -78,7 +79,7 @@ export default function AboutUs() {
           start: "top center",
         },
         ease: "power2.out",
-      })
+      });
 
       // Team cards animation
       gsap.from(".aboutpage-team-card", {
@@ -91,41 +92,41 @@ export default function AboutUs() {
           start: "top center",
         },
         ease: "back.out(1.2)",
-      })
+      });
 
       // Hover animations
       document.querySelectorAll(".aboutpage-service-card").forEach((card) => {
         card.addEventListener("mouseenter", () => {
-          gsap.to(card, { y: -10, duration: 0.3, ease: "power2.out" })
-        })
+          gsap.to(card, { y: -10, duration: 0.3, ease: "power2.out" });
+        });
         card.addEventListener("mouseleave", () => {
-          gsap.to(card, { y: 0, duration: 0.3, ease: "power2.out" })
-        })
-      })
+          gsap.to(card, { y: 0, duration: 0.3, ease: "power2.out" });
+        });
+      });
 
       document.querySelectorAll(".aboutpage-team-card").forEach((card) => {
         card.addEventListener("mouseenter", () => {
-          gsap.to(card, { scale: 1.05, duration: 0.3, ease: "power2.out" })
-        })
+          gsap.to(card, { scale: 1.05, duration: 0.3, ease: "power2.out" });
+        });
         card.addEventListener("mouseleave", () => {
-          gsap.to(card, { scale: 1, duration: 0.3, ease: "power2.out" })
-        })
-      })
-    }, containerRef)
+          gsap.to(card, { scale: 1, duration: 0.3, ease: "power2.out" });
+        });
+      });
+    }, containerRef);
 
-    return () => ctx.revert()
-  }, [])
+    return () => ctx.revert();
+  }, []);
 
   const toggleDarkMode = () => {
-    const newDarkMode = !isDark
-    setIsDark(newDarkMode)
-    localStorage.setItem("darkMode", String(newDarkMode))
+    const newDarkMode = !isDark;
+    setIsDark(newDarkMode);
+    localStorage.setItem("darkMode", String(newDarkMode));
     if (newDarkMode) {
-      document.documentElement.classList.add("dark")
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove("dark")
+      document.documentElement.classList.remove("dark");
     }
-  }
+  };
 
   return (
     <div ref={containerRef} className="aboutpage">
@@ -134,20 +135,20 @@ export default function AboutUs() {
         <div className="aboutpage-hero-pattern"></div>
         <div className="aboutpage-hero-content">
           <p className="aboutpage-hero-label">About Us</p>
-          <h1 className="aboutpage-hero-title">Innovative Technology Solutions</h1>
+          <h1 className="aboutpage-hero-title">
+            Innovative Technology Solutions
+          </h1>
           <p className="aboutpage-hero-description">
-            We deliver cutting-edge digital solutions that transform businesses and drive growth through innovation and
-            expertise.
+            We deliver cutting-edge digital solutions that transform businesses
+            and drive growth through innovation and expertise.
           </p>
-      <a href="#aboutpage-services">
+          <a href="#aboutpage-services">
             <button className="aboutpage-hero-cta">
-            Learn More <ArrowRight size={20} />
-          </button>
-      </a>
+              Learn More <ArrowRight size={20} />
+            </button>
+          </a>
         </div>
       </section>
-
-
 
       {/* Overview Section */}
       <section className="aboutpage-overview-section">
@@ -155,26 +156,28 @@ export default function AboutUs() {
           <div className="aboutpage-overview-content">
             <h2>Who We Are</h2>
             <p>
-              Bitnox Solutions is a forward-thinking technology company dedicated to delivering cutting-edge digital
-              solutions. With a team of passionate experts, we transform businesses through innovation, expertise, and
-              unwavering commitment to excellence.
+              Bitnox Solutions is a forward-thinking technology company
+              dedicated to delivering cutting-edge digital solutions. With a
+              team of passionate experts, we transform businesses through
+              innovation, expertise, and unwavering commitment to excellence.
             </p>
             <p>
-              Since our founding, we've partnered with leading organizations to solve complex challenges and unlock new
-              opportunities in the digital landscape.
+              Since our founding, we've partnered with leading organizations to
+              solve complex challenges and unlock new opportunities in the
+              digital landscape.
             </p>
           </div>
           <div className="aboutpage-overview-stats">
             <div className="aboutpage-stat-card">
-              <h3>500+</h3>
+              <h3>50+</h3>
               <p>Projects Completed</p>
             </div>
             <div className="aboutpage-stat-card">
-              <h3>50+</h3>
+              <h3>8+</h3>
               <p>Team Members</p>
             </div>
             <div className="aboutpage-stat-card">
-              <h3>12+</h3>
+              <h3>6+</h3>
               <p>Years Experience</p>
             </div>
             <div className="aboutpage-stat-card">
@@ -187,14 +190,19 @@ export default function AboutUs() {
 
       {/* Services Section */}
       <section className="aboutpage-services-section">
-        <h2 className="aboutpage-section-title" id="aboutpage-services">Our Services</h2>
+        <h2 className="aboutpage-section-title" id="aboutpage-services">
+          Our Services
+        </h2>
         <div className="aboutpage-services-grid">
           <div className="aboutpage-service-card">
             <div className="aboutpage-service-icon">
               <Zap />
             </div>
             <h3>Custom Development</h3>
-            <p>Tailored software solutions built specifically for your business needs and requirements.</p>
+            <p>
+              Tailored software solutions built specifically for your business
+              needs and requirements.
+            </p>
           </div>
 
           <div className="aboutpage-service-card">
@@ -202,7 +210,10 @@ export default function AboutUs() {
               <Shield />
             </div>
             <h3>Security Solutions</h3>
-            <p>Enterprise-grade security infrastructure to protect your digital assets and data.</p>
+            <p>
+              Enterprise-grade security infrastructure to protect your digital
+              assets and data.
+            </p>
           </div>
 
           <div className="aboutpage-service-card">
@@ -210,7 +221,10 @@ export default function AboutUs() {
               <Award />
             </div>
             <h3>Cloud Solutions</h3>
-            <p>Scalable cloud infrastructure designed for performance, reliability, and growth.</p>
+            <p>
+              Scalable cloud infrastructure designed for performance,
+              reliability, and growth.
+            </p>
           </div>
         </div>
       </section>
@@ -223,26 +237,36 @@ export default function AboutUs() {
             <div className="aboutpage-value-number">01</div>
             <h3>Innovation</h3>
             <p>
-              We continuously push boundaries and embrace emerging technologies to deliver next-generation solutions.
+              We continuously push boundaries and embrace emerging technologies
+              to deliver next-generation solutions.
             </p>
           </div>
 
           <div className="aboutpage-value-item">
             <div className="aboutpage-value-number">02</div>
             <h3>Excellence</h3>
-            <p>Uncompromising quality and attention to detail in every project we undertake.</p>
+            <p>
+              Uncompromising quality and attention to detail in every project we
+              undertake.
+            </p>
           </div>
 
           <div className="aboutpage-value-item">
             <div className="aboutpage-value-number">03</div>
             <h3>Integrity</h3>
-            <p>Transparent communication and ethical practices form the foundation of our partnerships.</p>
+            <p>
+              Transparent communication and ethical practices form the
+              foundation of our partnerships.
+            </p>
           </div>
 
           <div className="aboutpage-value-item">
             <div className="aboutpage-value-number">04</div>
             <h3>Collaboration</h3>
-            <p>We believe in the power of teamwork and partnering closely with our clients.</p>
+            <p>
+              We believe in the power of teamwork and partnering closely with
+              our clients.
+            </p>
           </div>
         </div>
       </section>
@@ -252,10 +276,22 @@ export default function AboutUs() {
         <h2 className="aboutpage-section-title">Our Leadership Team</h2>
         <div className="aboutpage-team-grid">
           {[
-            { name: "Oluwafemi Faleye", role: "Founder & CEO" , photo:Team1 },
-            { name: "Adefemi Sanyaolu", role: "Cloud & Data Engineer", photo:Team2 },
-            { name: "Bello Oladimeji Samuel", role: "Lead Developer", photo:Team3},
-            { name: "Tobiloba David", role: "Product Designer" , photo:Team4},
+            {
+              name: "Oluwafemi Faleye",
+              role: "Founder & Software Engineer",
+              photo: Team1,
+            },
+            {
+              name: "Adefemi Sanyaolu",
+              role: "Cloud & Data Engineer",
+              photo: Team2,
+            },
+            {
+              name: "Bello Oladimeji",
+              role: "Web Developer",
+              photo: Team3,
+            },
+            { name: "Tobiloba David", role: "Product Designer", photo: Team4 },
           ].map((member, index) => (
             <div key={index} className="aboutpage-team-card">
               <div className="aboutpage-team-image">
@@ -269,7 +305,6 @@ export default function AboutUs() {
           ))}
         </div>
       </section>
-
     </div>
-  )
+  );
 }

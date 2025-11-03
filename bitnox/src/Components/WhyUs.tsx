@@ -161,7 +161,7 @@ function WhyUs() {
         <div ref={titleRef} className="whyus-title">
           <span className="whyus-label">WHY BITNOX TECHNOLOGY?</span>
           <h2 className="section-heading">
-            We Have Over 8+ Years Experience
+            We Have Over 6+ Years Experience
             <br />
             In The Tech Industry
           </h2>
@@ -186,7 +186,9 @@ function WhyUs() {
                     cardsRef.current[index] = el;
                   }}
                   className="reason-card"
-                  style={{ "--card-color": reason.color } as React.CSSProperties}
+                  style={
+                    { "--card-color": reason.color } as React.CSSProperties
+                  }
                 >
                   <div className="card-glow"></div>
                   <div className="card-content">

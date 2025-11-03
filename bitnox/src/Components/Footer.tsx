@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Facebook, 
-  Twitter, 
-  Linkedin, 
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Facebook,
+  Twitter,
+  Linkedin,
   Instagram,
   Github,
   ArrowUpRight,
-  Send
+  Send,
 } from "lucide-react";
 import "../Styles/Footer.css";
 
@@ -76,7 +76,8 @@ function Footer() {
           <div className="newsletter-content">
             <h3 className="newsletter-title">Stay Updated</h3>
             <p className="newsletter-description">
-              Subscribe to our newsletter for the latest updates, tech insights, and exclusive offers.
+              Subscribe to our newsletter for the latest updates, tech insights,
+              and exclusive offers.
             </p>
           </div>
           <div className="newsletter-form" onSubmit={handleSubscribe}>
@@ -91,7 +92,11 @@ function Footer() {
                 required
               />
             </div>
-            <button type="button" className="newsletter-button" onClick={handleSubscribe}>
+            <button
+              type="button"
+              className="newsletter-button"
+              onClick={handleSubscribe}
+            >
               <span>Subscribe</span>
               <Send size={18} />
             </button>
@@ -103,26 +108,32 @@ function Footer() {
           {/* Company Column */}
           <div
             className="footer-column"
-            ref={(el) => { if (el) sectionsRef.current[0] = el; }}
+            ref={(el) => {
+              if (el) sectionsRef.current[0] = el;
+            }}
           >
             <div className="footer-brand">
               <h3 className="footer-brand-name">Bitnox Solution</h3>
-              <p className="footer-brand-tagline">Innovate. Transform. Excel.</p>
+              <p className="footer-brand-tagline">
+                Innovate. Transform. Excel.
+              </p>
             </div>
             <p className="footer-description">
-              Transforming businesses with cutting-edge IT solutions, comprehensive tech education, and reliable support services since 2016.
+              Transforming businesses with cutting-edge IT solutions,
+              comprehensive tech education, and reliable support services since
+              2016.
             </p>
             <div className="footer-stats">
               <div className="stat-item">
-                <span className="stat-number">180+</span>
+                <span className="stat-number">50+</span>
                 <span className="stat-label">Projects</span>
               </div>
               <div className="stat-item">
-                <span className="stat-number">100+</span>
+                <span className="stat-number">30+</span>
                 <span className="stat-label">Clients</span>
               </div>
               <div className="stat-item">
-                <span className="stat-number">8+</span>
+                <span className="stat-number">6+</span>
                 <span className="stat-label">Years</span>
               </div>
             </div>
@@ -131,7 +142,9 @@ function Footer() {
           {/* Quick Links */}
           <div
             className="footer-column"
-            ref={(el) => { if (el) sectionsRef.current[1] = el; }}
+            ref={(el) => {
+              if (el) sectionsRef.current[1] = el;
+            }}
           >
             <h4 className="footer-heading">Company</h4>
             <ul className="footer-links">
@@ -171,7 +184,9 @@ function Footer() {
           {/* Services */}
           <div
             className="footer-column"
-            ref={(el) => { if (el) sectionsRef.current[2] = el; }}
+            ref={(el) => {
+              if (el) sectionsRef.current[2] = el;
+            }}
           >
             <h4 className="footer-heading">Services</h4>
             <ul className="footer-links">
@@ -188,7 +203,10 @@ function Footer() {
                 </a>
               </li>
               <li>
-                <a href="https://edu.bitnoxsolution.com" className="footer-link">
+                <a
+                  href="https://edu.bitnoxsolution.com"
+                  className="footer-link"
+                >
                   <span>Tech Education</span>
                   <ArrowUpRight size={16} />
                 </a>
@@ -211,7 +229,9 @@ function Footer() {
           {/* Contact */}
           <div
             className="footer-column"
-            ref={(el) => { if (el) sectionsRef.current[3] = el; }}
+            ref={(el) => {
+              if (el) sectionsRef.current[3] = el;
+            }}
           >
             <h4 className="footer-heading">Get in Touch</h4>
             <div className="footer-contact">
@@ -247,19 +267,39 @@ function Footer() {
             </div>
 
             <div className="footer-social">
-              <a href="https://www.facebook.com/bitnoxsolution" className="social-link" aria-label="Facebook">
+              <a
+                href="https://www.facebook.com/bitnoxsolution"
+                className="social-link"
+                aria-label="Facebook"
+              >
                 <Facebook size={20} />
               </a>
-              <a href="https://x.com/bitnoxsolution" className="social-link" aria-label="Twitter">
+              <a
+                href="https://x.com/bitnoxsolution"
+                className="social-link"
+                aria-label="Twitter"
+              >
                 <Twitter size={20} />
               </a>
-              <a href="https://linkedin.com" className="social-link" aria-label="LinkedIn">
+              <a
+                href="https://linkedin.com"
+                className="social-link"
+                aria-label="LinkedIn"
+              >
                 <Linkedin size={20} />
               </a>
-              <a href="https://instagram.com" className="social-link" aria-label="Instagram">
+              <a
+                href="https://instagram.com"
+                className="social-link"
+                aria-label="Instagram"
+              >
                 <Instagram size={20} />
               </a>
-              <a href="https://github.com" className="social-link" aria-label="GitHub">
+              <a
+                href="https://github.com"
+                className="social-link"
+                aria-label="GitHub"
+              >
                 <Github size={20} />
               </a>
             </div>

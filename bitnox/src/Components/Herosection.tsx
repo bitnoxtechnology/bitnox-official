@@ -116,12 +116,12 @@ function Herosection() {
 
   const metrics = [
     {
-      number: "200",
+      number: "50",
       suffix: "+",
       label: "Projects Completed",
       isSymbol: false,
     },
-    { number: "150", suffix: "+", label: "Happy Clients", isSymbol: false },
+    { number: "30", suffix: "+", label: "Happy Clients", isSymbol: false },
     { number: "∞", suffix: "", label: "Innovative Solutions", isSymbol: true },
   ];
 
@@ -145,12 +145,12 @@ function Herosection() {
           </p>
 
           <div ref={buttonsRef} className="hero-buttons">
-           <a href="/contact">
-             <button className="hero-button primary">Get Started</button>
-           </a>
-           <a href="https://wa.me/2348137192766">
-             <button className="hero-button secondary">Consultation</button>
-           </a>
+            <a href="/contact">
+              <button className="hero-button primary">Get Started</button>
+            </a>
+            <a href="https://wa.me/2348137192766">
+              <button className="hero-button secondary">Consultation</button>
+            </a>
           </div>
 
           <div ref={metricsRef} className="hero-metrics">
