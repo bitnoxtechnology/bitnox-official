@@ -1,0 +1,26 @@
+{
+  "name": "bitnox-official",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "ts-node index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitnoxtechnology/bitnox-official.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bitnoxtechnology/bitnox-official/issues"
+  },
+  "homepage": "https://github.com/bitnoxtechnology/bitnox-official#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
