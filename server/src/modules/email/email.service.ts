@@ -1,3 +1,3 @@
 export class EmailService {
-  public sendContactEmail = async (): Promise<void> => {};
+  public sendContactUsEmail = async (): Promise<void> => {};
 }
