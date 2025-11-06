@@ -28,6 +28,7 @@ export const sendEmail = async ({
     });
 
     console.log("Resend Email Response: ", emailResponse);
+    return emailResponse;
   } catch (error) {
     console.error("Resend Email Sending Failed: ", error);
   }

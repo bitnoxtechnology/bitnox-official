@@ -1,12 +1,11 @@
-import { Request, Response } from "express";
+import express from "express";
+import { EmailController } from "./email.controller";
 import { EmailService } from "./email.service";
 
-export class EmailController {
-  private emailService: EmailService;
+const emailRouter = express.Router();
+const emailService = new EmailService();
+const emailController = new EmailController(emailService);
 
-  constructor(emailService: EmailService) {
-    this.emailService = emailService;
-  }
+emailRouter.post("/contact-us", emailController.sendContactUsEmail);
 
-  public sendContactEmail = async (req: Request, res: Response) => {};
-}
+export { emailRouter };

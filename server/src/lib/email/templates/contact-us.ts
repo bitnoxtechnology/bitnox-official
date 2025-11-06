@@ -5,10 +5,12 @@ const host = config.HOST;
 export const contactUsFormTemplate = ({
   name,
   email,
+  serviceType,
   message,
 }: {
   name: string;
   email: string;
+  serviceType: string;
   message: string;
 }) => ({
   to: "info@bitnoxsolution.com",
@@ -18,6 +20,7 @@ You have received a new message via Contact Us form on (${host}).
 
 Name: ${name}
 Email: ${email}
+Service Type: ${serviceType}
 Message:
 ${message}
   `,
@@ -85,6 +88,9 @@ ${message}
 
             <div class="label">Sender Email:</div>
             <div class="value">${email}</div>
+
+            <div class="label">Service Type:</div>
+            <div class="value">${serviceType}</div>
 
             <div class="label">Message:</div>
             <div class="value">${message.replace(/\n/g, "<br/>")}</div>
