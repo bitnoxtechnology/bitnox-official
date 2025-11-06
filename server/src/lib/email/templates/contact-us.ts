@@ -14,7 +14,7 @@ export const contactUsFormTemplate = ({
   to: "info@bitnoxsolution.com",
   subject: `New Contact Message from ${name}`,
   text: `
-You have received a new message via Contact Us form (${host}).
+You have received a new message via Contact Us form on (${host}).
 
 Name: ${name}
 Email: ${email}
@@ -78,7 +78,7 @@ ${message}
       <div class="container">
         <div class="header">New Contact Message</div>
         <div class="content">
-          <h2>You’ve received a new message from the platform contact form (${host})</h2>
+          <h2>You’ve received a new message from the platform contact form on (${host})</h2>
           <div>
             <div class="label">Sender Name:</div>
             <div class="value">${name}</div>
