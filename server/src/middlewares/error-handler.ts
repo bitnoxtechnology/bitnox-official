@@ -54,7 +54,7 @@ export const errorHandler: ErrorRequestHandler = (
   }
 
   if (error instanceof AppError) {
-    if (error.errorName === "AUTH_SESSION_NOT_FOUND") {
+    if (error.errorName === "AUTH_TOKEN_EXPIRED") {
       //   clearAuthenticationCookies(res);
     }
     return res.status(error.statusCode).json({

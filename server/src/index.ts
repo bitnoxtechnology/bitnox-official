@@ -6,6 +6,7 @@ import { config } from "./config/app.config";
 import { errorHandler } from "./middlewares/error-handler";
 import { asyncHandler } from "./middlewares/async-handler";
 import { emailRouter } from "./modules/email/email.route";
+import { connectToDatabase } from "./database/db";
 
 const isDevelopment = config.NODE_ENV === "development";
 
@@ -50,5 +51,6 @@ app.listen(config.PORT, async () => {
   console.info(
     `Server running on port ${config.PORT} in ${config.NODE_ENV} mode`
   );
-  // await connectToDatabase();
+
+  await connectToDatabase();
 });

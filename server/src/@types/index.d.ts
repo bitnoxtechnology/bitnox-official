@@ -2,11 +2,10 @@ import { Request } from "express";
 
 declare global {
   namespace Express {
-    // interface Request {
-    //   sessionId?: string;
-    //   role?: string;
-    //   userId?: string;
-    // }
+    interface User extends IUser {}
+    interface Request {
+      userId?: string;
+    }
   }
 
   interface ContactUsEmail {
