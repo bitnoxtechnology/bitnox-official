@@ -3,6 +3,7 @@ import { asyncHandler } from "./async-handler";
 import { UnauthorizedException } from "../lib/errors/catch-errors";
 import { ErrorName } from "../lib/enums/error-names";
 import { verifyJwt } from "../lib/jwt";
+import { AuthService } from "../modules/auth/auth.service";
 
 const requireAuth = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -21,6 +22,14 @@ const requireAuth = asyncHandler(
       throw new UnauthorizedException(
         "Invalid authorization format",
         ErrorName.AUTH_FORMAT_INVALID
+      );
+    }
+
+    // Check blacklist
+    if (await AuthService.isTokenBlacklisted(accessToken)) {
+      throw new UnauthorizedException(
+        "Token has been revoked",
+        ErrorName.AUTH_TOKEN_REVOKED
       );
     }
 

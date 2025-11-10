@@ -8,6 +8,7 @@ import { asyncHandler } from "./middlewares/async-handler";
 import { emailRouter } from "./modules/email/email.route";
 import { connectToDatabase } from "./database/db";
 import { authRouter } from "./modules/auth/auth.route";
+import redis from "./database/redis";
 
 const isDevelopment = config.NODE_ENV === "development";
 
@@ -54,5 +55,6 @@ app.listen(config.PORT, async () => {
     `Server running on port ${config.PORT} in ${config.NODE_ENV} mode`
   );
 
+  await redis.connect();
   await connectToDatabase();
 });

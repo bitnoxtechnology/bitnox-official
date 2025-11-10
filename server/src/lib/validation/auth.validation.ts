@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const nameSchema = z
-  .string()
+  .string("Name is required")
   .trim()
   .min(5, "Name cannot be less than 5 characters")
   .max(50, "Name cannot be greater than 50 characters");
@@ -21,3 +21,10 @@ export const loginSchema = z.object({
 });
 
 export type LoginType = z.infer<typeof loginSchema>;
+
+export const verifyLoginOTPSchema = z.object({
+  email: emailSchema,
+  code: z.string("OTP code is required"),
+});
+
+export type VerifyLoginOTPType = z.infer<typeof verifyLoginOTPSchema>;
