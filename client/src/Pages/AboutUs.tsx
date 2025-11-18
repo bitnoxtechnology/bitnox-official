@@ -9,6 +9,7 @@ import Team1 from "../assets/Team1.jpg";
 import Team2 from "../assets/Team2.jpg";
 import Team3 from "../assets/Team3.jpg";
 import Team4 from "../assets/Team4.jpg";
+import Meta from "../Components/Meta";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -129,182 +130,189 @@ export default function AboutUs() {
   };
 
   return (
-    <div ref={containerRef} className="aboutpage">
-      {/* Hero Section */}
-      <section className="aboutpage-hero-section">
-        <div className="aboutpage-hero-pattern"></div>
-        <div className="aboutpage-hero-content">
-          <p className="aboutpage-hero-label">About Us</p>
-          <h1 className="aboutpage-hero-title">
-            Innovative Technology Solutions
-          </h1>
-          <p className="aboutpage-hero-description">
-            We deliver cutting-edge digital solutions that transform businesses
-            and drive growth through innovation and expertise.
-          </p>
-          <a href="#aboutpage-services">
-            <button className="aboutpage-hero-cta">
-              Learn More <ArrowRight size={20} />
-            </button>
-          </a>
-        </div>
-      </section>
-
-      {/* Overview Section */}
-      <section className="aboutpage-overview-section">
-        <div className="aboutpage-overview-container">
-          <div className="aboutpage-overview-content">
-            <h2>Who We Are</h2>
-            <p>
-              Bitnox Solutions is a forward-thinking technology company
-              dedicated to delivering cutting-edge digital solutions. With a
-              team of passionate experts, we transform businesses through
-              innovation, expertise, and unwavering commitment to excellence.
+    <>
+      <Meta title="About Us | Bitnox Technology" />
+      <div ref={containerRef} className="aboutpage">
+        {/* Hero Section */}
+        <section className="aboutpage-hero-section">
+          <div className="aboutpage-hero-pattern"></div>
+          <div className="aboutpage-hero-content">
+            <p className="aboutpage-hero-label">About Us</p>
+            <h1 className="aboutpage-hero-title">
+              Innovative Technology Solutions
+            </h1>
+            <p className="aboutpage-hero-description">
+              We deliver cutting-edge digital solutions that transform
+              businesses and drive growth through innovation and expertise.
             </p>
-            <p>
-              Since our founding, we've partnered with leading organizations to
-              solve complex challenges and unlock new opportunities in the
-              digital landscape.
-            </p>
+            <a href="#aboutpage-services">
+              <button className="aboutpage-hero-cta">
+                Learn More <ArrowRight size={20} />
+              </button>
+            </a>
           </div>
-          <div className="aboutpage-overview-stats">
-            <div className="aboutpage-stat-card">
-              <h3>50+</h3>
-              <p>Projects Completed</p>
+        </section>
+
+        {/* Overview Section */}
+        <section className="aboutpage-overview-section">
+          <div className="aboutpage-overview-container">
+            <div className="aboutpage-overview-content">
+              <h2>Who We Are</h2>
+              <p>
+                Bitnox Solutions is a forward-thinking technology company
+                dedicated to delivering cutting-edge digital solutions. With a
+                team of passionate experts, we transform businesses through
+                innovation, expertise, and unwavering commitment to excellence.
+              </p>
+              <p>
+                Since our founding, we've partnered with leading organizations
+                to solve complex challenges and unlock new opportunities in the
+                digital landscape.
+              </p>
             </div>
-            <div className="aboutpage-stat-card">
-              <h3>8+</h3>
-              <p>Team Members</p>
-            </div>
-            <div className="aboutpage-stat-card">
-              <h3>6+</h3>
-              <p>Years Experience</p>
-            </div>
-            <div className="aboutpage-stat-card">
-              <h3>99%</h3>
-              <p>Client Satisfaction</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section className="aboutpage-services-section">
-        <h2 className="aboutpage-section-title" id="aboutpage-services">
-          Our Services
-        </h2>
-        <div className="aboutpage-services-grid">
-          <div className="aboutpage-service-card">
-            <div className="aboutpage-service-icon">
-              <Zap />
-            </div>
-            <h3>Custom Development</h3>
-            <p>
-              Tailored software solutions built specifically for your business
-              needs and requirements.
-            </p>
-          </div>
-
-          <div className="aboutpage-service-card">
-            <div className="aboutpage-service-icon">
-              <Shield />
-            </div>
-            <h3>Security Solutions</h3>
-            <p>
-              Enterprise-grade security infrastructure to protect your digital
-              assets and data.
-            </p>
-          </div>
-
-          <div className="aboutpage-service-card">
-            <div className="aboutpage-service-icon">
-              <Award />
-            </div>
-            <h3>Cloud Solutions</h3>
-            <p>
-              Scalable cloud infrastructure designed for performance,
-              reliability, and growth.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Values Section */}
-      <section className="aboutpage-values-section">
-        <h2 className="aboutpage-section-title">Our Core Values</h2>
-        <div className="aboutpage-values-container">
-          <div className="aboutpage-value-item">
-            <div className="aboutpage-value-number">01</div>
-            <h3>Innovation</h3>
-            <p>
-              We continuously push boundaries and embrace emerging technologies
-              to deliver next-generation solutions.
-            </p>
-          </div>
-
-          <div className="aboutpage-value-item">
-            <div className="aboutpage-value-number">02</div>
-            <h3>Excellence</h3>
-            <p>
-              Uncompromising quality and attention to detail in every project we
-              undertake.
-            </p>
-          </div>
-
-          <div className="aboutpage-value-item">
-            <div className="aboutpage-value-number">03</div>
-            <h3>Integrity</h3>
-            <p>
-              Transparent communication and ethical practices form the
-              foundation of our partnerships.
-            </p>
-          </div>
-
-          <div className="aboutpage-value-item">
-            <div className="aboutpage-value-number">04</div>
-            <h3>Collaboration</h3>
-            <p>
-              We believe in the power of teamwork and partnering closely with
-              our clients.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section className="aboutpage-team-section">
-        <h2 className="aboutpage-section-title">Our Leadership Team</h2>
-        <div className="aboutpage-team-grid">
-          {[
-            {
-              name: "Oluwafemi Faleye",
-              role: "Founder & Software Engineer",
-              photo: Team1,
-            },
-            {
-              name: "Adefemi Sanyaolu",
-              role: "Cloud & Data Engineer",
-              photo: Team2,
-            },
-            {
-              name: "Bello Oladimeji",
-              role: "Web Developer",
-              photo: Team3,
-            },
-            { name: "Tobiloba David", role: "Product Designer", photo: Team4 },
-          ].map((member, index) => (
-            <div key={index} className="aboutpage-team-card">
-              <div className="aboutpage-team-image">
-                <img src={member.photo} alt={member.name} />
+            <div className="aboutpage-overview-stats">
+              <div className="aboutpage-stat-card">
+                <h3>50+</h3>
+                <p>Projects Completed</p>
               </div>
-              <div className="aboutpage-team-info">
-                <h3>{member.name}</h3>
-                <p>{member.role}</p>
+              <div className="aboutpage-stat-card">
+                <h3>8+</h3>
+                <p>Team Members</p>
+              </div>
+              <div className="aboutpage-stat-card">
+                <h3>6+</h3>
+                <p>Years Experience</p>
+              </div>
+              <div className="aboutpage-stat-card">
+                <h3>99%</h3>
+                <p>Client Satisfaction</p>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
-    </div>
+          </div>
+        </section>
+
+        {/* Services Section */}
+        <section className="aboutpage-services-section">
+          <h2 className="aboutpage-section-title" id="aboutpage-services">
+            Our Services
+          </h2>
+          <div className="aboutpage-services-grid">
+            <div className="aboutpage-service-card">
+              <div className="aboutpage-service-icon">
+                <Zap />
+              </div>
+              <h3>Custom Development</h3>
+              <p>
+                Tailored software solutions built specifically for your business
+                needs and requirements.
+              </p>
+            </div>
+
+            <div className="aboutpage-service-card">
+              <div className="aboutpage-service-icon">
+                <Shield />
+              </div>
+              <h3>Security Solutions</h3>
+              <p>
+                Enterprise-grade security infrastructure to protect your digital
+                assets and data.
+              </p>
+            </div>
+
+            <div className="aboutpage-service-card">
+              <div className="aboutpage-service-icon">
+                <Award />
+              </div>
+              <h3>Cloud Solutions</h3>
+              <p>
+                Scalable cloud infrastructure designed for performance,
+                reliability, and growth.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Values Section */}
+        <section className="aboutpage-values-section">
+          <h2 className="aboutpage-section-title">Our Core Values</h2>
+          <div className="aboutpage-values-container">
+            <div className="aboutpage-value-item">
+              <div className="aboutpage-value-number">01</div>
+              <h3>Innovation</h3>
+              <p>
+                We continuously push boundaries and embrace emerging
+                technologies to deliver next-generation solutions.
+              </p>
+            </div>
+
+            <div className="aboutpage-value-item">
+              <div className="aboutpage-value-number">02</div>
+              <h3>Excellence</h3>
+              <p>
+                Uncompromising quality and attention to detail in every project
+                we undertake.
+              </p>
+            </div>
+
+            <div className="aboutpage-value-item">
+              <div className="aboutpage-value-number">03</div>
+              <h3>Integrity</h3>
+              <p>
+                Transparent communication and ethical practices form the
+                foundation of our partnerships.
+              </p>
+            </div>
+
+            <div className="aboutpage-value-item">
+              <div className="aboutpage-value-number">04</div>
+              <h3>Collaboration</h3>
+              <p>
+                We believe in the power of teamwork and partnering closely with
+                our clients.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Team Section */}
+        <section className="aboutpage-team-section">
+          <h2 className="aboutpage-section-title">Our Leadership Team</h2>
+          <div className="aboutpage-team-grid">
+            {[
+              {
+                name: "Oluwafemi Faleye",
+                role: "Founder & Software Engineer",
+                photo: Team1,
+              },
+              {
+                name: "Adefemi Sanyaolu",
+                role: "Cloud & Data Engineer",
+                photo: Team2,
+              },
+              {
+                name: "Bello Oladimeji",
+                role: "Web Developer",
+                photo: Team3,
+              },
+              {
+                name: "Tobiloba David",
+                role: "Product Designer",
+                photo: Team4,
+              },
+            ].map((member, index) => (
+              <div key={index} className="aboutpage-team-card">
+                <div className="aboutpage-team-image">
+                  <img src={member.photo} alt={member.name} />
+                </div>
+                <div className="aboutpage-team-info">
+                  <h3>{member.name}</h3>
+                  <p>{member.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+    </>
   );
 }

@@ -1,16 +1,17 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import "./App.css"
-import Navbar from "./Components/Navbar"
-import Herosection from "./Components/Herosection"
-import About from "./Components/About"
-import WhyUs from "./Components/WhyUs"
-import Portfolio from "./Components/Portfolio"
-import Testimonial from "./Components/Testimonial"
-import Conclusion from "./Components/Conclusion"
-import Footer from "./Components/Footer"
-import AboutUs from "./Pages/AboutUs"
-import Cleaning from "./Pages/Cleaning"
-import Contact from "./Pages/Contact"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./App.css";
+import Navbar from "./Components/Navbar";
+import Herosection from "./Components/Herosection";
+import About from "./Components/About";
+import WhyUs from "./Components/WhyUs";
+import Portfolio from "./Components/Portfolio";
+import Testimonial from "./Components/Testimonial";
+import Conclusion from "./Components/Conclusion";
+import Footer from "./Components/Footer";
+import AboutUs from "./Pages/AboutUs";
+import Cleaning from "./Pages/Cleaning";
+import Contact from "./Pages/Contact";
+import Meta from "./Components/Meta";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           path="/"
           element={
             <>
+              <Meta />
               <Herosection />
               <About />
               <WhyUs />
@@ -36,7 +38,7 @@ function App() {
       </Routes>
       <Footer />
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

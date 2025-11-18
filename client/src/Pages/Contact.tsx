@@ -7,6 +7,7 @@ import { Mail, Phone, MapPin, Plus, Minus } from "lucide-react";
 import { useState } from "react";
 import "../Styles/ContactPage.css";
 import { faqs } from "../lib/data";
+import Meta from "../Components/Meta";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -46,158 +47,165 @@ export default function ContactPage() {
   }, []);
 
   return (
-    <div className="contact">
-      {/* Hero Section */}
-      <section className="contact-hero-section">
-        <div className="contact-hero-pattern"></div>
-        <div className="contact-hero-content">
-          <h1 className="contact-hero-title">Get in Touch</h1>
-          <p className="contact-hero-description">
-            We'd love to hear from you. Reach out to us via phone, email, or
-            visit us at our office. Our team is ready to assist you with any
-            questions.
-          </p>
-        </div>
-      </section>
+    <div>
+      <Meta title="Contact Us | Bitnox Technology" />
 
-      {/* Contact Info Section */}
-      <section className="contact-info-section">
-        <div className="contact-info-container">
-          <div className="contact-info-card contact-fade-in">
-            <div className="contact-info-icon">
-              <Phone size={32} />
-            </div>
-            <h3>Call Us</h3>
-            <p className="contact-info-main">+234-8137-192-766</p>
-            <p className="contact-info-sub">Hotline 24/7</p>
-          </div>
-
-          <div className="contact-info-card contact-fade-in">
-            <div className="contact-info-icon">
-              <Mail size={32} />
-            </div>
-            <h3>Email Us</h3>
-            <p className="contact-info-main">info@bitnoxsolution.com</p>
-            <p className="contact-info-sub">Free consult</p>
-          </div>
-
-          <div className="contact-info-card contact-fade-in">
-            <div className="contact-info-icon">
-              <MapPin size={32} />
-            </div>
-            <h3>Visit Us</h3>
-            <p className="contact-info-main">
-              24, Last Floor Majek Kembo Plaza
-            </p>
-            <p className="contact-info-sub">
-              Beside Chicken Republic, Lalubu Street
-              <br />
-              Oke-Ilewo Abeokuta
+      <div className="contact">
+        {/* Hero Section */}
+        <section className="contact-hero-section">
+          <div className="contact-hero-pattern"></div>
+          <div className="contact-hero-content">
+            <h1 className="contact-hero-title">Get in Touch</h1>
+            <p className="contact-hero-description">
+              We'd love to hear from you. Reach out to us via phone, email, or
+              visit us at our office. Our team is ready to assist you with any
+              questions.
             </p>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Google Map Section */}
-      <section className="contact-map-section">
-        <div className="contact-map-container contact-scale-in">
-          <h2 className="contact-map-title">Find Us On The Map</h2>
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3949.3447662737!2d3.3390846!3d7.1352459!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103a4bd512ad0f79%3A0x1750465af8955ca1!2s24%20Majek%20Kembo%20Plaza%2C%20Abeokuta!5e0!3m2!1sen!2sng!4v1730383200000"
-            width="100%"
-            height="500"
-            style={{ border: 0, borderRadius: "16px" }}
-            // allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            className="contact-map-iframe"
-          ></iframe>
-          <p className="contact-map-help">
-            Click the map above to get directions via Google Maps or use the
-            coordinates to navigate with your preferred navigation app.
-          </p>
-        </div>
-      </section>
+        {/* Contact Info Section */}
+        <section className="contact-info-section">
+          <div className="contact-info-container">
+            <div className="contact-info-card contact-fade-in">
+              <div className="contact-info-icon">
+                <Phone size={32} />
+              </div>
+              <h3>Call Us</h3>
+              <p className="contact-info-main">+234-8137-192-766</p>
+              <p className="contact-info-sub">Hotline 24/7</p>
+            </div>
 
-      {/* Contact Form Section */}
-      <section className="contact-form-section">
-        <div className="contact-form-container">
-          <div className="contact-form-content contact-fade-in">
-            <h2>Send Us A Message</h2>
-            <p>
-              Have a question or ready to book a service? Fill out the form
-              below and we'll get back to you within 2 hours.
-            </p>
-            <form className="contact-form">
-              <div className="contact-form-group">
-                <input type="text" placeholder="Your Full Name" required />
+            <div className="contact-info-card contact-fade-in">
+              <div className="contact-info-icon">
+                <Mail size={32} />
               </div>
-              <div className="contact-form-group">
-                <input type="email" placeholder="Your Email Address" required />
+              <h3>Email Us</h3>
+              <p className="contact-info-main">info@bitnoxsolution.com</p>
+              <p className="contact-info-sub">Free consult</p>
+            </div>
+
+            <div className="contact-info-card contact-fade-in">
+              <div className="contact-info-icon">
+                <MapPin size={32} />
               </div>
-              <div className="contact-form-group">
-                <input type="tel" placeholder="Your Phone Number" required />
-              </div>
-              <div className="contact-form-group">
-                <select required>
-                  <option value="">Select Service Type</option>
-                  <option value="home">Home Cleaning</option>
-                  <option value="office">Office Cleaning</option>
-                  <option value="post">Post-Construction</option>
-                  <option value="laundry">Laundry Service</option>
-                  <option value="specialized">Specialized Cleaning</option>
-                  <option value="emergency">Emergency Service</option>
-                </select>
-              </div>
-              <div className="contact-form-group">
-                <textarea
-                  placeholder="Tell us about your cleaning needs..."
-                  rows={5}
-                ></textarea>
-              </div>
-              <button type="submit" className="contact-form-submit">
-                Send Message
-              </button>
-            </form>
+              <h3>Visit Us</h3>
+              <p className="contact-info-main">
+                24, Last Floor Majek Kembo Plaza
+              </p>
+              <p className="contact-info-sub">
+                Beside Chicken Republic, Lalubu Street
+                <br />
+                Oke-Ilewo Abeokuta
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* FAQs Section */}
-      <section className="contact-faqs-section">
-        <div className="contact-faqs-container">
-          <h2 className="contact-faqs-title contact-fade-in">
-            Frequently Asked Questions
-          </h2>
-          <div className="contact-faqs-grid">
-            {faqs.map((faq, index) => (
-              <div
-                key={index}
-                className="contact-faq-item contact-fade-in"
-                onClick={() =>
-                  setExpandedIndex(expandedIndex === index ? null : index)
-                }
-              >
-                <div className="contact-faq-header">
-                  <h3>{faq.question}</h3>
-                  <div className="contact-faq-icon">
-                    {expandedIndex === index ? (
-                      <Minus size={24} />
-                    ) : (
-                      <Plus size={24} />
-                    )}
-                  </div>
+        {/* Google Map Section */}
+        <section className="contact-map-section">
+          <div className="contact-map-container contact-scale-in">
+            <h2 className="contact-map-title">Find Us On The Map</h2>
+            <iframe
+              title="office-map"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3949.3447662737!2d3.3390846!3d7.1352459!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103a4bd512ad0f79%3A0x1750465af8955ca1!2s24%20Majek%20Kembo%20Plaza%2C%20Abeokuta!5e0!3m2!1sen!2sng!4v1730383200000"
+              width="100%"
+              height="500"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="contact-map-iframe"
+            ></iframe>
+            <p className="contact-map-help">
+              Click the map above to get directions via Google Maps or use the
+              coordinates to navigate with your preferred navigation app.
+            </p>
+          </div>
+        </section>
+
+        {/* Contact Form Section */}
+        <section className="contact-form-section">
+          <div className="contact-form-container">
+            <div className="contact-form-content contact-fade-in">
+              <h2>Send Us A Message</h2>
+              <p>
+                Have a question or ready to book a service? Fill out the form
+                below and we'll get back to you within 2 hours.
+              </p>
+              <form className="contact-form">
+                <div className="contact-form-group">
+                  <input type="text" placeholder="Your Full Name" required />
                 </div>
-                {expandedIndex === index && (
-                  <div className="contact-faq-answer">
-                    <p>{faq.answer}</p>
-                  </div>
-                )}
-              </div>
-            ))}
+                <div className="contact-form-group">
+                  <input
+                    type="email"
+                    placeholder="Your Email Address"
+                    required
+                  />
+                </div>
+                <div className="contact-form-group">
+                  <input type="tel" placeholder="Your Phone Number" required />
+                </div>
+                <div className="contact-form-group">
+                  <select title="service" name="service" required>
+                    <option value="">Select Service Type</option>
+                    <option value="home">Web development</option>
+                    <option value="office">IT Consultation</option>
+                    <option value="post">Tech Training</option>
+                    <option value="laundry">Software Solution</option>
+                    <option value="specialized">Specialized Cleaning</option>
+                    <option value="emergency">Emergency Service</option>
+                  </select>
+                </div>
+                <div className="contact-form-group">
+                  <textarea
+                    placeholder="Tell us about your cleaning needs..."
+                    rows={5}
+                  ></textarea>
+                </div>
+                <button type="submit" className="contact-form-submit">
+                  Send Message
+                </button>
+              </form>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* FAQs Section */}
+        <section className="contact-faqs-section">
+          <div className="contact-faqs-container">
+            <h2 className="contact-faqs-title contact-fade-in">
+              Frequently Asked Questions
+            </h2>
+            <div className="contact-faqs-grid">
+              {faqs.map((faq, index) => (
+                <div
+                  key={index}
+                  className="contact-faq-item contact-fade-in"
+                  onClick={() =>
+                    setExpandedIndex(expandedIndex === index ? null : index)
+                  }
+                >
+                  <div className="contact-faq-header">
+                    <h3>{faq.question}</h3>
+                    <div className="contact-faq-icon">
+                      {expandedIndex === index ? (
+                        <Minus size={24} />
+                      ) : (
+                        <Plus size={24} />
+                      )}
+                    </div>
+                  </div>
+                  {expandedIndex === index && (
+                    <div className="contact-faq-answer">
+                      <p>{faq.answer}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }
