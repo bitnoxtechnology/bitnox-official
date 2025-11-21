@@ -7,7 +7,7 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
-} from "../ui/field";
+} from "@/Components/ui/field";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -15,12 +15,12 @@ import {
   contactSchema,
   type ContactFormType,
 } from "@/lib/validations/contact-validator";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
+import { Input } from "@/Components/ui/input";
+import { Button } from "@/Components/ui/button";
+import { Textarea } from "@/Components/ui/textarea";
 import { MESSAGE_TEMPLATES } from "@/lib/data";
 import API from "@/lib/services/axios-client";
-import { Spinner } from "../ui/spinner";
+import { Spinner } from "@/Components/ui/spinner";
 
 const ContactForm = () => {
   const [isPending, startTransition] = React.useTransition();
