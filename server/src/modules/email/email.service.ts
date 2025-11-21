@@ -6,18 +6,15 @@ export class EmailService {
   public sendContactUsEmail = async ({
     name,
     email,
-    serviceType,
     message,
   }: {
     name: string;
     email: string;
-    serviceType: string;
     message: string;
   }): Promise<void> => {
     const emailContent = contactUsFormTemplate({
       name,
       email,
-      serviceType,
       message,
     });
 

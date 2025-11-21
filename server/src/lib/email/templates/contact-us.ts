@@ -1,26 +1,23 @@
 import { config } from "../../../config/app.config";
 
-const host = config.HOST;
+const clientOrigin = config.CLIENT_ORIGIN;
 
 export const contactUsFormTemplate = ({
   name,
   email,
-  serviceType,
   message,
 }: {
   name: string;
   email: string;
-  serviceType: string;
   message: string;
 }) => ({
   to: "info@bitnoxsolution.com",
   subject: `New Contact Message from ${name}`,
   text: `
-You have received a new message via Contact Us form on (${host}).
+You have received a new message via Contact Us form on (${clientOrigin}).
 
 Name: ${name}
 Email: ${email}
-Service Type: ${serviceType}
 Message:
 ${message}
   `,
@@ -81,16 +78,13 @@ ${message}
       <div class="container">
         <div class="header">New Contact Message</div>
         <div class="content">
-          <h2>You’ve received a new message from the platform contact form on (${host})</h2>
+          <h2>You’ve received a new message from the platform contact form on (${clientOrigin})</h2>
           <div>
             <div class="label">Sender Name:</div>
             <div class="value">${name}</div>
 
             <div class="label">Sender Email:</div>
             <div class="value">${email}</div>
-
-            <div class="label">Service Type:</div>
-            <div class="value">${serviceType}</div>
 
             <div class="label">Message:</div>
             <div class="value">${message.replace(/\n/g, "<br/>")}</div>

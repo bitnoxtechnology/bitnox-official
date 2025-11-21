@@ -270,7 +270,8 @@
 }
 
 .contact-form-submit {
-  padding: 16px 40px;
+  height: initial !important;
+  padding: 16px 40px !important;
   background: var(--cyan-primary);
   color: #002d43;
   border: none;

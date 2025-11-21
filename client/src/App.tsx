@@ -12,10 +12,12 @@ import AboutUs from "./Pages/AboutUs";
 import Cleaning from "./Pages/Cleaning";
 import Contact from "./Pages/Contact";
 import Meta from "./Components/Meta";
+import { Toaster } from "sonner";
 
 function App() {
   return (
     <Router>
+      <Toaster position="bottom-right" richColors closeButton />
       <Navbar />
       <Routes>
         <Route

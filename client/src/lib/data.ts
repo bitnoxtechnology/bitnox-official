@@ -98,3 +98,125 @@ export const faqs = [
       "You can contact us via email, phone, whatsapp, or through our website’s contact form. We’re always happy to discuss your ideas or answer any questions.",
   },
 ];
+
+export const MESSAGE_TEMPLATES = {
+  mobileApp: {
+    label: "Mobile App Development",
+    message: `Hi there! I'm interested in developing a mobile app for my business.
+
+The app should include:
+- [Describe main features you need]
+- [Target platform: iOS, Android, or both]
+- [Any specific integrations required]
+
+My budget range is [your budget] and I'm looking to launch by [timeline].
+
+I'd love to discuss this project further and get a quote.
+
+Best regards!`,
+  },
+  webDesign: {
+    label: "Web Design",
+    message: `Hello! I need a professional website designed for my business.
+
+Requirements:
+- [Describe your business and target audience]
+- [Key pages and features needed]
+- [Design style preferences]
+- [Any specific functionalities]
+
+My budget is [your budget] and timeline is [your timeline].
+
+Looking forward to hearing from you!
+
+Best regards!`,
+  },
+  cleaning: {
+    label: "Cleaning Services",
+    message: `Hi! I'm interested in your cleaning services for my [residential/commercial] property.
+
+Details:
+- Property size: [square footage]
+- Type of cleaning needed: [regular/deep/move-in/move-out]
+- Frequency: [one-time/weekly/monthly]
+- Preferred schedule: [your preferred time]
+
+Please provide a quote and availability.
+
+Thank you!`,
+  },
+  cybersecurity: {
+    label: "Cybersecurity Assistance",
+    message: `Hello! I need help with cybersecurity for my organization.
+
+Areas of concern:
+- [Current security challenges]
+- [Systems/data to protect]
+- [Compliance requirements]
+- [Budget range]
+
+Please advise on the best approach and provide recommendations.
+
+Looking forward to your response!
+
+Best regards!`,
+  },
+  techTraining: {
+    label: "Tech Training",
+    message: `Hi! I'm interested in tech training for [myself/my team].
+
+Details:
+- Topic/skills needed: [specify technology or skills]
+- Experience level: [beginner/intermediate/advanced]
+- Number of participants: [number]
+- Preferred format: [online/in-person/hybrid]
+- Timeline: [when do you need training]
+
+Please provide training options and pricing.
+
+Thank you!`,
+  },
+  itConsultation: {
+    label: "IT Consultation",
+    message: `Hello! I need IT consulting services for my business.
+
+Current situation:
+- [Describe your IT environment]
+- [Specific challenges you're facing]
+- [Business goals]
+- [Budget range]
+
+I'd appreciate a consultation to discuss solutions and next steps.
+
+Best regards!`,
+  },
+  hardwareInstallation: {
+    label: "Hardware Installation",
+    message: `Hi! I need help with hardware installation for my [business/home].
+
+Requirements:
+- [Type of hardware to install]
+- [Number of devices]
+- [Location and setup details]
+- [Any networking requirements]
+- [Preferred timeline]
+
+Please provide a quote and availability.
+
+Thank you!`,
+  },
+  laundry: {
+    label: "Laundry Services",
+    message: `Hello! I'm interested in your laundry services.
+
+Details:
+- Type of items: [clothing/linens/specialized items]
+- Quantity: [estimated per week/month]
+- Special requirements: [delicate care/allergies/preferences]
+- Preferred pickup/delivery: [frequency and schedule]
+
+Please provide pricing and service options.
+
+Best regards!`,
+  },
+};

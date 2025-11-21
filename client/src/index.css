@@ -4,8 +4,22 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-primary-200: #06b6d4;
-  --color-primary-220: #0891b2;
+  --color-secondary-100: #003d57;
+  --color-secondary-200: #004d6b;
+  --color-secondary-300: #003d57;
+  --color-secondary-400: #004d6b;
+  --color-secondary-500: #005873;
+
+  --color-primary-100: #05e4fc;
+  --color-primary-200: #2ef0ff;
+  --color-primary-300: #04b8d4;
+
+  --color-tertiary-100: #0a0a0a;
+  --color-tertiary-200: #ffffff;
+  --color-tertiary-300: #b0d4e3;
+  --color-tertiary-400: #7a9aab;
+
+  --shadow-form-input: 0 0 20px rgba(5, 228, 252, 0.2);
 }
 
 @theme inline {
@@ -116,7 +130,4 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
 }

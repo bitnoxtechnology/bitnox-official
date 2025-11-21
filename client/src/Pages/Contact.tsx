@@ -8,6 +8,7 @@ import { useState } from "react";
 import "../Styles/ContactPage.css";
 import { faqs } from "../lib/data";
 import Meta from "../Components/Meta";
+import ContactForm from "@/Components/forms/ContactForm";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -131,41 +132,8 @@ export default function ContactPage() {
                 Have a question or ready to book a service? Fill out the form
                 below and we'll get back to you within 2 hours.
               </p>
-              <form className="contact-form">
-                <div className="contact-form-group">
-                  <input type="text" placeholder="Your Full Name" required />
-                </div>
-                <div className="contact-form-group">
-                  <input
-                    type="email"
-                    placeholder="Your Email Address"
-                    required
-                  />
-                </div>
-                <div className="contact-form-group">
-                  <input type="tel" placeholder="Your Phone Number" required />
-                </div>
-                <div className="contact-form-group">
-                  <select title="service" name="service" required>
-                    <option value="">Select Service Type</option>
-                    <option value="home">Web development</option>
-                    <option value="office">IT Consultation</option>
-                    <option value="post">Tech Training</option>
-                    <option value="laundry">Software Solution</option>
-                    <option value="specialized">Specialized Cleaning</option>
-                    <option value="emergency">Emergency Service</option>
-                  </select>
-                </div>
-                <div className="contact-form-group">
-                  <textarea
-                    placeholder="Tell us about your cleaning needs..."
-                    rows={5}
-                  ></textarea>
-                </div>
-                <button type="submit" className="contact-form-submit">
-                  Send Message
-                </button>
-              </form>
+
+              <ContactForm />
             </div>
           </div>
         </section>
