@@ -5,10 +5,10 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Mail, Phone, MapPin, Plus, Minus } from "lucide-react";
 import { useState } from "react";
-import "../Styles/ContactPage.css";
+import "../styles/ContactPage.css";
 import { faqs } from "../lib/data";
-import Meta from "../Components/Meta";
-import ContactForm from "@/Components/forms/ContactForm";
+import Meta from "../components/Meta";
+import ContactForm from "@/components/forms/ContactForm";
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -1,17 +1,17 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import Navbar from "./Components/Navbar";
-import Herosection from "./Components/Herosection";
-import About from "./Components/About";
-import WhyUs from "./Components/WhyUs";
-import Portfolio from "./Components/Portfolio";
-import Testimonial from "./Components/Testimonial";
-import Conclusion from "./Components/Conclusion";
-import Footer from "./Components/Footer";
-import AboutUs from "./Pages/AboutUs";
-import Cleaning from "./Pages/Cleaning";
-import Contact from "./Pages/Contact";
-import Meta from "./Components/Meta";
+import Navbar from "./components/Navbar";
+import Herosection from "./components/Herosection";
+import About from "./components/About";
+import WhyUs from "./components/WhyUs";
+import Portfolio from "./components/Portfolio";
+import Testimonial from "./components/Testimonial";
+import Conclusion from "./components/Conclusion";
+import Footer from "./components/Footer";
+import AboutUs from "./pages/AboutUs";
+import Cleaning from "./pages/Cleaning";
+import Contact from "./pages/Contact";
+import Meta from "./components/Meta";
 import { Toaster } from "sonner";
 
 function App() {

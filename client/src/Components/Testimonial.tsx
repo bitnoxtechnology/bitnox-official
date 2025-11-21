@@ -1,7 +1,7 @@
 "use client";
 
 import { Quote } from "lucide-react";
-import "../Styles/Testimonial.css";
+import "../styles/Testimonial.css";
 import { testimonials } from "../lib/data";
 
 function Testimonial() {

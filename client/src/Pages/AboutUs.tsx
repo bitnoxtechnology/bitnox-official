@@ -4,12 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, Zap, Shield, Users, Award } from "lucide-react";
-import "../Styles/AboutPage.css";
+import "../styles/AboutPage.css";
 import Team1 from "../assets/Team1.jpg";
 import Team2 from "../assets/Team2.jpg";
 import Team3 from "../assets/Team3.jpg";
 import Team4 from "../assets/Team4.jpg";
-import Meta from "../Components/Meta";
+import Meta from "../components/Meta";
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -13,7 +13,7 @@ import {
   ArrowUpRight,
   Send,
 } from "lucide-react";
-import "../Styles/Footer.css";
+import "../styles/Footer.css";
 
 gsap.registerPlugin(ScrollTrigger);
 

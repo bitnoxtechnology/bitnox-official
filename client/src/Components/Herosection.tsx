@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import "../Styles/Herosection.css";
+import "../styles/Herosection.css";
 import HeroImage from "../assets/HeroImage.svg";
 
 function Herosection() {

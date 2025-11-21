@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import "../Styles/Portfolio.css";
+import "../styles/Portfolio.css";
 import ImageOne from "../assets/projectOne.png";
 import ImageTwo from "../assets/projectTwo.png";
 import ImageThree from "../assets/projectThree.png";

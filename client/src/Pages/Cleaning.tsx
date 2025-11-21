@@ -11,9 +11,9 @@ import {
   Sparkles,
   Clock,
 } from "lucide-react";
-import "../Styles/CleaningPage.css";
+import "../styles/CleaningPage.css";
 import CleaningImage from "../assets/CleaningImage.jpg";
-import Meta from "../Components/Meta";
+import Meta from "../components/Meta";
 
 gsap.registerPlugin(ScrollTrigger);
 

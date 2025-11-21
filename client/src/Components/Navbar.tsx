@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import { useEffect, useRef, useState } from "react"
-import { Link, useLocation } from "react-router-dom"
-import { gsap } from "gsap"
-import "../Styles/Navbar.css"
-import SecondaryLogo from "../assets/Logo.svg"
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { gsap } from "gsap";
+import "../styles/Navbar.css";
+import SecondaryLogo from "../assets/Logo.svg";
 
 function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const location = useLocation()
-  const navRef = useRef<HTMLElement>(null)
-  const logoRef = useRef<HTMLDivElement>(null)
-  const menuItemsRef = useRef<(HTMLElement | null)[]>([])
-  const mobileMenuRef = useRef<HTMLDivElement>(null)
-  const hamburgerRef = useRef<HTMLButtonElement>(null)
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+  const navRef = useRef<HTMLElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
+  const menuItemsRef = useRef<(HTMLElement | null)[]>([]);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     // Initial animation on mount
@@ -25,10 +25,10 @@ function Navbar() {
           x: -50,
           duration: 1,
           ease: "power3.out",
-        })
+        });
       }
 
-      const validItems = menuItemsRef.current.filter((item) => item !== null)
+      const validItems = menuItemsRef.current.filter((item) => item !== null);
       if (validItems.length > 0) {
         gsap.from(validItems, {
           opacity: 0,
@@ -37,22 +37,22 @@ function Navbar() {
           stagger: 0.1,
           ease: "power3.out",
           delay: 0.3,
-        })
+        });
       }
-    }, navRef)
+    }, navRef);
 
     // Scroll effect
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
-    }
+      setScrolled(window.scrollY > 50);
+    };
 
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      ctx.revert()
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [])
+      ctx.revert();
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     // Mobile menu animation
@@ -62,9 +62,10 @@ function Navbar() {
           x: 0,
           duration: 0.5,
           ease: "power3.inOut",
-        })
+        });
 
-        const mobileItems = mobileMenuRef.current.querySelectorAll(".mobile-nav-item")
+        const mobileItems =
+          mobileMenuRef.current.querySelectorAll(".mobile-nav-item");
         gsap.from(mobileItems, {
           opacity: 0,
           x: -30,
@@ -72,30 +73,30 @@ function Navbar() {
           stagger: 0.1,
           delay: 0.2,
           ease: "power2.out",
-        })
+        });
       } else {
         gsap.to(mobileMenuRef.current, {
           x: "-100%",
           duration: 0.5,
           ease: "power3.inOut",
-        })
+        });
       }
     }
 
     // Hamburger animation
     if (hamburgerRef.current) {
-      const lines = hamburgerRef.current.querySelectorAll(".hamburger-line")
+      const lines = hamburgerRef.current.querySelectorAll(".hamburger-line");
       if (isOpen) {
-        gsap.to(lines[0], { rotation: 45, y: 8, duration: 0.3 })
-        gsap.to(lines[1], { opacity: 0, duration: 0.2 })
-        gsap.to(lines[2], { rotation: -45, y: -8, duration: 0.3 })
+        gsap.to(lines[0], { rotation: 45, y: 8, duration: 0.3 });
+        gsap.to(lines[1], { opacity: 0, duration: 0.2 });
+        gsap.to(lines[2], { rotation: -45, y: -8, duration: 0.3 });
       } else {
-        gsap.to(lines[0], { rotation: 0, y: 0, duration: 0.3 })
-        gsap.to(lines[1], { opacity: 1, duration: 0.2 })
-        gsap.to(lines[2], { rotation: 0, y: 0, duration: 0.3 })
+        gsap.to(lines[0], { rotation: 0, y: 0, duration: 0.3 });
+        gsap.to(lines[1], { opacity: 1, duration: 0.2 });
+        gsap.to(lines[2], { rotation: 0, y: 0, duration: 0.3 });
       }
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   const navItems = [
     { name: "About", href: "/about" },
@@ -104,18 +105,21 @@ function Navbar() {
     { name: "Ask Community", href: "https://askcom.bitnoxsolution.com/" },
     { name: "Cleaning", href: "/cleaning" },
     { name: "Contact", href: "/contact" },
-  ]
+  ];
 
   const isActiveLink = (href: string) => {
-    if (href === "/" && location.pathname === "/") return true
-    if (href !== "/" && location.pathname === href) return true
-    if (href.startsWith("#") && location.hash === href) return true
-    return false
-  }
+    if (href === "/" && location.pathname === "/") return true;
+    if (href !== "/" && location.pathname === href) return true;
+    if (href.startsWith("#") && location.hash === href) return true;
+    return false;
+  };
 
   return (
     <>
-      <nav ref={navRef} className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
+      <nav
+        ref={navRef}
+        className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}
+      >
         <div className="navbar-container">
           <div ref={logoRef} className="navbar-logo">
             <Link to="/">
@@ -129,16 +133,26 @@ function Navbar() {
               <li
                 key={item.name}
                 ref={(el) => {
-                  menuItemsRef.current[index] = el
+                  menuItemsRef.current[index] = el;
                 }}
                 className="navbar-menu-item"
               >
                 {item.href.startsWith("http") ? (
-                  <a href={item.href} className="navbar-link" target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={item.href}
+                    className="navbar-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {item.name}
                   </a>
                 ) : (
-                  <Link to={item.href} className={`navbar-link ${isActiveLink(item.href) ? "active" : ""}`}>
+                  <Link
+                    to={item.href}
+                    className={`navbar-link ${
+                      isActiveLink(item.href) ? "active" : ""
+                    }`}
+                  >
                     {item.name}
                   </Link>
                 )}
@@ -149,7 +163,7 @@ function Navbar() {
           {/* Button */}
           <div
             ref={(el) => {
-              menuItemsRef.current[navItems.length] = el
+              menuItemsRef.current[navItems.length] = el;
             }}
             className="navbar-cta"
           >
@@ -157,7 +171,12 @@ function Navbar() {
           </div>
 
           {/* Menu */}
-          <button ref={hamburgerRef} className="hamburger" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
+          <button
+            ref={hamburgerRef}
+            className="hamburger"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
+          >
             <span className="hamburger-line"></span>
             <span className="hamburger-line"></span>
             <span className="hamburger-line"></span>
@@ -181,9 +200,11 @@ function Navbar() {
                   {item.name}
                 </a>
               ) : (
-                <Link 
-                  to={item.href} 
-                  className={`mobile-nav-link ${isActiveLink(item.href) ? "active" : ""}`}
+                <Link
+                  to={item.href}
+                  className={`mobile-nav-link ${
+                    isActiveLink(item.href) ? "active" : ""
+                  }`}
                   onClick={() => setIsOpen(false)}
                 >
                   {item.name}
@@ -198,9 +219,11 @@ function Navbar() {
       </div>
 
       {/* Overlay */}
-      {isOpen && <div className="overlay" onClick={() => setIsOpen(false)}></div>}
+      {isOpen && (
+        <div className="overlay" onClick={() => setIsOpen(false)}></div>
+      )}
     </>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;
