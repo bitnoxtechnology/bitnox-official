@@ -24,6 +24,7 @@ export class AuthController {
       });
       const { user } = await this.authService.signup(body);
       return res.status(HTTPSTATUSCODE.CREATED).json({
+        success: true,
         message: "User signup successfully",
         user,
       });
@@ -37,6 +38,7 @@ export class AuthController {
       });
       const { user } = await this.authService.login(body);
       return res.status(HTTPSTATUSCODE.OK).json({
+        success: true,
         message: "Attempt to login successful. Check your email for OTP code",
         user,
       });
@@ -57,6 +59,7 @@ export class AuthController {
       await this.authService.logout(accessToken);
 
       return res.status(HTTPSTATUSCODE.OK).json({
+        success: true,
         message: "Logout successful",
       });
     }
@@ -72,6 +75,7 @@ export class AuthController {
         await this.authService.verifyLoginOTP(body);
 
       return res.status(HTTPSTATUSCODE.OK).json({
+        success: true,
         message: "Login successful",
         user,
         token: {
@@ -96,6 +100,7 @@ export class AuthController {
         await this.authService.refreshToken(refreshToken);
 
       res.status(HTTPSTATUSCODE.OK).json({
+        success: true,
         message: "Refresh token successful",
         token: {
           accessToken,

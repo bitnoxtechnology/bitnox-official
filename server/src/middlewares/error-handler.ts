@@ -10,6 +10,7 @@ const formatZodError = (res: Response, error: z.ZodError) => {
     message: err.message,
   }));
   return res.status(HTTPSTATUSCODE.BAD_REQUEST).json({
+    success: false,
     message: errors[0].message,
     errorName: ErrorName.VALIDATION_ERROR,
   });
@@ -31,12 +32,14 @@ export const errorHandler: ErrorRequestHandler = (
   ) {
     if ((error as any).keyPattern.slug) {
       return res.status(HTTPSTATUSCODE.BAD_REQUEST).json({
+        success: false,
         message: "Title already exist",
         errorName: "DUPLICATE_SLUG",
       });
     }
 
     return res.status(HTTPSTATUSCODE.BAD_REQUEST).json({
+      success: false,
       message: "Duplicate entry",
       errorName: "DUPLICATE_KEY",
     });
@@ -44,6 +47,7 @@ export const errorHandler: ErrorRequestHandler = (
 
   if (error instanceof SyntaxError) {
     return res.status(HTTPSTATUSCODE.BAD_REQUEST).json({
+      success: false,
       message: "Invalid JSON format, please check your request body",
       errorName: "INVALID_JSON",
     });
@@ -58,12 +62,14 @@ export const errorHandler: ErrorRequestHandler = (
       //   clearAuthenticationCookies(res);
     }
     return res.status(error.statusCode).json({
+      success: false,
       message: error.message,
       errorName: error.errorName,
     });
   }
 
   return res.status(HTTPSTATUSCODE.INTERNAL_SERVER_ERROR).json({
+    success: false,
     message: error?.message || "Unknown error occurred",
     errorName: "INTERNAL_SERVER_ERROR",
   });

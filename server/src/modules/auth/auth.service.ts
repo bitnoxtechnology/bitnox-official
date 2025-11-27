@@ -103,7 +103,7 @@ export class AuthService {
   }
 
   public async verifyLoginOTP(verifyLoginData: VerifyLoginOTPType) {
-    const { email, code } = verifyLoginData;
+    const { email, otp } = verifyLoginData;
 
     const user = await UserModel.findOne({ email });
     if (!user) {
@@ -117,15 +117,12 @@ export class AuthService {
     const otpRecord = await VerificationCodeModel.findOne({
       userId,
       type: VerificationEnum.OTP,
-      code,
+      code: otp,
       expiresAt: { $gt: new Date() }, // Ensure OTP is not expired
     });
 
     if (!otpRecord) {
-      throw new BadRequestException(
-        "Invalid OTP code",
-        ErrorName.AUTH_OTP_INVALID
-      );
+      throw new BadRequestException("Invalid OTP", ErrorName.AUTH_OTP_INVALID);
     }
 
     const accessToken = signJwt({ userId: otpRecord.userId });

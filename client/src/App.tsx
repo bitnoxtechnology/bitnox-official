@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
+import "@/styles/Auth.css";
 import Navbar from "@/components/Navbar";
 import Herosection from "@/components/Herosection";
 import About from "@/components/About";
@@ -11,6 +12,7 @@ import Footer from "@/components/Footer";
 import AboutUs from "@/pages/AboutUs";
 import Cleaning from "@/pages/Cleaning";
 import Contact from "@/pages/Contact";
+import Signup from "./pages/auth/Signup";
 import Meta from "@/components/Meta";
 import { Toaster } from "sonner";
 
@@ -37,6 +39,7 @@ function App() {
         <Route path="/about" element={<AboutUs />} />
         <Route path="/cleaning" element={<Cleaning />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/auth/signup" element={<Signup />} />
       </Routes>
       <Footer />
     </Router>

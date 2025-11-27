@@ -24,7 +24,7 @@ export type LoginType = z.infer<typeof loginSchema>;
 
 export const verifyLoginOTPSchema = z.object({
   email: emailSchema,
-  code: z.string("OTP code is required"),
+  otp: z.string("OTP is required"),
 });
 
 export type VerifyLoginOTPType = z.infer<typeof verifyLoginOTPSchema>;
