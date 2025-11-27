@@ -15,6 +15,7 @@ import Contact from "@/pages/Contact";
 import Signup from "./pages/auth/Signup";
 import Meta from "@/components/Meta";
 import { Toaster } from "sonner";
+import Login from "./pages/auth/Login";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
         <Route path="/cleaning" element={<Cleaning />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/auth/signup" element={<Signup />} />
+        <Route path="/auth/login" element={<Login />} />
       </Routes>
       <Footer />
     </Router>

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, Mail, User } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -15,8 +15,8 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import {
-  signupSchema,
-  type SignupFormType,
+  loginSchema,
+  type LoginFormType,
 } from "@/lib/validations/auth-validator";
 import { authService } from "@/lib/services/auth-service";
 import { Link } from "react-router-dom";
@@ -25,19 +25,19 @@ interface Props {
   onSuccess: (email: string) => void;
 }
 
-const SignupForm: React.FC<Props> = ({ onSuccess }) => {
+const LoginForm: React.FC<Props> = ({ onSuccess }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const form = useForm<SignupFormType>({
-    resolver: zodResolver(signupSchema),
+  const form = useForm<LoginFormType>({
+    resolver: zodResolver(loginSchema),
     mode: "onChange",
-    defaultValues: { name: "", email: "" },
+    defaultValues: { email: "" },
   });
 
-  const onSubmit = async (data: SignupFormType) => {
+  const onSubmit = async (data: LoginFormType) => {
     setIsLoading(true);
     try {
-      await authService.signup({ name: data.name, email: data.email });
+      await authService.login({ email: data.email });
       toast.success(`OTP sent to ${data.email}`);
       onSuccess(data.email);
     } catch (err: unknown) {
@@ -53,43 +53,16 @@ const SignupForm: React.FC<Props> = ({ onSuccess }) => {
   return (
     <>
       <div className="auth-form-header">
-        <h2>Create Account</h2>
+        <h2>Log in to your account</h2>
         <p>
-          Already have an account?{" "}
-          <Link to="/auth/login" className="auth-link">
-            Log in
+          Don't have an account?{" "}
+          <Link to="/auth/signup" className="auth-link">
+            Sign up
           </Link>
         </p>
       </div>
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="auth-form">
-        <Controller
-          name="name"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldContent>
-                <FieldLabel htmlFor="name">Full Name</FieldLabel>
-                <div className="auth-input-wrapper">
-                  <User className="auth-input-icon" size={20} />
-                  <Input
-                    {...field}
-                    id="name"
-                    placeholder="John Doe"
-                    aria-invalid={fieldState.invalid}
-                    className="ps-10!"
-                    disabled={isLoading}
-                    autoComplete="name"
-                  />
-                </div>
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </FieldContent>
-            </Field>
-          )}
-        />
-
         <Controller
           name="email"
           control={form.control}
@@ -126,11 +99,11 @@ const SignupForm: React.FC<Props> = ({ onSuccess }) => {
           {isLoading ? (
             <>
               <span className="spinner-small" />
-              Signing up...
+              Logging in...
             </>
           ) : (
             <>
-              Sign up
+              Log in
               <ArrowRight size={18} />
             </>
           )}
@@ -140,4 +113,4 @@ const SignupForm: React.FC<Props> = ({ onSuccess }) => {
   );
 };
 
-export default SignupForm;
+export default LoginForm;

@@ -2,13 +2,13 @@
 
 import React, { useState } from "react";
 import { CheckCircle2 } from "lucide-react";
-import SignupForm from "@/components/forms/SignupForm";
+import LoginForm from "@/components/forms/LoginForm";
 import AuthOTPForm from "@/components/forms/AuthOTPForm";
 
-type SignupStep = "credentials" | "otp" | "success";
+type LoginStep = "credentials" | "otp" | "success";
 
-const Signup = () => {
-  const [step, setStep] = useState<SignupStep>("credentials");
+const Login = () => {
+  const [step, setStep] = useState<LoginStep>("credentials");
   const [emailForOTP, setEmailForOTP] = useState("");
 
   const handleCredentialsSuccess = (email: string) => {
@@ -32,9 +32,9 @@ const Signup = () => {
       <div className="auth-wrapper">
         <div className="auth-branding">
           <div className="auth-branding-content">
-            <h1 className="auth-title">Join Bitnox</h1>
+            <h1 className="auth-title">Welcome Back to Bitnox</h1>
             <p className="auth-subtitle">
-              Start your journey with cutting-edge technology solutions
+              Securely access your account with cutting-edge technology
             </p>
             <div className="auth-features">
               <div className="auth-feature">
@@ -56,7 +56,7 @@ const Signup = () => {
         <div className="auth-form-container">
           {step === "credentials" && (
             <div className="auth-form-wrapper">
-              <SignupForm onSuccess={handleCredentialsSuccess} />
+              <LoginForm onSuccess={handleCredentialsSuccess} />
             </div>
           )}
 
@@ -75,8 +75,8 @@ const Signup = () => {
               <div className="success-icon">
                 <CheckCircle2 size={64} />
               </div>
-              <h2>Welcome to Bitnox!</h2>
-              <p>Your account has been created successfully.</p>
+              <h2>Welcome back to Bitnox!</h2>
+              <p>You have successfully logged in.</p>
               <p className="success-email">Email: {emailForOTP}</p>
               <div className="success-redirect">
                 <p>Redirecting to dashboard...</p>
@@ -94,4 +94,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;

@@ -1,35 +1,45 @@
 import API from "./axios-client";
 
-export type SignupPayload = {
+type SignupPayload = {
   name: string;
   email: string;
 };
 
-export type VerifyOTPPayload = {
+type LoginPayload = {
+  email: string;
+};
+
+type VerifyOTPPayload = {
   email: string;
   otp: string;
 };
 
-export type SignupResponse = {
+type AuthResponse = {
   success: boolean;
   message: string;
   data?: {
-    userId: string;
-    email: string;
+    user: UserType;
   };
 };
 
-interface ErrorResponse {
+type VerifyOTPResponse = {
   success: boolean;
   message: string;
-}
+  data?: {
+    user: UserType;
+    token: {
+      accessToken: string;
+      refreshToken: string;
+    };
+  };
+};
 
-export const signupService = {
+export const authService = {
   /**
    * Submit signup form with name and email
    * This should trigger OTP sending to the email
    */
-  signup: async (payload: SignupPayload): Promise<SignupResponse> => {
+  signup: async (payload: SignupPayload): Promise<AuthResponse> => {
     try {
       const response = await API.post("/auth/signup", payload);
       return response.data;
@@ -40,9 +50,23 @@ export const signupService = {
   },
 
   /**
+   * Submit login form with email
+   * This should trigger OTP sending to the email
+   */
+  login: async (payload: LoginPayload): Promise<AuthResponse> => {
+    try {
+      const response = await API.post("/auth/login", payload);
+      return response.data;
+    } catch (error: unknown) {
+      const errorData = error as ErrorResponse;
+      throw errorData || { success: false, message: "Login failed" };
+    }
+  },
+
+  /**
    * Verify OTP and complete signup
    */
-  verifyOTP: async (payload: VerifyOTPPayload): Promise<SignupResponse> => {
+  verifyOTP: async (payload: VerifyOTPPayload): Promise<VerifyOTPResponse> => {
     try {
       const response = await API.post("/auth/verify-login-otp", payload);
       return response.data;
@@ -55,9 +79,9 @@ export const signupService = {
   /**
    * Resend OTP to email
    */
-  resendOTP: async (email: string): Promise<SignupResponse> => {
+  resendOTP: async (email: string): Promise<AuthResponse> => {
     try {
-      const response = await API.post("/auth/resend-otp", { email });
+      const response = await API.post("/auth/resend-login-otp", { email });
       return response.data;
     } catch (error: unknown) {
       const errorData = error as ErrorResponse;

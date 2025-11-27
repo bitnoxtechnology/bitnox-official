@@ -11,13 +11,9 @@ import {
   FieldDescription,
   FieldGroup,
   FieldLabel,
-  FieldError,
 } from "@/components/ui/field";
-import {
-  otpSchema,
-  type OTPFormType,
-} from "@/lib/validations/signup-validator";
-import { signupService } from "@/lib/services/signup-service";
+import { otpSchema, type OTPFormType } from "@/lib/validations/auth-validator";
+import { authService } from "@/lib/services/auth-service";
 import {
   InputOTP,
   InputOTPGroup,
@@ -33,6 +29,7 @@ interface Props {
 
 const AuthOTPForm: React.FC<Props> = ({ email, onVerified, onBack }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingResendOTP, setIsLoadingResendOTP] = useState(false);
   const [resendCountdown, setResendCountdown] = useState(0);
 
   const form = useForm<OTPFormType>({
@@ -50,7 +47,7 @@ const AuthOTPForm: React.FC<Props> = ({ email, onVerified, onBack }) => {
   const onSubmit = async (data: OTPFormType) => {
     setIsLoading(true);
     try {
-      const res = await signupService.verifyOTP({ email, otp: data.otp });
+      const res = await authService.verifyOTP({ email, otp: data.otp });
       if (res.success) {
         toast.success("Login successful!");
         onVerified();
@@ -66,9 +63,9 @@ const AuthOTPForm: React.FC<Props> = ({ email, onVerified, onBack }) => {
 
   const handleResendOTP = async () => {
     if (resendCountdown > 0) return;
-    setIsLoading(true);
+    setIsLoadingResendOTP(true);
     try {
-      await signupService.resendOTP(email);
+      await authService.resendOTP(email);
       toast.success("OTP resent successfully!");
       setResendCountdown(60);
       const interval = setInterval(() => {
@@ -84,7 +81,7 @@ const AuthOTPForm: React.FC<Props> = ({ email, onVerified, onBack }) => {
       const e = err as { message?: string; error?: string };
       toast.error(e?.message || e?.error || "Failed to resend OTP.");
     } finally {
-      setIsLoading(false);
+      setIsLoadingResendOTP(false);
     }
   };
 
@@ -113,7 +110,7 @@ const AuthOTPForm: React.FC<Props> = ({ email, onVerified, onBack }) => {
                   maxLength={6}
                   pattern={REGEXP_ONLY_DIGITS}
                   onComplete={() => form.handleSubmit(onSubmit)()}
-                  disabled={isLoading}
+                  disabled={isLoading || isLoadingResendOTP}
                   className="w-full!"
                 >
                   <InputOTPGroup>
@@ -132,7 +129,7 @@ const AuthOTPForm: React.FC<Props> = ({ email, onVerified, onBack }) => {
 
         <Button
           type="submit"
-          disabled={isLoading || !form.formState.isValid}
+          disabled={isLoading || isLoadingResendOTP || !form.formState.isValid}
           className="auth-submit-button"
         >
           {isLoading ? (
@@ -153,7 +150,7 @@ const AuthOTPForm: React.FC<Props> = ({ email, onVerified, onBack }) => {
           <button
             type="button"
             onClick={handleResendOTP}
-            disabled={resendCountdown > 0 || isLoading}
+            disabled={resendCountdown > 0 || isLoading || isLoadingResendOTP}
             className="otp-resend-button"
           >
             {resendCountdown > 0
@@ -165,10 +162,10 @@ const AuthOTPForm: React.FC<Props> = ({ email, onVerified, onBack }) => {
         <button
           type="button"
           onClick={onBack}
-          disabled={isLoading}
+          disabled={isLoading || isLoadingResendOTP}
           className="back-button"
         >
-          ← Change email
+          ← Back to Credentials
         </button>
       </form>
     </>

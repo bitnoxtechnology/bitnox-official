@@ -219,6 +219,18 @@
   cursor: not-allowed;
 }
 
+.auth-link {
+  color: #05e4fc;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.auth-link:hover {
+  color: #2ef0ff;
+  text-decoration: underline;
+}
+
 .spinner-small {
   width: 16px;
   height: 16px;

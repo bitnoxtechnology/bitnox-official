@@ -96,6 +96,25 @@ export class AuthService {
     };
   }
 
+  public async resendOTP(loginData: LoginType) {
+    const { email } = loginData;
+
+    const user = await UserModel.findOne({ email });
+
+    if (!user) {
+      throw new BadRequestException(
+        "User with this email does not exist",
+        ErrorName.AUTH_EMAIL_NOT_FOUND
+      );
+    }
+
+    await this.sendOTPEmail(email, user._id.toString());
+
+    return {
+      user,
+    };
+  }
+
   public async logout(accessToken: string) {
     // For JWT, logout can be handled on the client side by deleting the token.
     // Optionally, you can implement token blacklisting on the server side.

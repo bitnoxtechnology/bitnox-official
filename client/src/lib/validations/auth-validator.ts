@@ -11,6 +11,12 @@ export const signupSchema = z.object({
     .min(1, "Email is required"),
 });
 
+export const loginSchema = z.object({
+  email: z
+    .email("Please enter a valid email address")
+    .min(1, "Email is required"),
+});
+
 export const otpSchema = z.object({
   otp: z
     .string()
@@ -19,4 +25,5 @@ export const otpSchema = z.object({
 });
 
 export type SignupFormType = z.infer<typeof signupSchema>;
+export type LoginFormType = z.infer<typeof loginSchema>;
 export type OTPFormType = z.infer<typeof otpSchema>;

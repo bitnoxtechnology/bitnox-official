@@ -26,7 +26,9 @@ export class AuthController {
       return res.status(HTTPSTATUSCODE.CREATED).json({
         success: true,
         message: "User signup successfully",
-        user,
+        data: {
+          user,
+        },
       });
     }
   );
@@ -40,7 +42,25 @@ export class AuthController {
       return res.status(HTTPSTATUSCODE.OK).json({
         success: true,
         message: "Attempt to login successful. Check your email for OTP code",
-        user,
+        data: {
+          user,
+        },
+      });
+    }
+  );
+
+  public resendOTP = asyncHandler(
+    async (req: Request, res: Response): Promise<any> => {
+      const body = loginSchema.parse({
+        ...req.body,
+      });
+      const { user } = await this.authService.resendOTP(body);
+      return res.status(HTTPSTATUSCODE.OK).json({
+        success: true,
+        message: "OTP resent successfully. Check your email for OTP code",
+        data: {
+          user,
+        },
       });
     }
   );
@@ -77,10 +97,12 @@ export class AuthController {
       return res.status(HTTPSTATUSCODE.OK).json({
         success: true,
         message: "Login successful",
-        user,
-        token: {
-          accessToken,
-          refreshToken,
+        data: {
+          user,
+          token: {
+            accessToken,
+            refreshToken,
+          },
         },
       });
     }
@@ -102,9 +124,11 @@ export class AuthController {
       res.status(HTTPSTATUSCODE.OK).json({
         success: true,
         message: "Refresh token successful",
-        token: {
-          accessToken,
-          refreshToken: newRefreshToken,
+        data: {
+          token: {
+            accessToken,
+            refreshToken: newRefreshToken,
+          },
         },
       });
     }
