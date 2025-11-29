@@ -4,6 +4,7 @@ import { config } from "../config/app.config";
 
 export type AccessTPayload = {
   userId: IUser["id"];
+  sessionId?: string;
 };
 
 export type RefreshTPayload = {

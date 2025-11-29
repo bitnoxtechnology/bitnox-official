@@ -7,7 +7,10 @@ import {
   verifyLoginOTPSchema,
 } from "../../lib/validation/auth.validation";
 import { HTTPSTATUSCODE } from "../../config/status-codes.config";
-import { UnauthorizedException } from "../../lib/errors/catch-errors";
+import {
+  NotFoundException,
+  UnauthorizedException,
+} from "../../lib/errors/catch-errors";
 import { ErrorName } from "../../lib/enums/error-names";
 
 export class AuthController {
@@ -65,33 +68,21 @@ export class AuthController {
     }
   );
 
-  public logout = asyncHandler(
-    async (req: Request, res: Response): Promise<any> => {
-      const authHeader = req.headers["authorization"];
-      if (!authHeader || typeof authHeader !== "string") {
-        throw new UnauthorizedException(
-          "Invalid authorization format",
-          ErrorName.AUTH_FORMAT_INVALID
-        );
-      }
-
-      const accessToken = authHeader.split(" ")[1];
-      await this.authService.logout(accessToken);
-
-      return res.status(HTTPSTATUSCODE.OK).json({
-        success: true,
-        message: "Logout successful",
-      });
-    }
-  );
-
+  /**
+   * Verify Login OTP endpoint
+   * Body: { email, otp, deviceFingerprint }  // deviceFingerprint = hashed fingerprint from client
+   */
   public verifyLoginOTP = asyncHandler(
     async (req: Request, res: Response): Promise<any> => {
+      const userAgent = req.headers["user-agent"] || "";
+      const ip = req.ip;
       const body = verifyLoginOTPSchema.parse({
         ...req.body,
+        userAgent,
+        ip,
       });
 
-      const { user, accessToken, refreshToken } =
+      const { user, accessToken, sessionId } =
         await this.authService.verifyLoginOTP(body);
 
       return res.status(HTTPSTATUSCODE.OK).json({
@@ -99,37 +90,64 @@ export class AuthController {
         message: "Login successful",
         data: {
           user,
-          token: {
-            accessToken,
-            refreshToken,
-          },
+          accessToken,
+          sessionId,
         },
       });
     }
   );
 
+  /**
+   * Refresh endpoint
+   * Header: x-session-id
+   * Header: x-device-fp  (hashed fingerprint)
+   */
   public refreshToken = asyncHandler(
     async (req: Request, res: Response): Promise<any> => {
-      const { refreshToken } = req.body;
-      if (!refreshToken) {
+      const sessionId = (req.headers["x-session-id"] as string) || "";
+      const deviceFp = (req.headers["x-device-fp"] as string) || "";
+
+      if (!sessionId || !deviceFp) {
         throw new UnauthorizedException(
-          "Refresh token is required",
-          ErrorName.AUTH_TOKEN_NOT_FOUND
+          "Missing session ID or device fingerprint",
+          ErrorName.AUTH_MISSING_SESSION_OR_DEVICE_FP
         );
       }
 
-      const { accessToken, refreshToken: newRefreshToken } =
-        await this.authService.refreshToken(refreshToken);
+      const { accessToken, user } = await this.authService.refreshToken(
+        sessionId,
+        deviceFp
+      );
 
       res.status(HTTPSTATUSCODE.OK).json({
         success: true,
         message: "Refresh token successful",
         data: {
-          token: {
-            accessToken,
-            refreshToken: newRefreshToken,
-          },
+          user,
+          accessToken,
         },
+      });
+    }
+  );
+
+  /**
+   * Logout: invalidates session
+   */
+  public logout = asyncHandler(
+    async (req: Request, res: Response): Promise<any> => {
+      const sessionId = req.sessionId as string;
+      if (!sessionId) {
+        throw new NotFoundException(
+          "Session not found.",
+          ErrorName.AUTH_SESSION_NOT_FOUND
+        );
+      }
+
+      await this.authService.logout(sessionId);
+
+      return res.status(HTTPSTATUSCODE.OK).json({
+        success: true,
+        message: "Logout successful",
       });
     }
   );

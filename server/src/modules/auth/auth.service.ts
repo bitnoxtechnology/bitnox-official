@@ -11,26 +11,22 @@ import {
 import { ErrorName } from "../../lib/enums/error-names";
 import VerificationCodeModel from "../../database/models/verification.model";
 import { VerificationEnum } from "../../lib/enums/verification-names";
-import { minutesFromNow } from "../../lib/utils";
+import { generateRandomId, minutesFromNow } from "../../lib/utils";
 import { sendEmail } from "../../lib/email/send";
 import { otpEmailTemplate } from "../../lib/email/templates/auth";
-import {
-  refreshTokenSignOptions,
-  RefreshTPayload,
-  signJwt,
-  verifyJwt,
-} from "../../lib/jwt";
-import redis from "../../database/redis";
+import { refreshTokenSignOptions, signJwt } from "../../lib/jwt";
+// import redis from "../../database/redis";
+import SessionModel from "../../database/models/session.model";
 
 export class AuthService {
-  static async blacklistToken(token: string, exp: number) {
-    await redis.set(token, "blacklisted", { expiration: "KEEPTTL" });
-  }
+  // static async blacklistToken(token: string, exp: number) {
+  //   await redis.set(token, "blacklisted", { expiration: "KEEPTTL" });
+  // }
 
-  static async isTokenBlacklisted(token: string) {
-    const result = await redis.get(token);
-    return result === "blacklisted";
-  }
+  // static async isTokenBlacklisted(token: string) {
+  //   const result = await redis.get(token);
+  //   return result === "blacklisted";
+  // }
 
   private async sendOTPEmail(email: string, userId: string) {
     // Create OTP code
@@ -115,14 +111,8 @@ export class AuthService {
     };
   }
 
-  public async logout(accessToken: string) {
-    // For JWT, logout can be handled on the client side by deleting the token.
-    // Optionally, you can implement token blacklisting on the server side.
-    await AuthService.blacklistToken(accessToken, 0);
-  }
-
   public async verifyLoginOTP(verifyLoginData: VerifyLoginOTPType) {
-    const { email, otp } = verifyLoginData;
+    const { email, otp, deviceFp, userAgent, ip } = verifyLoginData;
 
     const user = await UserModel.findOne({ email });
     if (!user) {
@@ -144,36 +134,58 @@ export class AuthService {
       throw new BadRequestException("Invalid OTP", ErrorName.AUTH_OTP_INVALID);
     }
 
-    const accessToken = signJwt({ userId: otpRecord.userId });
     const refreshToken = signJwt(
       { userId: otpRecord.userId },
       refreshTokenSignOptions
     );
+    const sessionId = generateRandomId();
+    console.info("Creating session with ID:", sessionId);
+
+    await SessionModel.create({
+      userId: user._id,
+      refreshToken,
+      sessionId,
+      deviceFp,
+      userAgent,
+      ip,
+    });
+
+    const accessToken = signJwt({ userId: otpRecord.userId, sessionId });
 
     // Optionally, delete all user' otp records
     await VerificationCodeModel.deleteMany({ userId: otpRecord.userId });
 
     return {
       accessToken,
-      refreshToken,
+      sessionId,
       user,
     };
   }
 
-  public async refreshToken(refreshToken: string) {
-    // Implement token refresh logic here, typically by generating a new JWT
-    // using a refresh token mechanism.
-    const { payload } = verifyJwt<RefreshTPayload>(refreshToken, {
-      secret: refreshTokenSignOptions.secret,
+  public async refreshToken(sessionId: string, deviceFp: string) {
+    const session = await SessionModel.findOne({
+      sessionId,
+      valid: true,
+      expiredAt: { $gt: new Date() },
     });
-    if (!payload) {
+    if (!session) {
       throw new UnauthorizedException(
-        "Invalid refresh token",
-        ErrorName.AUTH_INVALID_TOKEN
+        "Invalid session",
+        ErrorName.AUTH_INVALID_SESSION
       );
     }
 
-    const user = await UserModel.findById(payload.userId);
+    if (session.deviceFp !== deviceFp) {
+      session.valid = false;
+      await session.save();
+
+      throw new UnauthorizedException(
+        "Mismatched device fingerprint",
+        ErrorName.AUTH_MISMATCHED_DEVICE_FINGERPRINT
+      );
+    }
+
+    const user = await UserModel.findById(session.userId);
     if (!user) {
       throw new UnauthorizedException(
         "User not found",
@@ -181,14 +193,15 @@ export class AuthService {
       );
     }
 
-    const accessToken = signJwt({ userId: user._id });
-    const newRefreshToken = signJwt(
-      { userId: user._id },
-      refreshTokenSignOptions
-    );
+    const accessToken = signJwt({ userId: user._id, sessionId });
+
     return {
       accessToken,
-      refreshToken: newRefreshToken,
+      user,
     };
+  }
+
+  public async logout(sessionId: string) {
+    return await SessionModel.findOneAndDelete({ sessionId });
   }
 }

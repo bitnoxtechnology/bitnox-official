@@ -20,6 +20,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
+import { useAuth } from "@/hooks/use-auth";
 
 interface Props {
   email: string;
@@ -28,6 +29,8 @@ interface Props {
 }
 
 const AuthOTPForm: React.FC<Props> = ({ email, onVerified, onBack }) => {
+  const { verifyLoginOTP } = useAuth();
+
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingResendOTP, setIsLoadingResendOTP] = useState(false);
   const [resendCountdown, setResendCountdown] = useState(0);
@@ -47,11 +50,12 @@ const AuthOTPForm: React.FC<Props> = ({ email, onVerified, onBack }) => {
   const onSubmit = async (data: OTPFormType) => {
     setIsLoading(true);
     try {
-      const res = await authService.verifyOTP({ email, otp: data.otp });
-      if (res.success) {
-        toast.success("Login successful!");
-        onVerified();
-      }
+      await verifyLoginOTP({ email, otp: data.otp });
+      // if (res.success) {
+      //   toast.success("Login successful!");
+
+      // }
+      onVerified();
     } catch (err: unknown) {
       const e = err as { message?: string; error?: string };
       toast.error(e?.message || e?.error || "Invalid OTP. Please try again.");

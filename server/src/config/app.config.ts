@@ -8,10 +8,10 @@ const appConfig = () => ({
   NODE_ENV: getEnv("NODE_ENV"),
   RESEND_API_KEY: getEnv("RESEND_API_KEY"),
   MONGO_URI: getEnv("MONGO_URI"),
-  REDIS_USER: getEnv("REDIS_USER"),
-  REDIS_PASSWORD: getEnv("REDIS_PASSWORD"),
-  REDIS_HOST: getEnv("REDIS_HOST"),
-  REDIS_PORT: getEnv("REDIS_PORT"),
+  // REDIS_USER: getEnv("REDIS_USER"),
+  // REDIS_PASSWORD: getEnv("REDIS_PASSWORD"),
+  // REDIS_HOST: getEnv("REDIS_HOST"),
+  // REDIS_PORT: getEnv("REDIS_PORT"),
 
   JWT: {
     ACCESS_SECRET: getEnv("JWT_ACCESS_SECRET"),

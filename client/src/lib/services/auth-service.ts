@@ -9,9 +9,15 @@ type LoginPayload = {
   email: string;
 };
 
-type VerifyOTPPayload = {
+type VerifyLoginOTPPayload = {
   email: string;
   otp: string;
+  deviceFp: string;
+};
+
+type RefreshTokenPayload = {
+  sessionId: string;
+  deviceFp: string;
 };
 
 type AuthResponse = {
@@ -22,16 +28,19 @@ type AuthResponse = {
   };
 };
 
-type VerifyOTPResponse = {
+type TokenResponse = {
   success: boolean;
   message: string;
   data?: {
     user: UserType;
-    token: {
-      accessToken: string;
-      refreshToken: string;
-    };
+    accessToken: string;
+    sessionId: string;
   };
+};
+
+type LogoutResponse = {
+  success: boolean;
+  message: string;
 };
 
 export const authService = {
@@ -66,7 +75,9 @@ export const authService = {
   /**
    * Verify OTP and complete signup
    */
-  verifyOTP: async (payload: VerifyOTPPayload): Promise<VerifyOTPResponse> => {
+  verifyLoginOTP: async (
+    payload: VerifyLoginOTPPayload
+  ): Promise<TokenResponse> => {
     try {
       const response = await API.post("/auth/verify-login-otp", payload);
       return response.data;
@@ -86,6 +97,43 @@ export const authService = {
     } catch (error: unknown) {
       const errorData = error as ErrorResponse;
       throw errorData || { success: false, message: "Failed to resend OTP" };
+    }
+  },
+
+  /**
+   * Refresh Token
+   */
+  refreshToken: async (
+    payload: RefreshTokenPayload
+  ): Promise<TokenResponse> => {
+    try {
+      const response = await API.post(
+        "/auth/refresh-token",
+        {},
+        {
+          headers: {
+            "x-session-id": payload.sessionId,
+            "x-device-fp": payload.deviceFp,
+          },
+        }
+      );
+      return response.data;
+    } catch (error: unknown) {
+      const errorData = error as ErrorResponse;
+      throw errorData || { success: false, message: "Failed to refresh token" };
+    }
+  },
+
+  /**
+   * Logout user
+   */
+  logout: async (): Promise<LogoutResponse> => {
+    try {
+      const response = await API.post("/auth/logout", {});
+      return response.data;
+    } catch (error: unknown) {
+      const errorData = error as ErrorResponse;
+      throw errorData || { success: false, message: "Failed to logout" };
     }
   },
 };
