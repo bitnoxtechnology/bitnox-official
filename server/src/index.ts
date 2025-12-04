@@ -8,6 +8,7 @@ import { asyncHandler } from "./middlewares/async-handler";
 import { emailRouter } from "./modules/email/email.route";
 import { connectToDatabase } from "./database/db";
 import { authRouter } from "./modules/auth/auth.route";
+import blogRouter from "./modules/blog/blog.route";
 // import redis from "./database/redis";
 
 const isDevelopment = config.NODE_ENV === "development";
@@ -47,6 +48,7 @@ app.get(
 
 app.use(`${BASE_PATH}/email`, emailRouter);
 app.use(`${BASE_PATH}/auth`, authRouter);
+app.use(`${BASE_PATH}/blog`, blogRouter);
 
 app.use(errorHandler);
 
