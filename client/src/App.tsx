@@ -1,49 +1,46 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import "@/styles/Auth.css";
-import Navbar from "@/components/Navbar";
-import Herosection from "@/components/Herosection";
-import About from "@/components/About";
-import WhyUs from "@/components/WhyUs";
-import Portfolio from "@/components/Portfolio";
-import Testimonial from "@/components/Testimonial";
-import Conclusion from "@/components/Conclusion";
-import Footer from "@/components/Footer";
 import AboutUs from "@/pages/AboutUs";
 import Cleaning from "@/pages/Cleaning";
 import Contact from "@/pages/Contact";
 import Signup from "./pages/auth/Signup";
-import Meta from "@/components/Meta";
 import { Toaster } from "sonner";
 import Login from "./pages/auth/Login";
+import PublicLayout from "./layout/PublicLayout";
+import LandingPage from "./pages/LandingPage";
+import AuthLayout from "./layout/AuthLayout";
+import AuthRoutes from "./protected/AuthRoutes";
+import ManageBlog from "./pages/admin/ManageBlog";
+import ProtectedRoutes from "./protected/ProtectedRoutes";
 
 function App() {
   return (
     <Router>
       <Toaster position="bottom-right" richColors closeButton />
-      <Navbar />
       <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Meta />
-              <Herosection />
-              <About />
-              <WhyUs />
-              <Portfolio />
-              <Testimonial />
-              <Conclusion />
-            </>
-          }
-        />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/cleaning" element={<Cleaning />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/auth/signup" element={<Signup />} />
-        <Route path="/auth/login" element={<Login />} />
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/cleaning" element={<Cleaning />} />
+          <Route path="/contact" element={<Contact />} />
+        </Route>
+
+        <Route element={<AuthRoutes />}>
+          <Route element={<AuthLayout />} path="/auth">
+            <Route path="signup" element={<Signup />} />
+            <Route path="login" element={<Login />} />
+          </Route>
+        </Route>
+
+        <Route element={<ProtectedRoutes />}>
+          <Route path="/admin" element={<ManageBlog />} />
+        </Route>
+
+        <Route element={<PublicLayout />}>
+          <Route path="*" element={<LandingPage />} />
+        </Route>
       </Routes>
-      <Footer />
     </Router>
   );
 }
