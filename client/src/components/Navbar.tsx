@@ -100,7 +100,7 @@ function Navbar() {
 
   const navItems = [
     { name: "About", href: "/about" },
-    { name: "Blogs", href: "#blog" },
+    { name: "Blogs", href: "/blogs" },
     { name: "Tech Training", href: "https://edu.bitnoxsolution.com/" },
     { name: "Ask Community", href: "https://askcom.bitnoxsolution.com/" },
     { name: "Cleaning", href: "/cleaning" },

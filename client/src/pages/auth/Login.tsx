@@ -19,7 +19,7 @@ const Login = () => {
   const handleVerificationSuccess = () => {
     setStep("success");
     setTimeout(() => {
-      window.location.href = "/admin";
+      window.location.href = "/admin/manage-blog";
     }, 2000);
   };
 

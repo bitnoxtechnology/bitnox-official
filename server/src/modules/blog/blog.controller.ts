@@ -32,14 +32,15 @@ export class BlogController {
 
   public getAllBlogs = asyncHandler(
     async (req: Request, res: Response): Promise<any> => {
-      const { page, limit, published } = req.query;
+      const { page, limit, published, q } = req.query;
       const isPublished =
         published === "true" ? true : published === "false" ? false : undefined;
 
       const data = await this.blogService.getAllBlogs(
         Number(page) || 1,
         Number(limit) || 10,
-        isPublished
+        isPublished,
+        q as string
       );
 
       return res.status(HTTPSTATUSCODE.OK).json({

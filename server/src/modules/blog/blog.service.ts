@@ -22,22 +22,32 @@ export class BlogService {
   public async getAllBlogs(
     page: number = 1,
     limit: number = 10,
-    isPublished?: boolean
+    isPublished?: boolean,
+    q?: string
   ) {
     const skip = (page - 1) * limit;
-    const query: { isPublished?: boolean } = {};
+    const filter: { isPublished?: boolean; $or?: any[] } = {};
 
-    if (isPublished !== undefined) {
-      query.isPublished = isPublished;
+    if (q) {
+      filter.$or = [
+        { title: { $regex: q, $options: "i" } },
+        { excerpt: { $regex: q, $options: "i" } },
+        { tags: { $elemMatch: { $regex: q, $options: "i" } } },
+        { contentHtml: { $regex: q, $options: "i" } },
+      ];
     }
 
-    const blogs = await BlogModel.find(query)
+    if (isPublished !== undefined) {
+      filter.isPublished = isPublished;
+    }
+
+    const blogs = await BlogModel.find(filter)
       .populate("author", "name email")
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
 
-    const total = await BlogModel.countDocuments(query);
+    const total = await BlogModel.countDocuments(filter);
 
     return {
       blogs,

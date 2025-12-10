@@ -34,8 +34,6 @@ const blogSchema = new Schema<IBlog>(
   { timestamps: true }
 );
 
-const BlogModel = mongoose.model<IBlog>("Blog", blogSchema);
-
 // Middleware to generate slug before saving
 blogSchema.pre<IBlog>("validate", async function (next) {
   if ((this.isModified("title") || this.isNew) && this.title) {
@@ -43,5 +41,7 @@ blogSchema.pre<IBlog>("validate", async function (next) {
   }
   next();
 });
+
+const BlogModel = mongoose.model<IBlog>("Blog", blogSchema);
 
 export default BlogModel;
