@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -26,7 +26,7 @@ import {
 } from "@/lib/validations/blog-validator";
 
 interface Props {
-  selected: IBlog | null;
+  selected: IBlog;
   onUpdated?: () => void;
   onCleared?: () => void;
 }
@@ -42,31 +42,16 @@ const UpdateBlogForm: React.FC<Props> = ({
   const updateForm = useForm<UpdateBlogInput>({
     resolver: zodResolver(updateBlogSchema),
     defaultValues: {
-      title: "",
-      excerpt: "",
-      contentHtml: "",
-      coverImage: undefined,
-      images: [],
-      videos: [],
-      tags: [],
-      isPublished: false,
+      title: selected.title || "",
+      excerpt: selected.excerpt || "",
+      contentHtml: selected.contentHtml || "",
+      coverImage: selected.coverImage,
+      images: selected.images || [],
+      videos: selected.videos || [],
+      tags: selected.tags || [],
+      isPublished: selected.isPublished,
     },
   });
-
-  useEffect(() => {
-    if (selected) {
-      updateForm.reset({
-        title: selected.title,
-        excerpt: selected.excerpt,
-        contentHtml: selected.contentHtml,
-        coverImage: selected.coverImage,
-        images: selected.images || [],
-        videos: selected.videos || [],
-        tags: selected.tags || [],
-        isPublished: selected.isPublished,
-      });
-    }
-  }, [selected, updateForm]);
 
   const onSubmit = async (data: UpdateBlogInput) => {
     setIsSubmitting(true);
@@ -84,10 +69,6 @@ const UpdateBlogForm: React.FC<Props> = ({
       setIsSubmitting(false);
     }
   };
-
-  if (!selected) {
-    return <div className="text-muted-foreground">Select a post to edit</div>;
-  }
 
   return (
     <form onSubmit={updateForm.handleSubmit(onSubmit)} className="space-y-6">
@@ -133,7 +114,7 @@ const UpdateBlogForm: React.FC<Props> = ({
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="contentHtml">Content</FieldLabel>
               <EditorMDX
-                value={field.value}
+                value={field.value as string}
                 fieldChange={field.onChange}
                 editorRef={editorRef}
               />

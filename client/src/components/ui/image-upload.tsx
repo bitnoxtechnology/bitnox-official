@@ -70,12 +70,10 @@ export function ImageUpload({
 
   return (
     <div className="flex flex-col gap-2">
-      <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-        {label}
-      </p>
+      <p className="text-sm font-medium text-gray-700">{label}</p>
       <div
         {...getRootProps()}
-        className="flex cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-6 text-gray-500 transition-colors hover:border-gray-400 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-600 dark:hover:bg-gray-700"
+        className="flex cursor-pointer items-center justify-center rounded-lg border border-secondary-500! text-tertiary-400! p-6! transition-colors"
       >
         <input {...getInputProps()} disabled={loading} />
         {loading ? (
@@ -92,9 +90,7 @@ export function ImageUpload({
               Drag 'n' drop some files here, or click to select files
             </p>
             {maxFiles > 1 && (
-              <p className="text-xs text-gray-400">
-                (Up to {maxFiles} files)
-              </p>
+              <p className="text-xs text-gray-400">(Up to {maxFiles} files)</p>
             )}
           </div>
         )}

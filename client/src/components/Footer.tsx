@@ -69,7 +69,7 @@ function Footer() {
   }, []);
 
   return (
-    <footer ref={footerRef} className="footer">
+    <footer ref={footerRef} className="footer pt-12! md:pt-16!">
       <div className="footer-container">
         {/* Newsletter */}
         <div className="footer-newsletter" ref={ctaRef}>

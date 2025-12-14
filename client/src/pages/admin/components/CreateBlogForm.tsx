@@ -53,7 +53,16 @@ const CreateBlogForm: React.FC<Props> = ({ onCreated }) => {
       const res = await blogService.createBlog(data);
       if (res.success) {
         toast.success("Blog created successfully!");
-        createForm.reset();
+        createForm.reset({
+          title: "",
+          excerpt: "",
+          contentHtml: "",
+          coverImage: undefined,
+          images: [],
+          videos: [],
+          tags: [],
+          isPublished: false,
+        });
         onCreated?.();
       }
     } catch (error) {
@@ -65,7 +74,7 @@ const CreateBlogForm: React.FC<Props> = ({ onCreated }) => {
   };
 
   return (
-    <div className="bg-secondary-900 rounded-lg shadow-lg mb-8">
+    <div className="max-w-3xl">
       <h2 className="text-lg font-semibold mt-4! md:mt-6! mb-4! text-white">
         Create New Blog Post
       </h2>
@@ -160,6 +169,7 @@ const CreateBlogForm: React.FC<Props> = ({ onCreated }) => {
                   initialImages={field.value || []}
                   multiple
                   label="Upload additional images"
+                  maxFiles={8}
                 />
               </Field>
             )}

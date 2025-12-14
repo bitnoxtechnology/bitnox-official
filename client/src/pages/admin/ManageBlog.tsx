@@ -82,7 +82,7 @@ const ManageBlog = () => {
   };
 
   return (
-    <div className="min-h-screen container mx-auto px-4 py-10 max-w-5xl">
+    <div className="min-h-screen container mx-auto pb-10! max-w-5xl">
       <h1 className="text-2xl font-semibold mb-6!">Manage Blog</h1>
 
       {/* Tabs */}
@@ -162,11 +162,15 @@ const ManageBlog = () => {
             <h2 className="text-lg font-semibold mb-4! text-white">
               Edit Existing Post
             </h2>
-            <UpdateBlogForm
-              selected={selected}
-              onUpdated={fetchBlogs}
-              onCleared={() => setSelected(null)}
-            />
+            {selected ? (
+              <UpdateBlogForm
+                selected={selected}
+                onUpdated={fetchBlogs}
+                onCleared={() => setSelected(null)}
+              />
+            ) : (
+              <div className="text-muted-foreground">Select a post to edit</div>
+            )}
           </div>
         </div>
       )}
@@ -174,7 +178,9 @@ const ManageBlog = () => {
       {/* Delete Tab */}
       {activeTab === "delete" && (
         <div className="max-w-3xl mt-4! md:mt-6! space-y-4">
-          <SearchInput value={query} onChange={setQuery} />
+          <div className="max-w-sm">
+            <SearchInput value={query} onChange={setQuery} />
+          </div>
           <div className="my-0.5! text-sm text-muted-foreground">
             {loadingSearch
               ? "Searching..."

@@ -7,7 +7,9 @@ import { User, CalendarDays, Tag } from "lucide-react";
 import { blogService } from "@/lib/services/blog-service";
 import { Spinner } from "@/components/ui/spinner";
 import Meta from "@/components/Meta";
-import EditorMDX from "@/components/editor/mdx-editor";
+import { PreviewMDX } from "@/components/editor/PreviewMDX";
+
+import blog_cover_image from "@/assets/blog-cover-image.png";
 
 const BlogDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -35,7 +37,6 @@ const BlogDetail = () => {
     } catch (err: any) {
       setError(err?.message || "An error occurred while fetching the blog.");
       toast.error(err?.message || "An error occurred while fetching the blog.");
-      console.error("Fetch blog detail error:", err);
     } finally {
       setLoading(false);
     }
@@ -75,28 +76,26 @@ const BlogDetail = () => {
         description={blog.excerpt}
         keywords={blog.tags?.join(", ")}
       />
-      <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8">
+      <div className="container mx-auto py-12! md:py-16!">
         <article className="max-w-4xl mx-auto bg-secondary-900 rounded-lg shadow-xl overflow-hidden">
-          {blog.coverImage && (
-            <div className="relative h-96 w-full overflow-hidden">
-              <img
-                src={blog.coverImage}
-                alt={blog.title}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent"></div>
-            </div>
-          )}
+          <div className="relative h-96 w-full overflow-hidden mb-6!">
+            <img
+              src={blog.coverImage ? blog.coverImage : blog_cover_image}
+              alt={blog.title}
+              className="w-full h-full object-cover"
+            />
+            {/* <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent"></div> */}
+          </div>
 
           <div className="p-8">
-            <h1 className="text-4xl font-extrabold text-white mb-4">
+            <h1 className="text-4xl font-extrabold text-white mb-4!">
               {blog.title}
             </h1>
 
-            <div className="flex items-center gap-4 text-gray-500 text-sm mb-6">
+            <div className="flex items-center gap-4 text-gray-500 text-sm mb-6!">
               <div className="flex items-center gap-1">
                 <User className="size-4" />
-                <span>{blog.author.name}</span>
+                <span className="capitalize">{blog.author.name}</span>
               </div>
               <div className="flex items-center gap-1">
                 <CalendarDays className="size-4" />
@@ -108,7 +107,7 @@ const BlogDetail = () => {
               </div>
             </div>
 
-            <div className="prose prose-invert max-w-none text-gray-300 leading-relaxed mb-8">
+            <div className="prose prose-invert max-w-none text-gray-300 leading-relaxed mb-8!">
               {/* Render contentHtml using RichTextEditor in read-only mode */}
               {/* <QuillEditor
                 value={blog.contentHtml}
@@ -116,12 +115,13 @@ const BlogDetail = () => {
                 // readOnly={true}
               /> */}
 
-              <EditorMDX value={blog.contentHtml} readonly={true} />
+              {/* <EditorMDX value={blog.contentHtml} readonly={true} /> */}
+              <PreviewMDX content={blog.contentHtml} />
             </div>
 
             {blog.images && blog.images.length > 0 && (
-              <div className="mb-8">
-                <h2 className="text-2xl font-bold text-white mb-4">Gallery</h2>
+              <div className="mb-8!">
+                <h2 className="text-2xl font-bold text-white mb-4!">Images</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {blog.images.map((img, index) => (
                     <img
@@ -136,8 +136,8 @@ const BlogDetail = () => {
             )}
 
             {blog.videos && blog.videos.length > 0 && (
-              <div className="mb-8">
-                <h2 className="text-2xl font-bold text-white mb-4">Videos</h2>
+              <div className="mb-8!">
+                <h2 className="text-2xl font-bold text-white mb-4!">Videos</h2>
                 <div className="grid grid-cols-1 gap-4">
                   {blog.videos.map((videoUrl, index) => (
                     <div
@@ -148,21 +148,21 @@ const BlogDetail = () => {
                       {videoUrl.includes("youtube.com") ||
                       videoUrl.includes("youtu.be") ? (
                         <iframe
+                          title={`Video ${index + 1}`}
                           src={`https://www.youtube.com/embed/${
                             videoUrl.split("v=")[1]?.split("&")[0] ||
                             videoUrl.split("/").pop()
                           }`}
-                          frameBorder="0"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           allowFullScreen
                           className="w-full h-full"
                         ></iframe>
                       ) : videoUrl.includes("vimeo.com") ? (
                         <iframe
+                          title={`Video ${index + 1}`}
                           src={`https://player.vimeo.com/video/${videoUrl
                             .split("/")
                             .pop()}`}
-                          frameBorder="0"
                           allow="autoplay; fullscreen; picture-in-picture"
                           allowFullScreen
                           className="w-full h-full"
@@ -184,7 +184,7 @@ const BlogDetail = () => {
             )}
 
             {blog.tags && blog.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 items-center mt-8 pt-6 border-t border-secondary-800">
+              <div className="flex flex-wrap gap-2 items-center mt-8! pt-6! border-t border-secondary-800">
                 <Tag className="size-5 text-gray-500" />
                 {blog.tags.map((tag, index) => (
                   <span

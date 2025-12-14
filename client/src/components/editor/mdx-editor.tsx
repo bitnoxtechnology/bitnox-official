@@ -26,6 +26,7 @@ import {
   Separator,
   InsertThematicBreak,
   diffSourcePlugin,
+  BlockTypeSelect,
   type MDXEditorMethods,
 } from "@mdxeditor/editor";
 
@@ -51,7 +52,7 @@ const EditorMDX = ({
       markdown={value}
       ref={editorRef}
       onChange={fieldChange}
-      className="markdown-editor bg-white! grid w-full border"
+      className="markdown-editor w-full border border-secondary-500"
       plugins={[
         headingsPlugin(),
         listsPlugin(),
@@ -61,7 +62,7 @@ const EditorMDX = ({
         markdownShortcutPlugin(),
         tablePlugin(),
         imagePlugin(),
-        codeBlockPlugin({ defaultCodeBlockLanguage: "" }),
+        codeBlockPlugin({ defaultCodeBlockLanguage: "js" }),
         codeMirrorPlugin({
           codeBlockLanguages: {
             css: "css",
@@ -100,6 +101,9 @@ const EditorMDX = ({
                       <Separator />
 
                       <ListsToggle />
+                      <Separator />
+
+                      <BlockTypeSelect />
                       <Separator />
 
                       <CreateLink />
