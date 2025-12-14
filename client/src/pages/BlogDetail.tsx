@@ -115,7 +115,6 @@ const BlogDetail = () => {
                 // readOnly={true}
               /> */}
 
-              {/* <EditorMDX value={blog.contentHtml} readonly={true} /> */}
               <PreviewMDX content={blog.contentHtml} />
             </div>
 
