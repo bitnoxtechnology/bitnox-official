@@ -21,6 +21,7 @@ import mongoose, { Mongoose, ClientSession } from "mongoose";
 import { config } from "../config/app.config";
 
 const MONGO_URI = config.MONGO_URI;
+console.log("MONGO_URI exists:", !!process.env.MONGO_URI);
 
 if (!MONGO_URI) {
   throw new Error("MONGO_URI is not defined");
@@ -55,6 +56,7 @@ export async function connectToDatabase(): Promise<Mongoose> {
     cached!.promise = mongoose
       .connect(MONGO_URI, {
         bufferCommands: false,
+        dbName: "bitnox-official",
       })
       .then((m) => m);
   }
