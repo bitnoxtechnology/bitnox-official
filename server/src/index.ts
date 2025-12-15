@@ -52,10 +52,10 @@ app.use(`${BASE_PATH}/blog`, blogRouter);
 
 app.use(errorHandler);
 
-app.listen(config.PORT, async () => {
-  console.info(
-    `Server running on port ${config.PORT} in ${config.NODE_ENV} mode`
-  );
+const PORT = process.env.PORT || 4000;
+
+app.listen(PORT, async () => {
+  console.info(`Server running on port ${PORT} in ${config.NODE_ENV} mode`);
 
   // await redis.connect();
   await connectToDatabase();

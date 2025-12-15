@@ -58,7 +58,10 @@ export async function connectToDatabase(): Promise<Mongoose> {
         bufferCommands: false,
         dbName: "bitnox-official",
       })
-      .then((m) => m);
+      .then((m) => {
+        console.info("Connected to the database successfully!");
+        return m;
+      });
   }
 
   cached!.conn = await cached!.promise;
