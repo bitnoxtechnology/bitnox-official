@@ -26,6 +26,7 @@ app.use(
   })
 );
 
+// Used to ensure mongodb is connected on every request (catched connection)
 app.use(
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     await connectToDatabase();
@@ -59,13 +60,16 @@ app.use(`${BASE_PATH}/blog`, blogRouter);
 
 app.use(errorHandler);
 
-// const PORT = process.env.PORT || 4000;
+if (isDevelopment) {
+  const PORT = process.env.PORT || 4000;
 
-// app.listen(PORT, async () => {
-//   console.info(`Server running on port ${PORT} in ${config.NODE_ENV} mode`);
+  app.listen(PORT, async () => {
+    console.info(`Server running on port ${PORT} in ${config.NODE_ENV} mode`);
 
-//   // await redis.connect();
-//   await connectToDatabase();
-// });
+    // await redis.connect();
+    // await connectToDatabase();
+  });
+}
 
+// Vercel Production Environment
 export default app;

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -17,7 +17,6 @@ import { Spinner } from "@/components/ui/spinner";
 import { ImageUpload } from "@/components/ui/image-upload";
 import { Switch } from "@/components/ui/switch";
 import EditorMDX from "@/components/editor/mdx-editor";
-import type { MDXEditorMethods } from "@mdxeditor/editor";
 
 import { blogService } from "@/lib/services/blog-service";
 import {
@@ -30,7 +29,6 @@ interface Props {
 }
 
 const CreateBlogForm: React.FC<Props> = ({ onCreated }) => {
-  const editorRef = useRef<MDXEditorMethods>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const createForm = useForm<CreateBlogInput>({
@@ -124,11 +122,7 @@ const CreateBlogForm: React.FC<Props> = ({ onCreated }) => {
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="contentHtml">Content</FieldLabel>
-                <EditorMDX
-                  value={field.value}
-                  fieldChange={field.onChange}
-                  editorRef={editorRef}
-                />
+                <EditorMDX value={field.value} fieldChange={field.onChange} />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}

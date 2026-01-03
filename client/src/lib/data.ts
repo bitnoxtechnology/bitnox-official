@@ -45,7 +45,7 @@ export const faqs = [
   {
     question: "What services does Bitnox Technology Solutions offer?",
     answer:
-      "We specialize in website and web app development, IT consulting, digital branding, and tailored software solutions for businesses of all sizes.",
+      "We specialize in web development, IT Training, digital branding, cleaning and tailored software solutions for businesses of all sizes.",
   },
   {
     question: "How can I get a quote for my project?",

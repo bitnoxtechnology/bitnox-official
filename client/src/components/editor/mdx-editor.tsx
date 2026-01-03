@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import {
   MDXEditor,
   UndoRedo,
@@ -31,21 +32,26 @@ import {
 } from "@mdxeditor/editor";
 
 import "@mdxeditor/editor/style.css";
-import type { Ref } from "react";
 
 interface Props {
   value: string;
+  initialValue?: string;
   readonly?: boolean;
-  editorRef?: Ref<MDXEditorMethods> | null;
   fieldChange?: (value: string) => void;
 }
 
 const EditorMDX = ({
   value,
-  editorRef,
+  initialValue,
   fieldChange,
   readonly = false,
 }: Props) => {
+  const editorRef = useRef<MDXEditorMethods>(null);
+
+  useEffect(() => {
+    editorRef.current?.setMarkdown(initialValue || "");
+  }, [initialValue, editorRef]);
+
   return (
     <MDXEditor
       readOnly={readonly}

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 import { Image, X } from "lucide-react";
@@ -24,7 +24,11 @@ export function ImageUpload({
   multiple = false,
 }: ImageUploadProps) {
   const [loading, setLoading] = useState(false);
-  const [images, setImages] = useState<string[]>(initialImages);
+  const [images, setImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    setImages(initialImages);
+  }, [initialImages]);
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
@@ -106,6 +110,7 @@ export function ImageUpload({
                 className="h-full w-full rounded-md object-cover"
               />
               <button
+                title="remove"
                 type="button"
                 onClick={() => handleRemoveImage(url)}
                 className="absolute right-1 top-1 rounded-full bg-red-500 p-1 text-white opacity-80 hover:opacity-100"

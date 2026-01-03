@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Monitor, Target, Sparkles, Stars } from "lucide-react";
 import "../styles/About.css";
+import { Link } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -93,18 +94,21 @@ function About() {
       title: "Tech Training & Development",
       description:
         "Comprehensive training programs in web development, data analytics, and digital marketing. We equip individuals and businesses with cutting-edge digital skills through hands-on, practical learning experiences.",
+      linkTo: "https://edu.bitnoxsolution.com",
     },
     {
       icon: Target,
       title: "IT Consultation",
       description:
         "Expert guidance and strategic IT solutions tailored to your business needs. From infrastructure planning to digital transformation, our certified professionals provide world-class consultation services.",
+      linkTo: "",
     },
     {
       icon: Sparkles,
       title: "Laundry & Cleaning Services",
       description:
         "Premium residential and commercial cleaning services. We bring the same precision and excellence to your lifestyle needs with pickup & delivery, dry cleaning, and comprehensive office cleaning solutions.",
+      linkTo: "/cleaning",
     },
   ];
 
@@ -169,7 +173,9 @@ function About() {
                 <div className="service-icon">
                   <IconComponent size={48} strokeWidth={1.5} />
                 </div>
-                <h3 className="service-title">{service.title}</h3>
+                <Link to={service.linkTo ? service.linkTo : "#"}>
+                  <h3 className="service-title"> {service.title}</h3>
+                </Link>
                 <p className="service-description">{service.description}</p>
                 <div className="card-gradient"></div>
               </div>

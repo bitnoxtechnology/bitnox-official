@@ -167,7 +167,9 @@ function Navbar() {
             }}
             className="navbar-cta"
           >
-            <button className="nav-cta-button">Get Started</button>
+            <Link to={"/contact"}>
+              <button className="nav-cta-button">Get Started</button>
+            </Link>
           </div>
 
           {/* Menu */}
@@ -213,7 +215,9 @@ function Navbar() {
             </li>
           ))}
           <li className="mobile-nav-item">
-            <button className="mobile-cta-button">Get Started</button>
+            <Link to="/contact" onClick={() => setIsOpen(false)}>
+              <button className="mobile-cta-button">Get Started</button>
+            </Link>
           </li>
         </ul>
       </div>

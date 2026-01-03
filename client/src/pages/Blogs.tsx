@@ -23,7 +23,7 @@ const Blogs = () => {
     try {
       const res = await blogService.getAllBlogs({
         page: currentPage,
-        limit: 2,
+        limit: 6,
         isPublished: true,
       });
       if (res.success && res.data?.blogs) {
@@ -56,7 +56,7 @@ const Blogs = () => {
         <h1 className="text-3xl font-bold mb-4! text-primary-500">
           Our Latest Posts
         </h1>
-        <p className="text-lg text-gray-400 mb-12! max-w-2xl mx-auto">
+        <p className="text-lg text-gray-400 mb-12! mx-auto">
           Stay updated with the latest in technology, business, and insights
           from Bitnox Technology.
         </p>
