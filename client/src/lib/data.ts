@@ -31,12 +31,12 @@ export const testimonials = [
   },
   {
     id: 4,
-    name: "David Thompson",
-    position: "CTO, InnovateLabs",
-    company: "InnovateLabs",
+    name: "Ayo Adeleke",
+    position: "Founder",
+    company: "Clean Axis Ltd",
     image:
       "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop",
-    text: "Working with Bitnox was a game-changer for our business. They delivered a sophisticated platform that exceeded our expectations. Their attention to detail and technical expertise is unmatched in the industry.",
+    text: "Bitnox technology did a great job by developing a booking system for my cleaning business.",
     rating: 5,
   },
 ];

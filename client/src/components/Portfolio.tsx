@@ -10,6 +10,7 @@ import ImageFour from "../assets/projectFour.png";
 import ImageFive from "../assets/projectFive.png";
 import ImageSix from "../assets/projectSix.png";
 import ImageSeven from "../assets/projectSeven.png";
+import BabadelEstates from "../assets/babadelestates.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,18 +23,18 @@ function Portfolio() {
   const projects = [
     {
       id: 1,
-      title: "DieselNG",
+      title: "Clean Axis",
       description:
-        "A comprehensive diesel procurement platform that bridges the information and logistical gap between AGO suppliers and consumers. Features real-time price tracking, supplier connections, and streamlined fuel ordering for corporate offices, factories, schools, events, and more across Nigeria.",
+        "Clean Axis deliver end of tenancy cleaning, deep cleaning, after builders cleaning, carpet cleaning, commercial cleaning, and jet/pressure washing across Coventry, Solihull, Birmingham, Warwick, Leamington Spa, Rugby and more.",
       image: ImageOne,
-      link: "https://dieselng.com",
-      tags: ["Next.js", "E-Commerce", "Real-time Data"],
+      link: "https://cleanaxis.uk",
+      tags: ["Next.js", "Graphql", "Cleaning", "Booking"],
     },
     {
       id: 2,
-      title: "Bitnox Technology Education",
+      title: "Bitnox Technology Training",
       description:
-        "A digital education platform offering structured, no-fluff coding courses designed to build practical tech skills. Features bite-sized lessons, hands-on projects, and expert instructors helping students master React, MongoDB, Node.js and other technologies with a clear learning path.",
+        "A digital training center offering structured, no-fluff courses designed to build practical tech skills. Features bite-sized lessons, hands-on projects, and expert instructors helping students master React, MongoDB, Node.js and other technologies with a clear learning path.",
       image: ImageTwo,
       link: "https://edu.bitnoxsolution.com",
       tags: ["Next.js", "EdTech", "LMS"],
@@ -46,6 +47,15 @@ function Portfolio() {
       image: ImageThree,
       link: "https://www.provisionsupportservice.co.uk",
       tags: ["React", "CIC", "Hospitality"],
+    },
+    {
+      id: 8,
+      title: "Babadel Estates Ltd",
+      description:
+        "Babadel Estates is your trusted UK property partner — from sourcing and flipping to sales, management, and social housing. We turn property ambitions into generational wealth.",
+      image: BabadelEstates,
+      link: "https://www.babadelestates.co.uk",
+      tags: ["Nextjs", "Real Estate", "Property"],
     },
     {
       id: 4,

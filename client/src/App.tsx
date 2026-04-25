@@ -13,8 +13,10 @@ import AuthLayout from "./layout/AuthLayout";
 import AuthRoutes from "./protected/AuthRoutes";
 import ManageBlog from "./pages/admin/ManageBlog";
 import ProtectedRoutes from "./protected/ProtectedRoutes";
-import Blogs from "./pages/Blogs"; // Import the Blogs component
-import BlogDetail from "./pages/BlogDetail"; // Import the BlogDetail component
+import Blogs from "./pages/Blogs";
+import BlogDetail from "./pages/BlogDetail";
+import TermsOfService from "./pages/TermsOfService";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 function App() {
   return (
@@ -26,9 +28,10 @@ function App() {
           <Route path="/about" element={<AboutUs />} />
           <Route path="/cleaning" element={<Cleaning />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/blogs" element={<Blogs />} /> {/* New Blogs route */}
-          <Route path="/blog/:slug" element={<BlogDetail />} />{" "}
-          {/* New Blog Detail route */}
+          <Route path="/blogs" element={<Blogs />} />
+          <Route path="/blog/:slug" element={<BlogDetail />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
         </Route>
 
         <Route element={<AuthRoutes />}>

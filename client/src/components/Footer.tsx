@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
@@ -310,11 +311,9 @@ function Footer() {
               © {new Date().getFullYear()} Bitnox Solution. All rights reserved.
             </p>
             <div className="footer-legal">
-              <a href="#privacy">Privacy Policy</a>
+              <Link to="/privacy">Privacy Policy</Link>
               <span className="separator">•</span>
-              <a href="#terms">Terms of Service</a>
-              <span className="separator">•</span>
-              <a href="#cookies">Cookies</a>
+              <Link to="/terms">Terms of Service</Link>
             </div>
           </div>
         </div>
