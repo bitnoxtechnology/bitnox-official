@@ -5,7 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "../styles/Portfolio.css";
 import ImageOne from "../assets/projectOne.png";
 import ImageTwo from "../assets/projectTwo.png";
-import ImageThree from "../assets/projectThree.png";
+import ProvisionCIC from "../assets/provisioncic.png";
 import ImageFour from "../assets/projectFour.png";
 import ImageFive from "../assets/projectFive.png";
 import ImageSix from "../assets/projectSix.png";
@@ -44,7 +44,7 @@ function Portfolio() {
       title: "ProVision Support Services",
       description:
         "A UK-based Community Interest Company (CIC) providing distinctive accommodation services with a focus on sustainability and exceptional guest experiences. Empowers investments while celebrating stays and elevating experiences for communities across the United Kingdom.",
-      image: ImageThree,
+      image: ProvisionCIC,
       link: "https://www.provisionsupportservice.co.uk",
       tags: ["React", "CIC", "Hospitality"],
     },
