@@ -6,6 +6,11 @@ import TestimonialModel from "./models/testimonial.model";
 import UserModel from "./models/user.model";
 import { seedBlogs, seedProjects, seedTestimonials } from "./data";
 
+if (process.env.NODE_ENV !== "development") {
+  console.error("Error: Seed script can only run in development environment.");
+  process.exit(1);
+}
+
 const MONGO_URI = process.env.MONGO_URI;
 
 if (!MONGO_URI) {

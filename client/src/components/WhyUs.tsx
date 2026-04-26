@@ -40,7 +40,6 @@ function WhyUs() {
             scrub: 1,
           },
           y: 50,
-          opacity: 0.8,
         });
       }
 

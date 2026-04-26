@@ -35,13 +35,13 @@ function Portfolio() {
       gsap.from(titleRef.current, {
         scrollTrigger: {
           trigger: titleRef.current,
-          start: "top 80%",
-          end: "top 50%",
-          scrub: 1,
+          start: "top 85%",
+          toggleActions: "play none none none",
         },
         opacity: 0,
         y: 50,
-        duration: 1,
+        duration: 0.8,
+        ease: "power2.out",
       });
 
       cardsRef.current.forEach((card, index) => {
@@ -49,14 +49,14 @@ function Portfolio() {
           gsap.from(card, {
             scrollTrigger: {
               trigger: card,
-              start: "top 85%",
-              end: "top 60%",
-              scrub: 1,
+              start: "top 90%",
+              toggleActions: "play none none none",
             },
             opacity: 0,
-            y: 80,
-            duration: 1,
+            y: 60,
+            duration: 0.7,
             delay: index * 0.1,
+            ease: "power2.out",
           });
         }
       });

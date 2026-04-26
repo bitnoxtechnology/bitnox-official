@@ -32,36 +32,34 @@ function Footer() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Animate sections on scroll
       sectionsRef.current.forEach((section, index) => {
         if (section) {
           gsap.from(section, {
             scrollTrigger: {
               trigger: section,
-              start: "top 90%",
-              end: "top 70%",
-              scrub: 1,
+              start: "top 95%",
+              toggleActions: "play none none none",
             },
             opacity: 0,
-            y: 60,
-            duration: 0.8,
-            delay: index * 0.1,
+            y: 40,
+            duration: 0.6,
+            delay: index * 0.08,
+            ease: "power2.out",
           });
         }
       });
 
-      // Animate CTA
       if (ctaRef.current) {
         gsap.from(ctaRef.current, {
           scrollTrigger: {
             trigger: ctaRef.current,
-            start: "top 90%",
-            end: "top 70%",
-            scrub: 1,
+            start: "top 95%",
+            toggleActions: "play none none none",
           },
           opacity: 0,
-          scale: 0.95,
-          duration: 1,
+          scale: 0.97,
+          duration: 0.7,
+          ease: "power2.out",
         });
       }
     }, footerRef);
@@ -266,35 +264,35 @@ function Footer() {
 
             <div className="footer-social">
               <a
-                href="https://www.facebook.com/bitnoxsolution"
+                href="https://www.facebook.com/bitnoxtechnology"
                 className="social-link"
                 aria-label="Facebook"
               >
                 <Facebook size={20} />
               </a>
               <a
-                href="https://x.com/bitnoxsolution"
+                href="https://x.com/bitnox"
                 className="social-link"
                 aria-label="Twitter"
               >
                 <Twitter size={20} />
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://linkedin.com/company/bitnox-technology-solutions"
                 className="social-link"
                 aria-label="LinkedIn"
               >
                 <Linkedin size={20} />
               </a>
               <a
-                href="https://instagram.com"
+                href="https://instagram.com/bitnoxtechnology"
                 className="social-link"
                 aria-label="Instagram"
               >
                 <Instagram size={20} />
               </a>
               <a
-                href="https://github.com"
+                href="https://github.com/bitnoxtechnology"
                 className="social-link"
                 aria-label="GitHub"
               >

@@ -2,6 +2,7 @@ import React from "react";
 import About from "@/components/About";
 import Conclusion from "@/components/Conclusion";
 import Herosection from "@/components/Herosection";
+import LatestBlogs from "@/components/LatestBlogs";
 import Meta from "@/components/Meta";
 import Portfolio from "@/components/Portfolio";
 import Testimonial from "@/components/Testimonial";
@@ -36,6 +37,7 @@ const LandingPage = () => {
       <WhyUs />
       <Portfolio />
       <Testimonial />
+      <LatestBlogs />
       <Conclusion />
     </>
   );

@@ -34,9 +34,11 @@ const BlogDetail = () => {
         setError(res.message || "Blog post not found.");
         toast.error(res.message || "Blog post not found.");
       }
-    } catch (err: any) {
-      setError(err?.message || "An error occurred while fetching the blog.");
-      toast.error(err?.message || "An error occurred while fetching the blog.");
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "An error occurred while fetching the blog.";
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }

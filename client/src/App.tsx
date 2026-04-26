@@ -21,10 +21,12 @@ import BlogDetail from "./pages/BlogDetail";
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import GoogleTagManager from "./components/GoogleTagManager";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <GoogleTagManager />
       <Toaster position="bottom-right" richColors closeButton />
       <Routes>

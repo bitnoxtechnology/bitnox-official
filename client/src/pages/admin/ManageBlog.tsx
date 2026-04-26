@@ -54,8 +54,10 @@ const ManageBlog = () => {
         const data = res.data.blog;
         setSelected(data);
       }
-    } catch (err: any) {
-      toast.error(err?.message || "An error occurred while fetching the blog.");
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "An error occurred while fetching the blog.";
+      toast.error(message);
       console.error("Fetch blog detail error:", err);
     }
   };
