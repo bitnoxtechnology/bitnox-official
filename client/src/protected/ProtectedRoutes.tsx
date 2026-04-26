@@ -1,23 +1,27 @@
 import React from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { Spinner } from "@/components/ui/spinner";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import AdminLayout from "@/layout/AdminLayout";
 
 const ProtectedRoutes = () => {
   const { user, isLoading } = useAuth();
 
   if (isLoading) {
     return (
-      <div className="h-screen w-full flex items-center justify-center">
-        <div className="flex items-center gap-2">
-          <Spinner className="size-8 text-primary-300" />
-          <span className="font-bold">Please Wait</span>
-        </div>
+      <div
+        className="h-screen w-full flex flex-col items-center justify-center gap-4"
+        style={{ background: "#0a0a0a" }}
+      >
+        <Spinner className="size-12" style={{ color: "#05e4fc" }} />
+        <span className="text-sm" style={{ color: "#94a3b8" }}>
+          Authenticating...
+        </span>
       </div>
     );
   }
 
-  return user ? <Outlet /> : <Navigate to={"/auth/login"} replace />;
+  return user ? <AdminLayout /> : <Navigate to={"/auth/login"} replace />;
 };
 
 export default ProtectedRoutes;

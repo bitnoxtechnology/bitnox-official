@@ -28,3 +28,31 @@ interface IBlog {
   createdAt: Date;
   updatedAt: Date;
 }
+
+interface IProject {
+  _id: string;
+  title: string;
+  description: string;
+  coverImage?: string;
+  images?: string[];
+  link?: string;
+  tags?: string[];
+  featured: boolean;
+  order: number;
+  isPublished: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface ITestimonial {
+  _id: string;
+  clientName: string;
+  position: string;
+  company: string;
+  testimonialText: string;
+  rating: number;
+  image?: string;
+  featured: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}

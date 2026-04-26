@@ -204,4 +204,17 @@ export class AuthService {
   public async logout(sessionId: string) {
     return await SessionModel.findOneAndDelete({ sessionId });
   }
+
+  public async getMe(userId: string) {
+    const user = await UserModel.findById(userId).select(
+      "name email accountId createdAt"
+    );
+    if (!user) {
+      throw new BadRequestException(
+        "User not found",
+        ErrorName.AUTH_USER_NOT_FOUND
+      );
+    }
+    return { user };
+  }
 }

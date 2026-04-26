@@ -12,15 +12,20 @@ import LandingPage from "./pages/LandingPage";
 import AuthLayout from "./layout/AuthLayout";
 import AuthRoutes from "./protected/AuthRoutes";
 import ManageBlog from "./pages/admin/ManageBlog";
+import ManagePortfolio from "./pages/admin/ManagePortfolio";
+import ManageTestimonials from "./pages/admin/ManageTestimonials";
+import Dashboard from "./pages/admin/Dashboard";
 import ProtectedRoutes from "./protected/ProtectedRoutes";
 import Blogs from "./pages/Blogs";
 import BlogDetail from "./pages/BlogDetail";
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import GoogleTagManager from "./components/GoogleTagManager";
 
 function App() {
   return (
     <Router>
+      <GoogleTagManager />
       <Toaster position="bottom-right" richColors closeButton />
       <Routes>
         <Route element={<PublicLayout />}>
@@ -42,7 +47,13 @@ function App() {
         </Route>
 
         <Route element={<ProtectedRoutes />}>
+          <Route path="/admin" element={<Dashboard />} />
           <Route path="/admin/manage-blog" element={<ManageBlog />} />
+          <Route path="/admin/manage-portfolio" element={<ManagePortfolio />} />
+          <Route
+            path="/admin/manage-testimonials"
+            element={<ManageTestimonials />}
+          />
         </Route>
 
         <Route element={<PublicLayout />}>

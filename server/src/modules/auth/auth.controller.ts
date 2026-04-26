@@ -151,6 +151,17 @@ export class AuthController {
       });
     }
   );
+
+  public getMe = asyncHandler(
+    async (req: Request, res: Response): Promise<any> => {
+      const userId = req.userId as string;
+      const { user } = await this.authService.getMe(userId);
+      return res.status(HTTPSTATUSCODE.OK).json({
+        success: true,
+        data: { user },
+      });
+    }
+  );
 }
 
 export const authController = new AuthController(new AuthService());

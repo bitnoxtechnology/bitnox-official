@@ -10,7 +10,27 @@ import WhyUs from "@/components/WhyUs";
 const LandingPage = () => {
   return (
     <>
-      <Meta />
+      <Meta
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Bitnox Technology Solutions",
+          url: "https://bitnoxsolution.com",
+          logo: "https://bitnoxsolution.com/og-image.png",
+          description:
+            "Comprehensive IT solutions — web development, cloud infrastructure, cybersecurity, digital marketing, and tech training.",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Abeokuta",
+            addressCountry: "NG",
+          },
+          contactPoint: {
+            "@type": "ContactPoint",
+            contactType: "customer service",
+            email: "info@bitnoxsolution.com",
+          },
+        }}
+      />
       <Herosection />
       <About />
       <WhyUs />

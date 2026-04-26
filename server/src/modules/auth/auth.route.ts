@@ -10,5 +10,6 @@ authRouter.post("/resend-login-otp", authController.resendOTP);
 authRouter.post("/verify-login-otp", authController.verifyLoginOTP);
 authRouter.post("/logout", requireAuth, authController.logout);
 authRouter.post("/refresh-token", authController.refreshToken);
+authRouter.get("/me", requireAuth, authController.getMe);
 
 export { authRouter };
