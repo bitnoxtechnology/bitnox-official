@@ -32,6 +32,7 @@ const inputClassName =
 
 const CreatePortfolioForm: React.FC<Props> = ({ onCreated }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [tagInput, setTagInput] = useState("");
 
   const form = useForm<CreateProjectInput>({
     resolver: zodResolver(projectSchema),
@@ -65,6 +66,7 @@ const CreatePortfolioForm: React.FC<Props> = ({ onCreated }) => {
           order: 0,
           isPublished: false,
         });
+        setTagInput("");
         onCreated?.();
       }
     } catch {
@@ -194,16 +196,13 @@ const CreatePortfolioForm: React.FC<Props> = ({ onCreated }) => {
                   id="tags"
                   placeholder="e.g., React, Next.js, Web Design"
                   disabled={isSubmitting}
-                  value={
-                    Array.isArray(field.value)
-                      ? field.value.join(", ")
-                      : field.value || ""
-                  }
-                  onChange={(e) =>
+                  value={tagInput}
+                  onChange={(e) => {
+                    setTagInput(e.target.value);
                     field.onChange(
                       e.target.value.split(",").map((t) => t.trim()).filter(Boolean)
-                    )
-                  }
+                    );
+                  }}
                   className={inputClassName}
                 />
                 {fieldState.invalid && (

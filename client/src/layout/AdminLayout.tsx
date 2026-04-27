@@ -5,6 +5,7 @@ import {
   FileText,
   Briefcase,
   MessageSquare,
+  Users,
   LogOut,
   Menu,
   X,
@@ -13,7 +14,7 @@ import { useAuth } from "@/hooks/use-auth";
 import Logo from "@/assets/Logo.svg";
 import "@/styles/AdminLayout.css";
 
-const navLinks = [
+const baseNavLinks = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true },
   { to: "/admin/manage-blog", label: "Manage Blog", icon: FileText },
   { to: "/admin/manage-portfolio", label: "Manage Portfolio", icon: Briefcase },
@@ -24,8 +25,16 @@ const navLinks = [
   },
 ];
 
+const superAdminLinks = [
+  { to: "/admin/manage-users", label: "Manage Users", icon: Users },
+];
+
 const AdminLayout = () => {
   const { user, logout } = useAuth();
+  const navLinks =
+    user?.role === "super_admin"
+      ? [...baseNavLinks, ...superAdminLinks]
+      : baseNavLinks;
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 

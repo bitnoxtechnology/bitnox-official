@@ -38,6 +38,7 @@ const UpdatePortfolioForm: React.FC<Props> = ({
   onCleared,
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [tagInput, setTagInput] = useState("");
 
   const form = useForm<UpdateProjectInput>({
     resolver: zodResolver(updateProjectSchema),
@@ -66,6 +67,7 @@ const UpdatePortfolioForm: React.FC<Props> = ({
       order: selected.order,
       isPublished: selected.isPublished,
     });
+    setTagInput((selected.tags || []).join(", "));
   }, [selected, form]);
 
   const onSubmit = async (data: UpdateProjectInput) => {
@@ -189,16 +191,13 @@ const UpdatePortfolioForm: React.FC<Props> = ({
                 id="tags"
                 placeholder="e.g., React, Next.js, Web Design"
                 disabled={isSubmitting}
-                value={
-                  Array.isArray(field.value)
-                    ? field.value.join(", ")
-                    : field.value || ""
-                }
-                onChange={(e) =>
+                value={tagInput}
+                onChange={(e) => {
+                  setTagInput(e.target.value);
                   field.onChange(
                     e.target.value.split(",").map((t) => t.trim()).filter(Boolean)
-                  )
-                }
+                  );
+                }}
                 className={inputClassName}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}

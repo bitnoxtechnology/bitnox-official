@@ -1,6 +1,5 @@
 import {
   LoginType,
-  SignupType,
   VerifyLoginOTPType,
 } from "../../lib/validation/auth.validation";
 import UserModel from "../../database/models/user.model";
@@ -49,30 +48,6 @@ export class AuthService {
     }
   }
 
-  public async signup(signupData: SignupType) {
-    const { name, email } = signupData;
-
-    const userExist = await UserModel.exists({ email });
-
-    if (userExist) {
-      throw new BadRequestException(
-        "User with this email already exists",
-        ErrorName.AUTH_EMAIL_ALREADY_EXISTS
-      );
-    }
-
-    const newUser = await UserModel.create({
-      name,
-      email,
-    });
-
-    await this.sendOTPEmail(email, newUser._id.toString());
-
-    return {
-      user: newUser,
-    };
-  }
-
   public async login(loginData: LoginType) {
     const { email } = loginData;
 
@@ -82,6 +57,13 @@ export class AuthService {
       throw new BadRequestException(
         "User with this email does not exist",
         ErrorName.AUTH_EMAIL_NOT_FOUND
+      );
+    }
+
+    if (!user.isActive) {
+      throw new UnauthorizedException(
+        "Account has been deactivated. Contact your administrator.",
+        ErrorName.AUTH_UNAUTHORIZED_ACCESS
       );
     }
 
@@ -104,6 +86,13 @@ export class AuthService {
       );
     }
 
+    if (!user.isActive) {
+      throw new UnauthorizedException(
+        "Account has been deactivated. Contact your administrator.",
+        ErrorName.AUTH_UNAUTHORIZED_ACCESS
+      );
+    }
+
     await this.sendOTPEmail(email, user._id.toString());
 
     return {
@@ -119,6 +108,13 @@ export class AuthService {
       throw new BadRequestException(
         "User not found",
         ErrorName.AUTH_USER_NOT_FOUND
+      );
+    }
+
+    if (!user.isActive) {
+      throw new UnauthorizedException(
+        "Account has been deactivated. Contact your administrator.",
+        ErrorName.AUTH_UNAUTHORIZED_ACCESS
       );
     }
 
@@ -193,6 +189,14 @@ export class AuthService {
       );
     }
 
+    if (!user.isActive) {
+      await session.deleteOne();
+      throw new UnauthorizedException(
+        "Account has been deactivated.",
+        ErrorName.AUTH_UNAUTHORIZED_ACCESS
+      );
+    }
+
     const accessToken = signJwt({ userId: user._id, sessionId });
 
     return {
@@ -207,7 +211,7 @@ export class AuthService {
 
   public async getMe(userId: string) {
     const user = await UserModel.findById(userId).select(
-      "name email accountId createdAt"
+      "name email accountId role isActive createdAt"
     );
     if (!user) {
       throw new BadRequestException(

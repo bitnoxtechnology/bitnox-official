@@ -54,12 +54,6 @@ const LoginForm: React.FC<Props> = ({ onSuccess }) => {
     <>
       <div className="auth-form-header">
         <h2>Log in to your account</h2>
-        <p>
-          Don't have an account?{" "}
-          <Link to="/auth/signup" className="auth-link">
-            Sign up
-          </Link>
-        </p>
       </div>
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="auth-form">

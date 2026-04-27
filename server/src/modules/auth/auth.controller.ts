@@ -3,7 +3,6 @@ import { asyncHandler } from "../../middlewares/async-handler";
 import { AuthService } from "./auth.service";
 import {
   loginSchema,
-  signupSchema,
   verifyLoginOTPSchema,
 } from "../../lib/validation/auth.validation";
 import { HTTPSTATUSCODE } from "../../config/status-codes.config";
@@ -19,22 +18,6 @@ export class AuthController {
   constructor(authService: AuthService) {
     this.authService = authService;
   }
-
-  public signup = asyncHandler(
-    async (req: Request, res: Response): Promise<any> => {
-      const body = signupSchema.parse({
-        ...req.body,
-      });
-      const { user } = await this.authService.signup(body);
-      return res.status(HTTPSTATUSCODE.CREATED).json({
-        success: true,
-        message: "User signup successfully",
-        data: {
-          user,
-        },
-      });
-    }
-  );
 
   public login = asyncHandler(
     async (req: Request, res: Response): Promise<any> => {

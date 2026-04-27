@@ -1,10 +1,25 @@
+type UserRole = "super_admin" | "admin";
+
 type UserType = {
   _id: string;
   name: string;
   email: string;
+  role: UserRole;
+  isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 };
+
+interface IAdminUser {
+  _id: string;
+  accountId: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 interface ErrorResponse {
   success: boolean;

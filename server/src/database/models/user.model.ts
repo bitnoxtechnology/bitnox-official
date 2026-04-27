@@ -1,10 +1,14 @@
 import mongoose, { Document, Schema } from "mongoose";
 
+export type UserRole = "super_admin" | "admin";
+
 export interface IUser extends Document {
   _id: mongoose.Types.ObjectId;
   accountId: string;
   name: string;
   email: string;
+  role: UserRole;
+  isActive: boolean;
 }
 
 const userSchema = new Schema<IUser>(
@@ -12,6 +16,13 @@ const userSchema = new Schema<IUser>(
     accountId: { type: String, unique: true, required: true },
     name: { type: String, required: true, lowercase: true },
     email: { type: String, required: true, unique: true, lowercase: true },
+    role: {
+      type: String,
+      enum: ["super_admin", "admin"],
+      default: "admin",
+      required: true,
+    },
+    isActive: { type: Boolean, default: true, required: true },
   },
   { timestamps: true, toJSON: {} }
 );

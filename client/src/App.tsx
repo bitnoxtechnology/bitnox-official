@@ -4,7 +4,6 @@ import "@/styles/Auth.css";
 import AboutUs from "@/pages/AboutUs";
 import Cleaning from "@/pages/Cleaning";
 import Contact from "@/pages/Contact";
-import Signup from "./pages/auth/Signup";
 import { Toaster } from "sonner";
 import Login from "./pages/auth/Login";
 import PublicLayout from "./layout/PublicLayout";
@@ -14,8 +13,10 @@ import AuthRoutes from "./protected/AuthRoutes";
 import ManageBlog from "./pages/admin/ManageBlog";
 import ManagePortfolio from "./pages/admin/ManagePortfolio";
 import ManageTestimonials from "./pages/admin/ManageTestimonials";
+import ManageUsers from "./pages/admin/ManageUsers";
 import Dashboard from "./pages/admin/Dashboard";
 import ProtectedRoutes from "./protected/ProtectedRoutes";
+import SuperAdminRoute from "./protected/SuperAdminRoute";
 import Blogs from "./pages/Blogs";
 import BlogDetail from "./pages/BlogDetail";
 import TermsOfService from "./pages/TermsOfService";
@@ -43,7 +44,6 @@ function App() {
 
         <Route element={<AuthRoutes />}>
           <Route element={<AuthLayout />} path="/auth">
-            <Route path="signup" element={<Signup />} />
             <Route path="login" element={<Login />} />
           </Route>
         </Route>
@@ -56,6 +56,9 @@ function App() {
             path="/admin/manage-testimonials"
             element={<ManageTestimonials />}
           />
+          <Route element={<SuperAdminRoute />}>
+            <Route path="/admin/manage-users" element={<ManageUsers />} />
+          </Route>
         </Route>
 
         <Route element={<PublicLayout />}>
