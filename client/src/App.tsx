@@ -14,6 +14,7 @@ import ManageBlog from "./pages/admin/ManageBlog";
 import ManagePortfolio from "./pages/admin/ManagePortfolio";
 import ManageTestimonials from "./pages/admin/ManageTestimonials";
 import ManageUsers from "./pages/admin/ManageUsers";
+import ManageNewsletterSubscribers from "./pages/admin/ManageNewsletterSubscribers";
 import Dashboard from "./pages/admin/Dashboard";
 import ProtectedRoutes from "./protected/ProtectedRoutes";
 import SuperAdminRoute from "./protected/SuperAdminRoute";
@@ -58,6 +59,10 @@ function App() {
           />
           <Route element={<SuperAdminRoute />}>
             <Route path="/admin/manage-users" element={<ManageUsers />} />
+            <Route
+              path="/admin/manage-newsletter"
+              element={<ManageNewsletterSubscribers />}
+            />
           </Route>
         </Route>
 

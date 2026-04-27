@@ -9,6 +9,7 @@ import {
   LogOut,
   Menu,
   X,
+  Mail,
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import Logo from "@/assets/Logo.svg";
@@ -27,6 +28,11 @@ const baseNavLinks = [
 
 const superAdminLinks = [
   { to: "/admin/manage-users", label: "Manage Users", icon: Users },
+  {
+    to: "/admin/manage-newsletter",
+    label: "Newsletter Subscribers",
+    icon: Mail,
+  },
 ];
 
 const AdminLayout = () => {

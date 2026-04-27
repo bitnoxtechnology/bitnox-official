@@ -19,7 +19,6 @@ import {
   type LoginFormType,
 } from "@/lib/validations/auth-validator";
 import { authService } from "@/lib/services/auth-service";
-import { Link } from "react-router-dom";
 
 interface Props {
   onSuccess: (email: string) => void;

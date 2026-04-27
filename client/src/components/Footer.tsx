@@ -14,6 +14,8 @@ import {
   ArrowUpRight,
   Send,
 } from "lucide-react";
+import { toast } from "sonner";
+import { newsletterService } from "../lib/services/newsletter-service";
 import "../styles/Footer.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -23,11 +25,21 @@ function Footer() {
   const sectionsRef = useRef<HTMLDivElement[]>([]);
   const ctaRef = useRef<HTMLDivElement>(null);
   const [email, setEmail] = useState("");
+  const [isSubscribing, setIsSubscribing] = useState(false);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Subscribing email:", email);
-    setEmail("");
+    if (!email) return;
+    setIsSubscribing(true);
+    try {
+      const res = await newsletterService.subscribe(email);
+      toast.success(res.message || "Successfully subscribed!");
+      setEmail("");
+    } catch (err: any) {
+      toast.error(err?.message || "Failed to subscribe. Please try again.");
+    } finally {
+      setIsSubscribing(false);
+    }
   };
 
   useEffect(() => {
@@ -79,7 +91,7 @@ function Footer() {
               and exclusive offers.
             </p>
           </div>
-          <div className="newsletter-form" onSubmit={handleSubscribe}>
+          <form className="newsletter-form" onSubmit={handleSubscribe}>
             <div className="newsletter-input-wrapper">
               <Mail className="newsletter-icon" size={20} />
               <input
@@ -89,17 +101,18 @@ function Footer() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                disabled={isSubscribing}
               />
             </div>
             <button
-              type="button"
+              type="submit"
               className="newsletter-button"
-              onClick={handleSubscribe}
+              disabled={isSubscribing}
             >
-              <span>Subscribe</span>
+              <span>{isSubscribing ? "Subscribing..." : "Subscribe"}</span>
               <Send size={18} />
             </button>
-          </div>
+          </form>
         </div>
 
         {/* Main Footer Grid */}

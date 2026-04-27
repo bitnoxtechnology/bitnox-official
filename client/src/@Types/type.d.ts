@@ -71,3 +71,12 @@ interface ITestimonial {
   createdAt: Date;
   updatedAt: Date;
 }
+
+interface INewsletterSubscriber {
+  _id: string;
+  email: string;
+  isActive: boolean;
+  subscribedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
