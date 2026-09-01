@@ -16,6 +16,19 @@ const optionalString = z
   .optional()
   .transform((value) => (value === "" ? undefined : value));
 
+/**
+ * Required in production, optional elsewhere.
+ *
+ * For credentials that are outstanding inputs rather than setup mistakes. A missing
+ * Cloudinary secret should stop a deployment, but it should not stop a developer from
+ * running the site, which has nothing to do with uploads on most pages.
+ */
+const productionOnly = (name: string) =>
+  optionalString.refine(
+    (value) => process.env.NODE_ENV !== "production" || (value !== undefined && value.length > 0),
+    `${name} is required in production`,
+  );
+
 const serverSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 
@@ -32,7 +45,8 @@ const serverSchema = z.object({
   RESEND_API_KEY: z.string().min(1, "RESEND_API_KEY is required"),
 
   CLOUDINARY_API_KEY: z.string().min(1, "CLOUDINARY_API_KEY is required"),
-  CLOUDINARY_API_SECRET: z.string().min(1, "CLOUDINARY_API_SECRET is required"),
+  // Still an outstanding Phase 0 input. Upload signing checks for it at its own call site.
+  CLOUDINARY_API_SECRET: productionOnly("CLOUDINARY_API_SECRET"),
   CLOUDINARY_UPLOAD_PRESET: z.string().min(1, "CLOUDINARY_UPLOAD_PRESET is required"),
 
   CRON_SECRET: z.string().min(16, "CRON_SECRET must be at least 16 characters"),

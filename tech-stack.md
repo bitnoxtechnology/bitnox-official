@@ -90,6 +90,10 @@ npm install
 npm run dev             # http://localhost:3000
 ```
 
+**DNS in development.** A `mongodb+srv://` URI needs an SRV lookup, and the local resolver
+refuses SRV queries, which surfaces as `querySrv ECONNREFUSED`. `src/lib/dns.ts` points DNS at
+`1.1.1.1` and `8.8.8.8` in development. It does nothing in production.
+
 No proxy configuration and no second process. The API and the site are one application on one
 origin, which is the main operational difference from the legacy setup.
 

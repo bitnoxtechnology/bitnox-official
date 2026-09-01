@@ -55,10 +55,10 @@ No migration. Development and production both start empty, so every model is des
 new site needs rather than inherited from the legacy shape. Content is entered through the admin
 after launch.
 
-- [ ] Write `src/lib/db.ts`, a Mongoose connection with a `globalThis` cache to survive serverless invocations and HMR
-- [ ] Write `scripts/reset-db.ts`, which drops every collection in the target database. Guarded behind `--confirm` and a check that `MONGO_URI` is not pointing somewhere unexpected. Refuses to run against a database whose name is not in an allowlist.
-- [ ] Write `scripts/seed.ts`, which creates the first `super_admin` with a password read from argv or env, and seeds the `SiteSettings` singleton. Without this, nobody can log in to a clean database.
-- [ ] Add `db:reset` and `db:seed` npm scripts, plus a combined `db:fresh` for development
+- [x] Write `src/lib/db.ts`, a Mongoose connection with a `globalThis` cache to survive serverless invocations and HMR
+- [x] Write `scripts/reset-db.ts`, which drops every collection in the target database. Guarded behind `--confirm` and a check that `MONGO_URI` is not pointing somewhere unexpected. Refuses to run against a database whose name is not in an allowlist.
+- [x] Write `scripts/seed.ts`, which creates the first `super_admin` with a password read from argv or env, and seeds the `SiteSettings` singleton. Without this, nobody can log in to a clean database.
+- [x] Add `db:reset` and `db:seed` npm scripts, plus a combined `db:fresh` for development
 
 **Blog.** `title`, `slug` (unique, generated from title with collision handling), `excerpt`,
 `contentJson` (Tiptap doc, source of truth), `contentHtml` (rendered snapshot), `coverImage`,
@@ -66,58 +66,63 @@ after launch.
 `scheduledFor`, `tags`, `category`, `author`, `readingMinutes`, `seoTitle`, `seoDescription`,
 `ogImage`, `canonicalUrl`, `featured`, `viewCount`, timestamps.
 
-- [ ] Build the Blog model. `status` replaces the legacy `isPublished` boolean, because draft, scheduled and archived are three different states that a boolean cannot express.
-- [ ] Slug generation runs on validate, stays stable once published, and never silently changes under an edited title
+- [x] Build the Blog model. `status` replaces the legacy `isPublished` boolean, because draft, scheduled and archived are three different states that a boolean cannot express.
+- [x] Slug generation runs on validate, stays stable once published, and never silently changes under an edited title
 
 **Project (portfolio).** Improvements over the legacy model, which had no slug, no detail content
 and no client context:
 
-- [ ] Add `slug` (unique) so projects get their own indexable URLs
-- [ ] Add `summary` (card copy) separate from `content` (Tiptap JSON plus HTML for the detail page)
-- [ ] Add `client`, `industry`, `services` (referencing the four service slugs), `techStack`, `completedAt`
-- [ ] Add `liveUrl` and `repoUrl` in place of the single untyped `link`
-- [ ] Add `coverImageAlt` and change `images` from `string[]` to `{ url, alt, caption, sortOrder }[]`, since bare URL strings cannot carry the alt text that image SEO and accessibility both need
-- [ ] Keep `featured`, `order`, `tags`, and replace `isPublished` with the same `status` enum as Blog
+- [x] Add `slug` (unique) so projects get their own indexable URLs
+- [x] Add `summary` (card copy) separate from `content` (Tiptap JSON plus HTML for the detail page)
+- [x] Add `client`, `industry`, `services` (referencing the four service slugs), `techStack`, `completedAt`
+- [x] Add `liveUrl` and `repoUrl` in place of the single untyped `link`
+- [x] Add `coverImageAlt` and change `images` from `string[]` to `{ url, alt, caption, sortOrder }[]`, since bare URL strings cannot carry the alt text that image SEO and accessibility both need
+- [x] Keep `featured`, `order`, `tags`, and replace `isPublished` with the same `status` enum as Blog
 
 **Testimonial.** Improvements over the legacy model:
 
-- [ ] Make `position` and `company` optional, since not every testimonial has both, and required fields here block real entries
-- [ ] Add `relatedProject` (optional reference) so a testimonial can be shown on the project it refers to
-- [ ] Add `service` (optional, one of the four slugs) so testimonials can be surfaced on the matching service page
-- [ ] Add `imageAlt`, `sortOrder` and the same `status` enum as Blog and Project. Only `draft` and `published` are used in practice, but one status model across the admin means one filter component and one mental model.
-- [ ] Keep `clientName`, `testimonialText`, `rating`, `featured`
+- [x] Make `position` and `company` optional, since not every testimonial has both, and required fields here block real entries
+- [x] Add `relatedProject` (optional reference) so a testimonial can be shown on the project it refers to
+- [x] Add `service` (optional, one of the four slugs) so testimonials can be surfaced on the matching service page
+- [x] Add `imageAlt`, `sortOrder` and the same `status` enum as Blog and Project. Only `draft` and `published` are used in practice, but one status model across the admin means one filter component and one mental model.
+- [x] Keep `clientName`, `testimonialText`, `rating`, `featured`
 
 **User.** `name`, `email` (unique), `passwordHash` (argon2id), `role` (`super_admin` | `admin`),
 `isActive`, `lastLoginAt`, `passwordChangedAt`, timestamps.
 
-- [ ] Drop `accountId`. It generated a random six-digit ID in a retry loop on every insert and nothing consumes it.
-- [ ] `passwordHash` is required, since the seed and invite flows both set one at creation. No user ever exists without a password.
-- [ ] Never select `passwordHash` by default. Use `select: false` and opt in explicitly at the one call site that verifies it.
+- [x] Drop `accountId`. It generated a random six-digit ID in a retry loop on every insert and nothing consumes it.
+- [x] `passwordHash` is required, since the seed and invite flows both set one at creation. No user ever exists without a password.
+- [x] Never select `passwordHash` by default. Use `select: false` and opt in explicitly at the one call site that verifies it.
 
 **Session.** `sessionId` (unique), `userId`, `userAgent`, `ip`, `expiresAt`, `revokedAt`, timestamps.
 
-- [ ] Drop `refreshToken` and `deviceFp`. The cookie session replaces the access and refresh token pair, and the browser fingerprint dependency goes with it.
-- [ ] Add a TTL index on `expiresAt` so MongoDB expires dead sessions without a cleanup job
+- [x] Drop `refreshToken` and `deviceFp`. The cookie session replaces the access and refresh token pair, and the browser fingerprint dependency goes with it.
+- [x] Add a TTL index on `expiresAt` so MongoDB expires dead sessions without a cleanup job
 
 **Newsletter subscriber.** `email` (unique), `status` (`subscribed` | `unsubscribed`), `source`,
 `confirmedAt`, `unsubscribedAt`, `unsubscribeToken`, timestamps.
 
-- [ ] Replace `isActive` with `status`, and add `source` so it is visible which page drove each signup
-- [ ] Add `unsubscribeToken` for one-click unsubscribe links, which bulk senders increasingly require
+- [x] Replace `isActive` with `status`, and add `source` so it is visible which page drove each signup
+- [x] Add `unsubscribeToken` for one-click unsubscribe links, which bulk senders increasingly require
 
 **New models.**
 
-- [ ] `OtpToken`: `identifier`, `codeHash`, `purpose` (`login` | `password_reset`), `expiresAt`, `attempts`, `consumedAt`, with a TTL index on `expiresAt`
-- [ ] `Enquiry`: `type` (`contact` | `event_space` | `cleaning`), `status` (`new` | `read` | `responded`), `name`, `email`, `phone`, `message`, plus a typed `details` sub-document for the Event Space fields (event type, preferred date, expected attendees), `source`, timestamps
-- [ ] `EventSpaceImage`: `url`, `alt` (required, not optional), `caption`, `sortOrder`, `isCover`. Unbounded length, admin-ordered.
-- [ ] `SiteSettings` singleton: NAP, opening hours, social links, sister-site URLs, default OG image, Event Space capacity, amenities and availability copy
+- [x] `OtpToken`: `identifier`, `codeHash`, `purpose` (`login` | `password_reset`), `expiresAt`, `attempts`, `consumedAt`, with a TTL index on `expiresAt`
+- [x] `Enquiry`: `type` (`contact` | `event_space` | `cleaning`), `status` (`new` | `read` | `responded`), `name`, `email`, `phone`, `message`, plus a typed `details` sub-document for the Event Space fields (event type, preferred date, expected attendees), `source`, timestamps
+- [x] `EventSpaceImage`: `url`, `alt` (required, not optional), `caption`, `sortOrder`, `isCover`. Unbounded length, admin-ordered.
+- [x] `SiteSettings` singleton: NAP, opening hours, social links, sister-site URLs, default OG image, Event Space capacity, amenities and availability copy
 
 **Shared.**
 
-- [ ] Indexes: `blog {status, publishedAt}`, unique `blog.slug`, `blog.tags`, unique `project.slug`, `project {status, order}`, `enquiry {type, status, createdAt}`, unique `newsletter.email`, `eventSpaceImage.sortOrder`, TTL on `session.expiresAt` and `otpToken.expiresAt`
-- [ ] Guard every model against Next.js HMR re-registration with the `models.X || model(...)` pattern, or hot reload throws `OverwriteModelError`
-- [ ] Write `src/lib/dto.ts`, serializers converting Mongoose documents to plain objects safe to cross the server and client boundary
+- [x] Indexes: `blog {status, publishedAt}`, unique `blog.slug`, `blog.tags`, unique `project.slug`, `project {status, order}`, `enquiry {type, status, createdAt}`, unique `newsletter.email`, `eventSpaceImage.sortOrder`, TTL on `session.expiresAt` and `otpToken.expiresAt`
+- [x] Guard every model against Next.js HMR re-registration with the `models.X || model(...)` pattern, or hot reload throws `OverwriteModelError`
+- [x] Write `src/lib/dto.ts`, serializers converting Mongoose documents to plain objects safe to cross the server and client boundary
 - [ ] Run `db:fresh` and confirm the app boots, the seeded super_admin can log in, and every admin list renders its empty state
+  - Reset and seed both ran against `bitnox-official`, the app builds and boots, and a
+    verification pass confirmed the seeded super_admin, the `SiteSettings` singleton, slug
+    collision handling, the DTO boundary and the indexes. Logging in cannot be checked until
+    Phase 3 builds the login flow, and the admin empty states until Phase 10, so this box
+    stays open until then.
 
 ---
 
