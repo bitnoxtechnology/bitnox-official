@@ -91,9 +91,17 @@ npm install
 npm run dev             # http://localhost:3000
 ```
 
-**DNS in development.** A `mongodb+srv://` URI needs an SRV lookup, and the local resolver
+**DNS off a deployment.** A `mongodb+srv://` URI needs an SRV lookup, and the local resolver
 refuses SRV queries, which surfaces as `querySrv ECONNREFUSED`. `src/lib/dns.ts` points DNS at
-`1.1.1.1` and `8.8.8.8` in development. It does nothing in production.
+`1.1.1.1` and `8.8.8.8` unless the process is running on the hosting platform. The test is the
+platform's own variable rather than `NODE_ENV`, because `next build` sets `NODE_ENV` to production
+while running on the developer's machine, and the build prerenders pages that read the database.
+
+**Outstanding credentials and the build.** `CLOUDINARY_API_SECRET` and the other production-only
+variables are required when the server starts, not when it is built: `next build` renders no page
+that uses them. `src/instrumentation.ts` validates both halves of the environment at server start,
+so a deployment missing one fails there with a message naming the variable. A local
+`npm run build` succeeds without them; `npm run start` does not.
 
 No proxy configuration and no second process. The API and the site are one application on one
 origin, which is the main operational difference from the legacy setup.

@@ -120,6 +120,7 @@ guessing, because incorrect price markup is worse than absent markup.
 | `/about`, `/contact` | |
 | `/cleaning` | Overview only, hands off to the subdomain |
 | `/terms`, `/privacy` | Indexable |
+| `/newsletter/unsubscribe` | One-click unsubscribe, `noindex`. Reached from the link in every newsletter email, never navigated to. |
 | `/admin/*` | Guarded, `noindex` |
 
 **The `/cleaning` rule.** It is a short overview, not a service page. It states that Bitnox offers
@@ -150,9 +151,12 @@ it alone.
 react-hook-form resolver on the client and re-validated inside the server action. Never write the
 rules twice, and never trust the client-side pass.
 
-**Static by default, invalidated by tag.** Public pages are statically generated. Any admin
-mutation that changes public content calls `revalidateTag()` for the affected tag before returning.
-Time-based revalidation is not used.
+**Static by default, invalidated by tag.** Public pages are statically generated. Every public
+read is a `"use cache"` function in `src/lib/queries/`, declaring a tag from `src/lib/cache.ts`.
+Any admin mutation that changes public content calls `revalidateTag()` for the same constant
+before returning. Time-based revalidation is not used, which is also why nothing outside a cached
+function may read the clock during a render: the shortest `cacheLife` in a page's tree governs the
+whole page, so one `new Date()` in the footer would put every public page back on a timer.
 
 **Mongoose documents never cross the server and client boundary.** Serialize through `src/lib/dto.ts`
 into plain objects first.
@@ -233,8 +237,11 @@ nextjs/src/
 │   ├── db.ts                # Cached Mongoose connection
 │   ├── env.ts               # Zod-validated process.env
 │   ├── dto.ts               # Document to plain object serializers
+│   ├── cache.ts             # The cache tag constants
+│   ├── cloudinary.ts        # Upload signing, server only
 │   ├── auth/                # password.ts, session.ts, guards
 │   ├── actions/             # Server actions by domain
+│   ├── queries/             # Cached public reads, one file per collection
 │   ├── validations/         # Shared Zod schemas
 │   └── mail/                # Resend client and React Email templates
 ├── models/                  # Mongoose models

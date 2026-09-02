@@ -17,15 +17,27 @@ const optionalString = z
   .transform((value) => (value === "" ? undefined : value));
 
 /**
- * Required in production, optional elsewhere.
+ * Required when the server runs in production, optional elsewhere.
  *
  * For credentials that are outstanding inputs rather than setup mistakes. A missing
  * Cloudinary secret should stop a deployment, but it should not stop a developer from
  * running the site, which has nothing to do with uploads on most pages.
+ *
+ * The build is deliberately exempt. `next build` sets `NODE_ENV` to production, and it needs
+ * none of these credentials: no page is rendered against Cloudinary, and the root layout
+ * only reads the Search Console token. Failing there would mean nobody could build the site
+ * locally until every outstanding Phase 0 input had arrived, which is the opposite of what
+ * this refinement is for. `instrumentation.ts` reads both halves of the environment when the
+ * server starts, and that is where a real deployment is stopped.
  */
+const isProductionBuild = () => process.env.NEXT_PHASE === "phase-production-build";
+
 const productionOnly = (name: string) =>
   optionalString.refine(
-    (value) => process.env.NODE_ENV !== "production" || (value !== undefined && value.length > 0),
+    (value) =>
+      process.env.NODE_ENV !== "production" ||
+      isProductionBuild() ||
+      (value !== undefined && value.length > 0),
     `${name} is required in production`,
   );
 

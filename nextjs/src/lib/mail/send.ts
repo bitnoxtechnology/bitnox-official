@@ -21,6 +21,14 @@ export interface MailMessage {
   subject: string;
   react: ReactElement;
   text: string;
+  /**
+   * Where a reply should go, when that is not the From address.
+   *
+   * Used by the internal enquiry alert: the message comes from the no-reply address, but
+   * hitting reply in the inbox has to reach the person who sent the enquiry, not a mailbox
+   * nobody reads.
+   */
+  replyTo?: string;
 }
 
 export interface MailResult {
@@ -36,6 +44,7 @@ export async function sendMail(message: MailMessage): Promise<MailResult> {
       subject: message.subject,
       react: message.react,
       text: message.text,
+      replyTo: message.replyTo,
     });
 
     if (error) {

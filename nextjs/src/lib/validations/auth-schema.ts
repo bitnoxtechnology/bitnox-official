@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { MIN_PASSWORD_LENGTH, USER_ROLES } from "@/lib/constants";
+import { emailField } from "@/lib/validations/fields";
 
 /**
  * One schema per form, two consumers.
@@ -11,13 +12,14 @@ import { MIN_PASSWORD_LENGTH, USER_ROLES } from "@/lib/constants";
  * loading the form.
  */
 
-const email = z
-  .string()
-  .trim()
-  .min(1, "Enter your email address")
-  .max(254, "That email address is too long")
-  .toLowerCase()
-  .pipe(z.email("Enter a valid email address"));
+/**
+ * The same address rules the public forms use.
+ *
+ * Shared rather than restated, so the address an admin is invited with is normalised
+ * identically to the one a visitor subscribes with, and the unique index on `email` is
+ * comparing like with like.
+ */
+const email = emailField;
 
 /**
  * Length first, then a token requirement.

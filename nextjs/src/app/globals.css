@@ -50,6 +50,35 @@
 }
 
 /* ---------------------------------------------------------------------------------------
+ * The logo marquee
+ *
+ * One keyframe, used by the trusted-by row under the hero. The track holds the logo list
+ * twice and travels exactly half its own width, so the moment the first copy has left the
+ * viewport the second copy is sitting where the first started and the loop is seamless.
+ * Translating a percentage of the track rather than a pixel distance is what makes it work
+ * at any viewport width without measuring anything in JavaScript.
+ *
+ * The duration is a variable rather than a constant so the row can be slowed down on a phone,
+ * where the same speed over a narrower viewport reads as much faster.
+ *
+ * Under `prefers-reduced-motion` the global guard further down this file collapses every
+ * animation to a single 0.01ms pass. With no fill mode the track then settles back at its
+ * starting offset, which leaves a static, complete row of logos rather than a blank strip.
+ * ------------------------------------------------------------------------------------ */
+@theme {
+  --animate-marquee: marquee var(--marquee-duration, 45s) linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------------------
  * Type scale
  *
  * A minor-third ramp at reading sizes, widening above `3xl` where headings need the extra

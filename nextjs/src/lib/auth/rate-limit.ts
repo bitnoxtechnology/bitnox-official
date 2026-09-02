@@ -31,6 +31,19 @@ export const RATE_LIMITS = {
 
   passwordResetPerEmail: { limit: 3, windowMs: 60 * MINUTE },
   passwordResetPerIp: { limit: 10, windowMs: 60 * MINUTE },
+
+  /**
+   * The public forms.
+   *
+   * Not credential endpoints, so the numbers are looser: these exist to cap what a spam run
+   * costs in database writes and Resend credits, not to stop guessing. An office behind one
+   * shared address can still send several enquiries in an hour, which is why the per-IP
+   * figure is not two.
+   */
+  enquiryPerIp: { limit: 8, windowMs: 60 * MINUTE },
+  enquiryPerEmail: { limit: 4, windowMs: 60 * MINUTE },
+
+  newsletterPerIp: { limit: 6, windowMs: 60 * MINUTE },
 } as const satisfies Record<string, RateLimitRule>;
 
 export interface RateLimitResult {

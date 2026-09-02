@@ -66,3 +66,24 @@ export const MIN_PASSWORD_LENGTH = 12;
 
 /** The Event Space seats 60. Overridable in SiteSettings, but this is the fallback. */
 export const EVENT_SPACE_CAPACITY = 60;
+
+/**
+ * Where an upload is allowed to land in the Cloudinary account.
+ *
+ * Here rather than beside the signing code, because the client-side upload component needs
+ * the union type and `src/lib/cloudinary.ts` carries `server-only`: it holds the API secret,
+ * so nothing in a browser bundle may import from it, not even a type.
+ */
+export const UPLOAD_FOLDERS = ["blog", "portfolio", "event-space", "testimonials", "site"] as const;
+
+export type UploadFolder = (typeof UPLOAD_FOLDERS)[number];
+
+/** Ten megabytes. Above this the browser is asked to pick a smaller file rather than wait. */
+export const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
+
+export const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/avif",
+] as const;

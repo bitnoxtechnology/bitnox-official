@@ -34,8 +34,17 @@ export interface ActionForm<TValues extends FieldValues> {
   submit: (formData: FormData) => void;
 }
 
+/**
+ * `TValues` is the schema's *input* type, not its output.
+ *
+ * They are the same for most forms, and differ the moment a field carries a transform: an
+ * optional field written as `.optional().transform(...)` accepts a missing key on the way in
+ * and produces `string | undefined` on the way out. React Hook Form holds what the person
+ * typed, which is the input side, so that is what this hook is typed against and what
+ * `z.input<typeof schema>` gives a form.
+ */
 export function useActionForm<TValues extends FieldValues>(options: {
-  schema: ZodType<TValues, TValues>;
+  schema: ZodType<unknown, TValues>;
   action: FormAction;
   defaultValues: DefaultValues<TValues>;
 }): ActionForm<TValues> {

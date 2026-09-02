@@ -167,18 +167,18 @@ and no client context:
 
 ## Phase 5: Shared Chrome and Cross-Cutting Infrastructure
 
-- [ ] Build the root layout: `metadataBase`, GTM, theme colour, skip-to-content link, `<Toaster>`
-- [ ] Build the public `Navbar`: sticky, responsive sheet menu, four services in a dropdown, Event Space, Blog, About, Contact, and a Courses call to action pointing at `edu.bitnoxsolution.com`
-- [ ] Build the cross-property switcher for nav and footer: Bitnox Technology, Bitnox Education (`edu.bitnoxsolution.com`), Bitnox Cleaning (`cleaning.bitnoxsolution.com`)
-- [ ] Build the `Footer`: NAP block, the four services, Event Space, sister properties, legal links, newsletter form
-- [ ] Build `src/lib/mail/`: Resend client plus React Email templates for OTP, password reset, contact acknowledgement, Event Space booking acknowledgement, and internal new-enquiry notification. Email copy follows the same standards as page copy.
-- [ ] Build the shared form stack: Zod schemas in `src/lib/validations/` consumed by both the react-hook-form resolver on the client and the server action on the server. One schema, two consumers.
-- [ ] Build the signed Cloudinary upload: an `/api/uploads/sign` route handler returning a signature, plus an `<ImageUpload>` client component that posts directly to Cloudinary with it
-- [ ] Build a `<MultiImageUpload>` variant with drag-to-reorder, per-image alt text and captions, used by the Event Space gallery and portfolio
-- [ ] Establish `src/lib/actions/` conventions: a typed `ActionResult<T>`, a `withAuth()` wrapper, and consistent field-level error mapping back into react-hook-form
-- [ ] Implement newsletter subscribe as a server action with duplicate-email handling and a confirmation email
-- [ ] Add a honeypot field and a timing check on all public forms. No third-party captcha unless spam actually appears.
-- [ ] Build `not-found.tsx` and `error.tsx` at the root and in each route group
+- [x] Build the root layout: `metadataBase`, GTM, theme colour, skip-to-content link, `<Toaster>`
+- [x] Build the public `Navbar`: sticky, responsive sheet menu, four services in a dropdown, Event Space, Blog, About, Contact, and a Courses call to action pointing at `edu.bitnoxsolution.com`
+- [x] Build the cross-property switcher for nav and footer: Bitnox Technology, Bitnox Education (`edu.bitnoxsolution.com`), Bitnox Cleaning (`cleaning.bitnoxsolution.com`)
+- [x] Build the `Footer`: NAP block, the four services, Event Space, sister properties, legal links, newsletter form
+- [x] Build `src/lib/mail/`: Resend client plus React Email templates for OTP, password reset, contact acknowledgement, Event Space booking acknowledgement, and internal new-enquiry notification. Email copy follows the same standards as page copy.
+- [x] Build the shared form stack: Zod schemas in `src/lib/validations/` consumed by both the react-hook-form resolver on the client and the server action on the server. One schema, two consumers.
+- [x] Build the signed Cloudinary upload: an `/api/uploads/sign` route handler returning a signature, plus an `<ImageUpload>` client component that posts directly to Cloudinary with it
+- [x] Build a `<MultiImageUpload>` variant with drag-to-reorder, per-image alt text and captions, used by the Event Space gallery and portfolio
+- [x] Establish `src/lib/actions/` conventions: a typed `ActionResult<T>`, a `withAuth()` wrapper, and consistent field-level error mapping back into react-hook-form
+- [x] Implement newsletter subscribe as a server action with duplicate-email handling and a confirmation email
+- [x] Add a honeypot field and a timing check on all public forms. No third-party captcha unless spam actually appears.
+- [x] Build `not-found.tsx` and `error.tsx` at the root and in each route group
 
 ---
 
@@ -186,19 +186,19 @@ and no client context:
 
 Covers all four services. No laundry or cleaning content on this page at all.
 
-- [ ] Hero: headline, sub-headline, two calls to action (start a project, browse courses), GSAP entrance. Headline names what Bitnox builds, not an abstraction.
-- [ ] Services grid: four cards, one per service, each linking to its dedicated page
-- [ ] About and who we are, condensed, linking to `/about`
-- [ ] Why Bitnox: differentiators, ported and tightened from the current `WhyUs`, rewritten to remove filler
-- [ ] **Event Space section**: 60 capacity, teaser gallery pulled from the first images in the gallery collection, call to action to `/event-space`
-- [ ] Technology Training band: a distinct, unmissable route to `edu.bitnoxsolution.com` for course seekers
-- [ ] Portfolio: server-fetched, statically generated, cached under a `portfolio` tag
-- [ ] Testimonials: server-fetched, same caching treatment
-- [ ] Latest blog posts: the three most recent published posts
-- [ ] FAQ section using the existing `data.ts` FAQs, rewritten to standard, marked up with `FAQPage` JSON-LD
-- [ ] Closing call to action and contact band
-- [ ] Verify: no laundry or cleaning copy, imagery or links anywhere on this page
-- [ ] Copy review pass against the Content and UI Standards in `CLAUDE.md`
+- [x] Hero: headline, sub-headline, two calls to action (start a project, browse courses), GSAP entrance. Headline names what Bitnox builds, not an abstraction.
+- [x] Services grid: four cards, one per service, each linking to its dedicated page
+- [x] About and who we are, condensed, linking to `/about`
+- [x] Why Bitnox: differentiators, ported and tightened from the current `WhyUs`, rewritten to remove filler
+- [x] **Event Space section**: 60 capacity, teaser gallery pulled from the first images in the gallery collection, call to action to `/event-space`
+- [x] Technology Training band: a distinct, unmissable route to `edu.bitnoxsolution.com` for course seekers
+- [x] Portfolio: server-fetched, statically generated, cached under a `portfolio` tag
+- [x] Testimonials: server-fetched, same caching treatment
+- [x] Latest blog posts: the three most recent published posts
+- [x] FAQ section using the existing `data.ts` FAQs, rewritten to standard, marked up with `FAQPage` JSON-LD
+- [x] Closing call to action and contact band
+- [x] Verify: no laundry or cleaning copy, imagery or links anywhere on this page
+- [x] Copy review pass against the Content and UI Standards in `CLAUDE.md`
 
 ---
 

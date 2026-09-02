@@ -1,0 +1,40 @@
+import "server-only";
+
+import { cacheLife, cacheTag } from "next/cache";
+
+import { CACHE_TAGS } from "@/lib/cache";
+import { connectToDatabase } from "@/lib/db";
+import { toBlogCard, type BlogCardDTO } from "@/lib/dto";
+import { Blog, type IBlog } from "@/models";
+// Registers User on the connection, so populating the byline does not throw.
+import "@/models";
+
+/**
+ * Published posts, for the landing page and the blog index.
+ *
+ * The filter is `status: "published"` and a `publishedAt` in the past. A scheduled post has
+ * its own status and is excluded by the first condition, so the date check only guards the
+ * case where a post was published with a future date by hand.
+ *
+ * `new Date()` inside a cached function pins a moment into the cache entry, which is the
+ * intended behaviour here: the entry is invalidated by tag when a post is published, and the
+ * scheduled-publish cron calls `revalidateTag` when it flips a post over. Nothing depends on
+ * the clock ticking between those two events.
+ */
+export async function getLatestPosts(limit = 3): Promise<BlogCardDTO[]> {
+  "use cache";
+  cacheTag(CACHE_TAGS.blog);
+  cacheLife("max");
+
+  await connectToDatabase();
+
+  const posts = await Blog.find({ status: "published", publishedAt: { $lte: new Date() } })
+    .sort({ publishedAt: -1 })
+    .limit(limit)
+    .populate("author", "name")
+    .select("-contentJson -contentHtml")
+    .lean<IBlog[]>()
+    .exec();
+
+  return posts.map(toBlogCard);
+}

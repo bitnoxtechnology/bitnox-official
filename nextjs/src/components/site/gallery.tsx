@@ -90,7 +90,7 @@ export function Gallery({ images, columns = 3, label, className }: GalleryProps)
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
               {image.caption ? (
-                <span className="from-background/90 text-foreground absolute inset-x-0 bottom-0 bg-gradient-to-t to-transparent px-4 pt-8 pb-3 text-left text-sm">
+                <span className="from-background/90 text-foreground absolute inset-x-0 bottom-0 bg-linear-to-t to-transparent px-4 pt-8 pb-3 text-left text-sm">
                   {image.caption}
                 </span>
               ) : null}

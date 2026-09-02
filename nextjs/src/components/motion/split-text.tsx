@@ -15,6 +15,14 @@ type SplitTextProps = {
   delay?: number;
   /** Play on mount, or wait until the element scrolls into view. Heroes are on mount. */
   trigger?: "mount" | "scroll";
+  /**
+   * Line indexes, zero based, to paint in the accent colour.
+   *
+   * For a headline whose last clause is the claim and the rest is the setup. The alternative
+   * is passing a ReactNode and giving up the `aria-label`, which is what keeps a screen
+   * reader hearing one heading instead of a list of fragments.
+   */
+  accentLines?: number[];
   className?: string;
 };
 
@@ -47,6 +55,7 @@ export function SplitText({
   as: Tag = "h1",
   delay = 0.1,
   trigger = "mount",
+  accentLines,
   className,
 }: SplitTextProps) {
   const ref = React.useRef<HTMLElement>(null);
@@ -89,7 +98,11 @@ export function SplitText({
       className={cn(className)}
     >
       {lines.map((line, lineIndex) => (
-        <span key={lineIndex} aria-hidden className="block">
+        <span
+          key={lineIndex}
+          aria-hidden
+          className={cn("block", accentLines?.includes(lineIndex) && "text-primary")}
+        >
           {splitLine(line, by)}
         </span>
       ))}

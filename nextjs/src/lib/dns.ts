@@ -8,14 +8,24 @@ import { setServers } from "node:dns/promises";
  * `_mongodb._tcp.<host>`, and this machine's resolver refuses SRV queries, which surfaces as
  * `querySrv ECONNREFUSED` and reads like a network outage rather than a DNS problem.
  *
- * Production is left alone. A hosting platform's resolver is its own concern.
+ * A deployed server is left alone. A hosting platform's resolver is its own concern, and
+ * overriding it there would route every lookup the application makes through a third party.
+ *
+ * "Deployed" is not the same as "NODE_ENV is production". `next build` sets NODE_ENV to
+ * production while running on the developer's machine, behind the same resolver that refuses
+ * SRV queries, and the build prerenders pages that read the database. Checking for the
+ * platform's own variable instead is what keeps a local production build working.
  */
 
 const PUBLIC_RESOLVERS = ["1.1.1.1", "8.8.8.8"];
 
+function isDeployed(): boolean {
+  return Boolean(process.env.VERCEL) || process.env.NEXT_RUNTIME === "edge";
+}
+
 /** Call before connecting. Safe to call more than once. */
 export function applyDevelopmentDns(): void {
-  if (process.env.NODE_ENV === "production") return;
+  if (isDeployed()) return;
 
   // Node keeps a separate default resolver for each API. The driver resolves SRV through the
   // promises one, so that is the line that matters, but setting only half of it would be a
