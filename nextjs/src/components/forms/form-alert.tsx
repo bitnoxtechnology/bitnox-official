@@ -18,12 +18,12 @@ export function FormAlert({ state }: { state: ActionState }) {
   return (
     <Alert
       variant={failed ? "destructive" : "default"}
-      className={failed ? undefined : "border-brand/30 text-brand-card"}
+      className={failed ? undefined : "border-primary/30 text-foreground"}
       // Announced to screen readers when it appears, rather than sitting there unread.
       role="status"
       aria-live="polite"
     >
-      <Icon className={failed ? undefined : "text-brand"} />
+      <Icon className={failed ? undefined : "text-primary"} />
       <AlertDescription>{state.message}</AlertDescription>
     </Alert>
   );

@@ -62,7 +62,7 @@ async function Notice({
   if (!message) return null;
 
   return (
-    <Alert className="border-brand/30 text-brand-card mb-6">
+    <Alert className="border-primary/30 text-foreground mb-6">
       <AlertDescription>{message}</AlertDescription>
     </Alert>
   );

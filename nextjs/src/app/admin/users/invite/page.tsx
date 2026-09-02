@@ -21,7 +21,10 @@ export const metadata: Metadata = { title: "Invite an admin" };
 export default function InviteUserPage() {
   return (
     <main className="mx-auto w-full max-w-xl px-6 py-16">
-      <Link href="/admin" className="text-brand-muted hover:text-brand text-sm transition-colors">
+      <Link
+        href="/admin"
+        className="text-muted-foreground hover:text-primary text-sm transition-colors"
+      >
         Back to dashboard
       </Link>
 
@@ -37,10 +40,10 @@ async function InvitePanel() {
 
   return (
     <>
-      <h1 className="text-brand-card mt-6 text-2xl font-semibold tracking-tight">
+      <h1 className="text-foreground mt-6 text-2xl font-semibold tracking-tight">
         Invite an admin
       </h1>
-      <p className="text-brand-muted mt-2 mb-10 text-sm leading-6">
+      <p className="text-muted-foreground mt-2 mb-10 text-sm leading-6">
         The account is created now and the invitation link expires in three days. They set their own
         password from that link, so nobody else ever knows it.
       </p>

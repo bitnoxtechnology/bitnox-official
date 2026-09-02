@@ -177,6 +177,35 @@ boolean collapses them.
 Alt text is required, since image SEO and accessibility both depend on it and a bare string cannot
 hold it.
 
+**Never hand-roll a control that the UI kit already has.** Reach for the shadcn primitive in
+`src/components/ui/`, then the brand composite in `src/components/site/`. A bare `<select>`,
+`<button>`, `<input>`, `<textarea>`, `<table>` or `<dialog>` styled with Tailwind by hand is a bug,
+not a shortcut. Every one of them re-decides focus rings, invalid states, disabled states, keyboard
+behaviour and dark-mode colours that the primitive has already decided, and each copy drifts from
+the others the moment a token moves. If the component you need is not installed, install it:
+`npx shadcn@latest add <name>`.
+
+A native element is correct only where the kit genuinely has no equivalent. In practice that means
+two things:
+
+- Structural or non-interactive markup: `<form>`, `<section>`, `<figure>`, `<dl>`, `<ul>`, `<p>`.
+  These are not controls and there is nothing to reuse.
+- `<input type="hidden">`. The shadcn `Input` is a visible field, and its sizing, border and focus
+  styling are meaningless on something that never renders.
+
+Two decisions follow from this rather than from the rule itself. A Radix select is not a native
+`<select>`, so `form.register` has nothing to bind to and the field goes through react-hook-form's
+`Controller`; passing `name` to the root is what makes Radix render the hidden native select that
+puts the value into `FormData`. And where a component is styled well outside its variants, as the
+Event Space gallery tile is, the overrides go in `className` on the primitive rather than into a
+new hand-built element, so the focus and press behaviour still come from one place.
+
+**Do not restate a token that a variant already applies.** After the Phase 4 remap, `--primary` is
+the brand cyan, `--foreground` the card text and `--muted-foreground` the muted grey. Writing
+`bg-brand text-brand-bg` over a default `Button` paints what the variant already painted and goes
+stale the first time a colour moves. The `brand-*` utilities are for the rare case that needs the
+literal brand colour independent of its role.
+
 ---
 
 ## Folder Structure
@@ -191,7 +220,8 @@ nextjs/src/
 │   └── opengraph-image.tsx
 ├── components/
 │   ├── ui/                  # shadcn primitives, restyled to brand
-│   ├── motion/              # Reveal, StaggerGroup, Parallax over GSAP
+│   ├── site/                # SectionHeading, GlassCard, CTABand, StatCounter, Gallery
+│   ├── motion/              # Reveal, StaggerGroup, Parallax, SplitText over GSAP
 │   ├── seo/                 # JSON-LD components
 │   ├── forms/
 │   ├── editor/              # Tiptap, admin only
@@ -221,6 +251,8 @@ nextjs/src/
 - Components: PascalCase files, colocated with the route when route-specific
 - Admin pages: `src/app/admin/<domain>/page.tsx`
 - JSON-LD: `<Type>Schema.tsx` in `src/components/seo/`
+- `ui/` holds shadcn primitives, `site/` the brand composites built from them. A page-level
+  block that owns spacing rhythm or heading rank goes in `site/`, not `ui/`.
 - No `.css` files beyond `globals.css`. All styling is Tailwind v4 utilities and `@theme` tokens.
 
 ---
@@ -268,8 +300,16 @@ starting point to redecorate.
 - Glass surface: `background: rgba(0,45,67,0.3)`, `border: 1px solid rgba(5,228,252,0.15)`, `backdrop-filter: blur(12px)`
 
 Defined once as Tailwind v4 `@theme` tokens in `globals.css`, with a `.glass` utility for the
-surface treatment. Muted text on the near-black ground needs checking against WCAG AA before it is
-used for body copy.
+surface treatment. The shadcn palette variables are remapped onto the brand in the same file, so
+restyling the kit happens there rather than in the component files.
+
+Contrast was measured and every text pair clears WCAG AAA. On the `#0a0a0a` ground: card text
+15.2:1, cyan 12.7:1, muted 7.7:1. On the glass surface: 14.4:1, 12.0:1, 7.3:1. The muted grey is
+therefore cleared for body copy, not only labels.
+
+`globals.css` also owns the type scale (`text-display`, `text-section`, `text-lead` are fluid) and
+the spacing rhythm (`section`, `section-sm`, `gutter`, `stack`, plus the `container-page` and
+`section-y` utilities). Pages compose those rather than inventing padding.
 
 **Animation.** GSAP with ScrollTrigger for scroll-driven sequences, Motion for UI transitions. All
 GSAP runs inside `useGSAP` with `gsap.context()` cleanup, or React 19 strict mode double-invocation

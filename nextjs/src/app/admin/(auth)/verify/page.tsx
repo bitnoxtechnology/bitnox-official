@@ -38,7 +38,7 @@ async function SentTo() {
 
   return (
     <>
-      We sent a six-digit code to <span className="text-brand-card">{pending.email}</span>. It
+      We sent a six-digit code to <span className="text-foreground">{pending.email}</span>. It
       expires in ten minutes.
     </>
   );

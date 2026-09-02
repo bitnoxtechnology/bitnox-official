@@ -67,7 +67,7 @@ export function LoginForm() {
       <p className="text-center">
         <Link
           href="/admin/forgot-password"
-          className="text-brand-muted hover:text-brand text-sm transition-colors"
+          className="text-muted-foreground hover:text-primary text-sm transition-colors"
         >
           Forgotten your password?
         </Link>

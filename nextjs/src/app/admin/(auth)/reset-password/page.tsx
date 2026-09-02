@@ -48,13 +48,13 @@ async function ResetCard({
         footer={
           <Link
             href="/admin/forgot-password"
-            className="text-brand hover:text-brand/80 transition-colors"
+            className="text-primary hover:text-primary/80 transition-colors"
           >
             Request a new link
           </Link>
         }
       >
-        <p className="text-brand-muted text-sm">
+        <p className="text-muted-foreground text-sm">
           Your current password still works until a new one is set.
         </p>
       </AuthCard>
@@ -66,7 +66,7 @@ async function ResetCard({
       title="Choose a new password"
       description={
         <>
-          Setting a password for <span className="text-brand-card">{result.email}</span>. Every
+          Setting a password for <span className="text-foreground">{result.email}</span>. Every
           other signed-in device is signed out.
         </>
       }

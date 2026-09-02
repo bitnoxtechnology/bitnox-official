@@ -144,18 +144,24 @@ and no client context:
 
 ## Phase 4: Design System, UI Kit and Animation
 
-- [ ] Define the brand as Tailwind v4 `@theme` tokens in `globals.css`: background `#0a0a0a`, accent `#05e4fc`, muted `#94a3b8`, card text `#d4e4f0`, glass surface `rgba(0,45,67,0.3)`, glass border `rgba(5,228,252,0.15)`
-- [ ] Add a `.glass` utility (background, 1px border, `backdrop-filter: blur(12px)`) replacing the repeated CSS across the old stylesheets
-- [ ] Set a deliberate type scale and vertical rhythm before building any page. Restraint in spacing is what separates this from a template.
-- [ ] Configure fonts via `next/font` with `display: swap` and preloading
-- [ ] Install the shadcn components the app needs: button, input, textarea, label, form, select, switch, dialog, sheet, dropdown-menu, table, tabs, badge, skeleton, sonner, avatar, separator, alert-dialog, pagination, command
-- [ ] Restyle every shadcn primitive to the dark cyan brand rather than the default neutral palette
-- [ ] Build `src/components/motion/`: `<Reveal>`, `<StaggerGroup>`, `<Parallax>` wrappers over GSAP ScrollTrigger, all client components with proper cleanup
-- [ ] Honour `prefers-reduced-motion` globally, one guard inside the motion primitives rather than per usage
-- [ ] Port the existing hero and scroll timelines from the current components and stylesheets, improving easing and stagger where they are rough
-- [ ] Build shared page-level pieces: `<SectionHeading>`, `<GlassCard>`, `<CTABand>`, `<StatCounter>`, `<Gallery>`
-- [ ] Build the skeleton set for blog cards, portfolio cards and testimonials as `loading.tsx` fallbacks
-- [ ] Design review against the UI standards: no gradient blobs, no glow-on-everything, no icon-title-filler cards
+- [x] Define the brand as Tailwind v4 `@theme` tokens in `globals.css`: background `#0a0a0a`, accent `#05e4fc`, muted `#94a3b8`, card text `#d4e4f0`, glass surface `rgba(0,45,67,0.3)`, glass border `rgba(5,228,252,0.15)`
+- [x] Add a `.glass` utility (background, 1px border, `backdrop-filter: blur(12px)`) replacing the repeated CSS across the old stylesheets
+- [x] Set a deliberate type scale and vertical rhythm before building any page. Restraint in spacing is what separates this from a template.
+- [x] Configure fonts via `next/font` with `display: swap` and preloading
+- [x] Install the shadcn components the app needs: button, input, textarea, label, form, select, switch, dialog, sheet, dropdown-menu, table, tabs, badge, skeleton, sonner, avatar, separator, alert-dialog, pagination, command
+    All present. `form` does not exist in the radix-nova registry this project uses: its form
+    primitive is `field`, which was already in place from Phase 3 and is what all six auth
+    forms are built on. `command` pulled in `input-group` as a dependency.
+- [x] Restyle every shadcn primitive to the dark cyan brand rather than the default neutral palette
+- [x] Build `src/components/motion/`: `<Reveal>`, `<StaggerGroup>`, `<Parallax>` wrappers over GSAP ScrollTrigger, all client components with proper cleanup
+- [x] Honour `prefers-reduced-motion` globally, one guard inside the motion primitives rather than per usage
+- [x] Port the existing hero and scroll timelines from the current components and stylesheets, improving easing and stagger where they are rough
+- [x] Build shared page-level pieces: `<SectionHeading>`, `<GlassCard>`, `<CTABand>`, `<StatCounter>`, `<Gallery>`
+- [x] Build the skeleton set for blog cards, portfolio cards and testimonials as `loading.tsx` fallbacks
+    The components exist in `src/components/skeleton/`, each sized to the card it replaces.
+    Wiring them into `loading.tsx` files happens in the phase that creates each route: blog in
+    Phase 9, portfolio and testimonials in Phase 10.
+- [x] Design review against the UI standards: no gradient blobs, no glow-on-everything, no icon-title-filler cards
 
 ---
 

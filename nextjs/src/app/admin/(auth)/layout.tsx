@@ -14,7 +14,7 @@ export default function AuthLayout({ children }: LayoutProps<"/admin">) {
       <div className="w-full max-w-sm">
         <Link
           href="/"
-          className="text-brand-card hover:text-brand mb-10 block text-sm font-semibold tracking-tight transition-colors"
+          className="text-foreground hover:text-primary mb-10 block text-sm font-semibold tracking-tight transition-colors"
         >
           {BUSINESS.legalName}
         </Link>

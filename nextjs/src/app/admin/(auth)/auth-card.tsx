@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { GlassCard } from "@/components/site/glass-card";
 import { Skeleton } from "@/components/ui/skeleton";
 
 /**
@@ -20,12 +21,14 @@ export function AuthCard({
   footer?: ReactNode;
 }) {
   return (
-    <section className="glass rounded-xl p-7">
-      <h1 className="text-brand-card text-xl font-semibold tracking-tight">{title}</h1>
-      <p className="text-brand-muted mt-2 text-sm leading-6">{description}</p>
-      <div className="mt-7">{children}</div>
-      {footer ? <div className="mt-6 text-sm">{footer}</div> : null}
-    </section>
+    <GlassCard asChild padding="md">
+      <section>
+        <h1 className="text-foreground text-xl font-semibold tracking-tight">{title}</h1>
+        <p className="text-muted-foreground mt-2 text-sm leading-6">{description}</p>
+        <div className="mt-7">{children}</div>
+        {footer ? <div className="mt-6 text-sm">{footer}</div> : null}
+      </section>
+    </GlassCard>
   );
 }
 
@@ -38,15 +41,17 @@ export function AuthCard({
  */
 export function AuthCardSkeleton() {
   return (
-    <section className="glass rounded-xl p-7" aria-hidden>
-      <Skeleton className="h-6 w-2/3" />
-      <Skeleton className="mt-3 h-4 w-full" />
-      <Skeleton className="mt-2 h-4 w-4/5" />
-      <div className="mt-8 space-y-5">
-        <Skeleton className="h-9 w-full" />
-        <Skeleton className="h-9 w-full" />
-        <Skeleton className="h-10 w-full" />
-      </div>
-    </section>
+    <GlassCard asChild padding="md">
+      <section aria-hidden>
+        <Skeleton className="h-6 w-2/3" />
+        <Skeleton className="mt-3 h-4 w-full" />
+        <Skeleton className="mt-2 h-4 w-4/5" />
+        <div className="mt-8 space-y-5">
+          <Skeleton className="h-9 w-full" />
+          <Skeleton className="h-9 w-full" />
+          <Skeleton className="h-10 w-full" />
+        </div>
+      </section>
+    </GlassCard>
   );
 }

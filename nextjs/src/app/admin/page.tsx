@@ -4,6 +4,7 @@ import { Suspense } from "react";
 
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { GlassCard } from "@/components/site/glass-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { logoutAction } from "@/lib/actions/auth-actions";
 import { isSuperAdmin, requireUser } from "@/lib/auth/guards";
@@ -39,10 +40,10 @@ async function Dashboard({ searchParams }: { searchParams: PageProps<"/admin">["
     <>
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-brand-card text-2xl font-semibold tracking-tight">
+          <h1 className="text-foreground text-2xl font-semibold tracking-tight">
             {user.name.split(" ")[0]}, you are signed in
           </h1>
-          <p className="text-brand-muted mt-2 text-sm">
+          <p className="text-muted-foreground mt-2 text-sm">
             {user.email} | {superAdmin ? "Super admin" : "Admin"}
           </p>
         </div>
@@ -77,7 +78,7 @@ async function Dashboard({ searchParams }: { searchParams: PageProps<"/admin">["
         ) : null}
       </div>
 
-      <p className="text-brand-muted mt-10 text-sm">
+      <p className="text-muted-foreground mt-10 text-sm">
         Content management arrives in a later phase. This screen exists so the sign-in flow has
         somewhere to land.
       </p>
@@ -113,9 +114,11 @@ function DashboardLink({
   description: string;
 }) {
   return (
-    <Link href={href} className="glass hover:border-brand/40 rounded-xl p-5 transition-colors">
-      <h2 className="text-brand-card text-sm font-semibold">{title}</h2>
-      <p className="text-brand-muted mt-1.5 text-sm leading-6">{description}</p>
-    </Link>
+    <GlassCard asChild interactive padding="sm">
+      <Link href={href}>
+        <h2 className="text-foreground text-sm font-semibold">{title}</h2>
+        <p className="text-muted-foreground mt-1.5 text-sm leading-6">{description}</p>
+      </Link>
+    </GlassCard>
   );
 }

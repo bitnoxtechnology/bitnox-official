@@ -80,7 +80,7 @@ export function OtpForm() {
             type="submit"
             variant="link"
             disabled={resending}
-            className="text-brand-muted hover:text-brand h-auto p-0"
+            className="text-muted-foreground hover:text-primary h-auto p-0"
           >
             {resending ? "Sending" : "Send another code"}
           </Button>
@@ -88,7 +88,7 @@ export function OtpForm() {
             type="submit"
             formAction={cancelLoginAction}
             variant="link"
-            className="text-brand-muted hover:text-brand h-auto p-0"
+            className="text-muted-foreground hover:text-primary h-auto p-0"
           >
             Use a different account
           </Button>

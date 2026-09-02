@@ -45,12 +45,15 @@ async function InviteCard({
             : "The invitation has been used already, or part of the link was lost on the way."
         }
         footer={
-          <Link href="/admin/login" className="text-brand-muted hover:text-brand transition-colors">
+          <Link
+            href="/admin/login"
+            className="text-muted-foreground hover:text-primary transition-colors"
+          >
             Back to sign in
           </Link>
         }
       >
-        <p className="text-brand-muted text-sm">
+        <p className="text-muted-foreground text-sm">
           If you have already set a password, sign in with it instead.
         </p>
       </AuthCard>
@@ -62,7 +65,7 @@ async function InviteCard({
       title={`Welcome, ${result.name.split(" ")[0]}`}
       description={
         <>
-          Choose a password for <span className="text-brand-card">{result.email}</span>. You will
+          Choose a password for <span className="text-foreground">{result.email}</span>. You will
           need it and an emailed code each time you sign in.
         </>
       }

@@ -1,19 +1,35 @@
 "use client";
 
+import { Controller } from "react-hook-form";
+
 import { FormAlert } from "@/components/forms/form-alert";
 import { SubmitButton } from "@/components/forms/submit-button";
 import { useActionForm } from "@/components/forms/use-action-form";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { inviteUserAction } from "@/lib/actions/auth-actions";
 import { inviteUserSchema, type InviteUserInput } from "@/lib/validations/auth-schema";
-import { cn } from "@/lib/utils";
+
+/**
+ * The two roles, with the labels the form shows for them.
+ *
+ * One list drives the menu items and the closed trigger's label, so there is no second place
+ * to edit when a role is renamed.
+ */
+const ROLES: { value: InviteUserInput["role"]; label: string }[] = [
+  { value: "admin", label: "Admin" },
+  { value: "super_admin", label: "Super admin" },
+];
 
 /**
  * The invitation form.
- *
- * The role control is a native select rather than the shadcn one, which Phase 4 installs and
- * restyles. A two-option control did not justify pulling that forward.
  */
 export function InviteForm() {
   const { form, state, pending, submit } = useActionForm<InviteUserInput>({
@@ -53,18 +69,46 @@ export function InviteForm() {
 
         <Field data-invalid={Boolean(errors.role)}>
           <FieldLabel htmlFor="role">Role</FieldLabel>
-          <select
-            id="role"
-            className={cn(
-              "border-input bg-input/30 text-brand-card h-9 w-full rounded-lg border px-3 text-sm",
-              "focus-visible:border-brand focus-visible:ring-brand/40 focus-visible:ring-3 focus-visible:outline-none",
+          {/*
+           * A Radix select is not a native `<select>`, so `form.register` has nothing to
+           * attach to and the field goes through `Controller` instead. Two things then have
+           * to be true at once, and both are: `name` on the root makes Radix render its
+           * hidden native select, which is what puts the value in the `FormData` the server
+           * action receives, and `onValueChange` writes the same value into react-hook-form
+           * so the client-side Zod pass sees it.
+           */}
+          <Controller
+            control={form.control}
+            name="role"
+            render={({ field }) => (
+              <Select name={field.name} value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger
+                  id="role"
+                  size="default"
+                  className="h-9 w-full"
+                  aria-invalid={Boolean(errors.role)}
+                  onBlur={field.onBlur}
+                >
+                  {/*
+                   * The label is passed rather than left for Radix to resolve. While the
+                   * menu is closed Radix keeps the items in an off-document fragment that
+                   * only exists after hydration, so a `<SelectValue />` with no children
+                   * renders an empty trigger on the server and fills in a moment later.
+                   */}
+                  <SelectValue>
+                    {ROLES.find((role) => role.value === field.value)?.label}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {ROLES.map((role) => (
+                    <SelectItem key={role.value} value={role.value}>
+                      {role.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             )}
-            aria-invalid={Boolean(errors.role)}
-            {...form.register("role")}
-          >
-            <option value="admin">Admin</option>
-            <option value="super_admin">Super admin</option>
-          </select>
+          />
           <FieldDescription>
             Super admins can invite and deactivate other admins. Give it out sparingly.
           </FieldDescription>
