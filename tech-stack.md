@@ -46,6 +46,7 @@ malformed variable fails the build rather than surfacing at runtime.
 | `MONGO_URI` | server | MongoDB connection string. Separate databases for development and production. |
 | `SESSION_SECRET` | server | Signs the session cookie |
 | `RESEND_API_KEY` | server | Transactional email |
+| `MAIL_FROM` | server | From address on transactional email. Optional, defaults to `no-reply@bitnoxsolution.com`. Its domain must be verified in Resend. |
 | `CLOUDINARY_API_KEY` | server | Upload signing |
 | `CLOUDINARY_API_SECRET` | server | Upload signing |
 | `CLOUDINARY_UPLOAD_PRESET` | server | Upload target |
@@ -108,6 +109,7 @@ origin, which is the main operational difference from the legacy setup.
 | `npm run db:reset -- --confirm` | Drops every collection. Guarded by a database-name allowlist. |
 | `npm run db:seed` | Creates the first super_admin and the SiteSettings singleton |
 | `npm run db:fresh` | Reset then seed, for development only |
+| `npm run test:auth` | Auth integration tests against `bitnox-official-test` |
 
 ---
 

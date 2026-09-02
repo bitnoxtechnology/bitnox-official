@@ -29,6 +29,9 @@ const productionOnly = (name: string) =>
     `${name} is required in production`,
   );
 
+/** Overridable with MAIL_FROM once a sending domain is verified. */
+const DEFAULT_MAIL_FROM = "Bitnox Technology Solutions <no-reply@bitnoxsolution.com>";
+
 const serverSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 
@@ -43,6 +46,9 @@ const serverSchema = z.object({
   SESSION_SECRET: z.string().min(32, "SESSION_SECRET must be at least 32 characters"),
 
   RESEND_API_KEY: z.string().min(1, "RESEND_API_KEY is required"),
+  // The From address on every transactional email. Its domain must be verified in Resend,
+  // so it is configurable rather than hard-coded against one that may not be.
+  MAIL_FROM: optionalString.transform((value) => value ?? DEFAULT_MAIL_FROM),
 
   CLOUDINARY_API_KEY: z.string().min(1, "CLOUDINARY_API_KEY is required"),
   // Still an outstanding Phase 0 input. Upload signing checks for it at its own call site.

@@ -38,18 +38,39 @@ node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
 
 ## Scripts
 
-| Command                | Does                                                                     |
-| ---------------------- | ------------------------------------------------------------------------ |
-| `npm run dev`          | Dev server on port 3000                                                  |
-| `npm run build`        | Production build                                                         |
-| `npm run start`        | Serve the production build                                               |
-| `npm run lint`         | ESLint. `next lint` was removed in Next 16, so ESLint is wired directly. |
-| `npm run lint:fix`     | ESLint with `--fix`                                                      |
-| `npm run format`       | Prettier over the repository                                             |
-| `npm run format:check` | Prettier in check mode, for CI                                           |
-| `npm run typecheck`    | `tsc --noEmit`                                                           |
+| Command                         | Does                                                                     |
+| ------------------------------- | ------------------------------------------------------------------------ |
+| `npm run dev`                   | Dev server on port 3000                                                  |
+| `npm run build`                 | Production build                                                         |
+| `npm run start`                 | Serve the production build                                               |
+| `npm run lint`                  | ESLint. `next lint` was removed in Next 16, so ESLint is wired directly. |
+| `npm run lint:fix`              | ESLint with `--fix`                                                      |
+| `npm run format`                | Prettier over the repository                                             |
+| `npm run format:check`          | Prettier in check mode, for CI                                           |
+| `npm run typecheck`             | `tsc --noEmit`                                                           |
+| `npm run db:reset -- --confirm` | Drops every collection. Guarded by a database-name allowlist.            |
+| `npm run db:seed`               | Creates the first super_admin and the SiteSettings singleton             |
+| `npm run db:fresh`              | Reset then seed. Development only.                                       |
+| `npm run test:auth`             | The auth integration tests. See below.                                   |
 
-Database scripts (`db:reset`, `db:seed`, `db:fresh`) arrive in Phase 2 alongside the models.
+## Signing in
+
+A clean database has no accounts. `npm run db:seed -- --email you@bitnoxsolution.com` creates the
+first super_admin and prints a generated password once. Every account after that is created by
+invitation from `/admin/users/invite`, where the invitee sets their own password from an emailed
+link.
+
+Sign-in is two steps: the password, then a six-digit code emailed by Resend. With no working
+`RESEND_API_KEY` the send fails and, in development only, the code is printed to the server console
+so the admin is still reachable.
+
+## Tests
+
+`npm run test:auth` exercises the auth flows against a real database: expired codes, the
+five-attempt lockout, deactivated accounts, session expiry and spent one-time links. It runs
+against `TEST_MONGO_URI`, or `MONGO_URI` with the database name replaced by
+`bitnox-official-test`, and refuses to run anywhere else. Every document it creates is removed
+afterwards.
 
 ## Layout
 

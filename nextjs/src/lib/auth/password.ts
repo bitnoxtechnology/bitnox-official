@@ -24,9 +24,6 @@ const OPTIONS = {
   parallelism: 1,
 } satisfies Options;
 
-/** Long enough that the hash cost is the last line of defence rather than the first. */
-export const MIN_PASSWORD_LENGTH = 12;
-
 export async function hashPassword(password: string): Promise<string> {
   return hash(password, OPTIONS);
 }

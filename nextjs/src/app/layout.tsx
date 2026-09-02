@@ -14,7 +14,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
+    // `suppressHydrationWarning` covers the <html> element only, one level deep. Extensions
+    // such as password managers and reader tools stamp attributes on it before React
+    // hydrates, and the resulting mismatch warning is about the visitor's browser rather
+    // than about this markup. Nothing inside the document is suppressed.
+    <html lang="en" className={cn("font-sans", geist.variable)} suppressHydrationWarning>
       <body>{children}</body>
     </html>
   );

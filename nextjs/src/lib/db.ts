@@ -66,3 +66,27 @@ export async function disconnectFromDatabase(): Promise<void> {
   cache.connection = null;
   cache.promise = null;
 }
+
+/**
+ * Was this a unique-index collision?
+ *
+ * Two write paths can hit one. An upsert on a key that does not exist yet is not atomic
+ * across concurrent callers: MongoDB lets one insert win and hands the other `E11000`. And a
+ * check-then-insert, such as looking for an existing email before creating a user, has a gap
+ * between the two statements that a second request can slip through.
+ *
+ * Neither shows up on a single-process dev server. Both show up eventually across concurrent
+ * serverless instances, which is why the callers handle this rather than assuming it away.
+ */
+export function isDuplicateKeyError(error: unknown): boolean {
+  if (typeof error !== "object" || error === null) return false;
+
+  const code = (error as { code?: unknown }).code;
+  if (code === 11000) return true;
+
+  // Mongoose wraps driver errors in some paths, so the original is worth a look.
+  const cause = (error as { cause?: unknown }).cause;
+  return (
+    typeof cause === "object" && cause !== null && (cause as { code?: unknown }).code === 11000
+  );
+}

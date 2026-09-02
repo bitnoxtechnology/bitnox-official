@@ -7,7 +7,8 @@ import mongoose from "mongoose";
 
 import { applyDevelopmentDns } from "@/lib/dns";
 
-import { hashPassword, MIN_PASSWORD_LENGTH } from "@/lib/auth/password";
+import { hashPassword } from "@/lib/auth/password";
+import { MIN_PASSWORD_LENGTH } from "@/lib/constants";
 import { SiteSettings, User } from "@/models";
 
 /**

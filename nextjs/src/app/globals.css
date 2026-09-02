@@ -4,6 +4,26 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/**
+ * Brand tokens.
+ *
+ * The admin sign-in screens need these before Phase 4 builds the design system, so the four
+ * brand colours and the glass surface land here now. Phase 4 extends this block with the type
+ * scale and remaps the shadcn palette onto it. Nothing outside this file states a brand hex.
+ */
+@theme {
+  --color-brand-bg: #0a0a0a;
+  --color-brand: #05e4fc;
+  --color-brand-muted: #94a3b8;
+  --color-brand-card: #d4e4f0;
+}
+
+@utility glass {
+  background: rgba(0, 45, 67, 0.3);
+  border: 1px solid rgba(5, 228, 252, 0.15);
+  backdrop-filter: blur(12px);
+}
+
 @theme inline {
   --font-heading: var(--font-sans);
   --font-sans: var(--font-sans);

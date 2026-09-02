@@ -128,17 +128,17 @@ and no client context:
 
 ## Phase 3: Auth and Sessions
 
-- [ ] Implement `src/lib/auth/password.ts`, argon2id hash and verify with sane cost parameters
-- [ ] Implement `src/lib/auth/session.ts`, create, read and destroy sessions in the `sessions` collection, referenced by a signed httpOnly, `sameSite=lax`, `secure` cookie
-- [ ] Build the login server action: validate credentials, issue a short-lived pending-OTP token, email a 6-digit code via Resend
-- [ ] Build the OTP verification action: constant-time compare, 5-attempt lockout, 10-minute expiry, single-use consumption, then upgrade to a full session
-- [ ] Build the invite flow for new admins: super_admin invites by email, invitee sets their own password via a one-time link. No admin ever sets another user's password, and the seeded super_admin is the only account created outside this flow.
-- [ ] Build password reset (request, emailed token, set new password) and change-password from the admin profile
-- [ ] Add rate limiting on login, OTP request and OTP verify, per IP and per email, sliding window
-- [ ] Add `proxy.ts` (Next 16's renamed middleware) guarding `/admin/*`, redirecting unauthenticated users to `/admin/login`
-- [ ] Implement `requireUser()` and `requireSuperAdmin()` server helpers and call them inside every protected server action. The proxy is defence in depth, not the authorisation boundary.
-- [ ] Build the OTP entry UI on top of shadcn's `input-otp`
-- [ ] Test: expired OTP, wrong password, locked-out account, deactivated user, session expiry, super-admin route accessed as a plain admin
+- [x] Implement `src/lib/auth/password.ts`, argon2id hash and verify with sane cost parameters
+- [x] Implement `src/lib/auth/session.ts`, create, read and destroy sessions in the `sessions` collection, referenced by a signed httpOnly, `sameSite=lax`, `secure` cookie
+- [x] Build the login server action: validate credentials, issue a short-lived pending-OTP token, email a 6-digit code via Resend
+- [x] Build the OTP verification action: constant-time compare, 5-attempt lockout, 10-minute expiry, single-use consumption, then upgrade to a full session
+- [x] Build the invite flow for new admins: super_admin invites by email, invitee sets their own password via a one-time link. No admin ever sets another user's password, and the seeded super_admin is the only account created outside this flow.
+- [x] Build password reset (request, emailed token, set new password) and change-password from the admin profile
+- [x] Add rate limiting on login, OTP request and OTP verify, per IP and per email, sliding window
+- [x] Add `proxy.ts` (Next 16's renamed middleware) guarding `/admin/*`, redirecting unauthenticated users to `/admin/login`
+- [x] Implement `requireUser()` and `requireSuperAdmin()` server helpers and call them inside every protected server action. The proxy is defence in depth, not the authorisation boundary.
+- [x] Build the OTP entry UI on top of shadcn's `input-otp`
+- [x] Test: expired OTP, wrong password, locked-out account, deactivated user, session expiry, super-admin route accessed as a plain admin
 
 ---
 
@@ -324,9 +324,12 @@ Starting from an empty collection, so there is no legacy content to accommodate.
 
 ## Phase 14: Deploy and Cutover
 
+- [ ] Set the Vercel project's Root Directory to `nextjs`, since the legacy apps leave lockfiles above it
 - [ ] Deploy `nextjs/` to Vercel as a preview against a staging database
-- [ ] Configure all production env vars in Vercel, confirming `NEXT_PUBLIC_SITE_URL` is the canonical apex domain
-- [ ] Verify the Mongoose connection pool behaves under serverless cold starts
+- [ ] Configure all production env vars in Vercel **before the first build**, confirming `NEXT_PUBLIC_SITE_URL` is the canonical apex domain. It is inlined at build time and is what the invitation and password reset emails link to, so a stale value sends admins to localhost. `src/instrumentation.ts` fails the boot with the offending variable named if any are missing.
+- [ ] Allow Vercel through Atlas Network Access, or every request hangs to the server-selection timeout rather than failing quickly
+- [ ] Put the function region next to the Atlas region. A sign-in makes roughly five sequential round trips, so a cross-region pairing costs about a second for nothing.
+- [ ] Verify the Mongoose connection pool behaves under serverless cold starts, and that the argon2 native binding resolves in the Lambda
 - [ ] Side-by-side parity review of the preview against the live site: design, animations, forms. Content differs by design, since the database is new.
 - [ ] Point the production env at a clean database, run `db:seed` to create the super_admin and settings, then log in and verify
 - [ ] Enter launch content through the admin before DNS cutover: portfolio projects, testimonials, Event Space gallery, site settings, and the three blog posts. The site must not go live with empty sections.

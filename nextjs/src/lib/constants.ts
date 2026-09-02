@@ -39,9 +39,30 @@ export const SUBSCRIBER_STATUSES = ["subscribed", "unsubscribed"] as const;
 
 export type SubscriberStatus = (typeof SUBSCRIBER_STATUSES)[number];
 
-export const OTP_PURPOSES = ["login", "password_reset"] as const;
+/**
+ * Six-digit emailed codes. Login is the only one.
+ *
+ * Password reset and invitations use a one-time link instead, because the person following
+ * one has already proved they can read the mailbox and a link removes a step. Their purposes
+ * are in AUTH_TOKEN_PURPOSES below.
+ */
+export const OTP_PURPOSES = ["login"] as const;
 
 export type OtpPurpose = (typeof OTP_PURPOSES)[number];
+
+/** One-time links: 256 bits of randomness in a URL, single use, short lived. */
+export const AUTH_TOKEN_PURPOSES = ["invite", "password_reset"] as const;
+
+export type AuthTokenPurpose = (typeof AUTH_TOKEN_PURPOSES)[number];
+
+/**
+ * Minimum password length.
+ *
+ * Here rather than beside the hashing code, because the sign-in forms need it to say so and a
+ * client component that imports from `auth/password.ts` drags the argon2 native binding into
+ * the browser bundle, where it does not exist.
+ */
+export const MIN_PASSWORD_LENGTH = 12;
 
 /** The Event Space seats 60. Overridable in SiteSettings, but this is the fallback. */
 export const EVENT_SPACE_CAPACITY = 60;
