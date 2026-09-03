@@ -38,3 +38,39 @@ export async function getLatestPosts(limit = 3): Promise<BlogCardDTO[]> {
 
   return posts.map(toBlogCard);
 }
+
+/**
+ * Published posts carrying any of a set of tags, for the reading list on a service page.
+ *
+ * Tags rather than a category, because a post about search optimisation belongs to Web
+ * Development and to the blog's own SEO tag at the same time, and a single category field
+ * would force a choice between the two.
+ *
+ * The service pages call this with the tags named in `src/content/services.ts`. Nothing here
+ * fails when the database has no posts with those tags in it, which is the state the site
+ * launches in: the section calling this renders nothing at all until there is something to
+ * link to, so a service page never carries a heading over an empty row.
+ */
+export async function getPostsByTags(tags: readonly string[], limit = 3): Promise<BlogCardDTO[]> {
+  "use cache";
+  cacheTag(CACHE_TAGS.blog);
+  cacheLife("max");
+
+  if (tags.length === 0) return [];
+
+  await connectToDatabase();
+
+  const posts = await Blog.find({
+    status: "published",
+    publishedAt: { $lte: new Date() },
+    tags: { $in: tags },
+  })
+    .sort({ publishedAt: -1 })
+    .limit(limit)
+    .populate("author", "name")
+    .select("-contentJson -contentHtml")
+    .lean<IBlog[]>()
+    .exec();
+
+  return posts.map(toBlogCard);
+}

@@ -224,7 +224,8 @@ nextjs/src/
 │   └── opengraph-image.tsx
 ├── components/
 │   ├── ui/                  # shadcn primitives, restyled to brand
-│   ├── site/                # SectionHeading, GlassCard, CTABand, StatCounter, Gallery
+│   ├── site/                # SectionHeading, SplitSection, GlassCard, CTABand, Gallery
+│   ├── graphics/            # Drawn product interfaces: dashboards, wireframes, reports
 │   ├── motion/              # Reveal, StaggerGroup, Parallax, SplitText over GSAP
 │   ├── seo/                 # JSON-LD components
 │   ├── forms/
@@ -295,6 +296,55 @@ illustration of abstract shapes. No icon on every list item. No card that is onl
 two-word title and a sentence of filler. Space, type scale and restraint carry the design. Real
 screenshots and real photography over stock abstractions. The brand below is a constraint, not a
 starting point to redecorate.
+
+---
+
+## Page Composition
+
+Every public page is built from the same parts, in the same order. The services hub and the four
+service pages are the reference implementation; every page built after them follows it.
+
+**The hero is the landing page hero.** Centred, on the page's centre line: an optional breadcrumb,
+a small uppercase eyebrow, a `SplitText` `h1` carrying a claim rather than the page's name, one
+lead paragraph capped at `max-w-2xl`, and two calls to action. Directly beneath it, something real
+at `max-w-5xl`: the client marks on the landing page, the service's drawn interface on a service
+page, the room on the Event Space page. Never a stock illustration and never nothing.
+
+**Cards are for image-led content only.** Portfolio, blog and testimonial cards earn their frame
+because each is a distinct linked object with a picture. Everything else sits on the page ground
+and is separated by hairlines. A page whose sections are six rounded boxes of equal size is the
+shape a reader recognises as filler, whatever the boxes say.
+
+Two rounded panels per page is the working limit: the closing `CTABand`, and the frame around each
+drawn graphic.
+
+**What replaces the card grid:**
+
+| Instead of | Use |
+|---|---|
+| A grid of feature cards | `SplitSection`: copy one side, a graphic the other, alternating down the page |
+| A row of pill badges | A ruled strip, `border-y` with `divide-x`, one row or a plain stack |
+| A grid of "what you get" cards | A `dl` of ruled rows, numbered, title and body side by side |
+| Cards for a sequence | A numbered `ol` against one continuous left rule |
+| Cards comparing options | A real `<table>`, scrolling sideways on a phone rather than stacking |
+| Two cards linking elsewhere | Full-width ruled rows, name large, reason beside it, arrow at the end |
+
+**Every substantive claim gets a graphic, and the graphics are drawn interfaces.** They live in
+`src/components/graphics/`, inside a `WindowFrame`, and they show the actual artefact: the system,
+the storefront at two widths, the audit report, the syllabus, the signed scope, the order of work.
+Rules for them:
+
+- Real content. Real order references, Nigerian trade names, published thresholds. Never `Lorem`,
+  never anonymous grey rectangles, never round invented numbers.
+- Illustrative, never presented as ours. Each one carries a `GraphicCaption` saying what it shows.
+  A drawn dashboard with no caption is a claim to a customer we do not have, and metrics attributed
+  to Bitnox are fabricated social proof under the copy standards above.
+- Never a price. The same rule as everywhere else on the site.
+- `WindowFrame` is a container query root and its contents size with `@sm:`/`@md:`/`@xl:`, not with
+  viewport breakpoints, so one graphic works full width under a hero and again in a narrow band.
+- Decorative to assistive technology. The frame is `aria-hidden`; the caption is the description.
+
+**The page closes with one `CTABand`.** One claim, one primary action, at most one secondary.
 
 ---
 

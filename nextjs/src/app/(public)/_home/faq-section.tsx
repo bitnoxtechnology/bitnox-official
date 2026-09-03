@@ -1,9 +1,9 @@
 import Image from "next/image";
 
-import { FaqAccordion } from "@/app/(public)/_home/faq-accordion";
 import { FAQPageSchema } from "@/components/seo/FAQPageSchema";
 import { SectionHeading } from "@/components/site";
 import { ActionButton } from "@/components/site/action-button";
+import { FaqAccordion } from "@/components/site/faq-accordion";
 import { EVENT_SPACE_PHOTOS } from "@/content/event-space-media";
 import { HOME_FAQS } from "@/content/faqs";
 
@@ -20,9 +20,9 @@ import { HOME_FAQS } from "@/content/faqs";
  * half beside it. The picture fills that half with something real. It is sticky, so it stays
  * in view while the answers open and the column beside it grows.
  *
- * The accordion itself is the one client component in this section, and `faq-accordion.tsx`
- * explains why: keeping the answers in the document, which the structured data depends on,
- * needs the open panel to be known at render time.
+ * The accordion itself is the one client component in this section, and
+ * `components/site/faq-accordion.tsx` explains why: keeping the answers in the document,
+ * which the structured data depends on, needs the open panel to be known at render time.
  */
 export function FaqSection() {
   // The second, not the first: the Event Space section above uses the cover shot, and one

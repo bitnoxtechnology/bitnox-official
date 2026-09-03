@@ -204,17 +204,17 @@ Covers all four services. No laundry or cleaning content on this page at all.
 
 ## Phase 7: Services Information Architecture
 
-- [ ] Define the four services in a typed content module (`src/content/services.ts`): slug, name, summary, hero copy, deliverables, process steps, FAQs, related services, SEO metadata
-- [ ] Build the `/services` hub page listing all four with internal links
-- [ ] Build the `/services/[slug]` template: hero, the problem and the outcome, what is included, how the engagement runs, relevant portfolio work, service-specific FAQ, call to action
-- [ ] Write Software Development: custom software, business management systems, web applications. Cloud infrastructure named here as a capability.
-- [ ] Write Web Development: professional websites, e-commerce, portals. Digital marketing named here as a capability.
-- [ ] Write IT Consulting: technology advisory, digital transformation, IT strategy. Cybersecurity named here as a capability.
-- [ ] Write Technology Training: professional technology and digital skills training, with the course catalogue call to action pointing at `edu.bitnoxsolution.com`
-- [ ] Add `Service` and `BreadcrumbList` JSON-LD per page, and unique title and description metadata
-- [ ] Cross-link services to each other and to relevant blog posts. Internal linking is a ranking input, not decoration.
-- [ ] `generateStaticParams` over the four slugs
-- [ ] Copy review pass on all four pages
+- [x] Define the four services in a typed content module (`src/content/services.ts`): slug, name, summary, hero copy, deliverables, process steps, FAQs, related services, SEO metadata
+- [x] Build the `/services` hub page listing all four with internal links
+- [x] Build the `/services/[slug]` template: hero, the problem and the outcome, what is included, how the engagement runs, relevant portfolio work, service-specific FAQ, call to action
+- [x] Write Software Development: custom software, business management systems, web applications. Cloud infrastructure named here as a capability.
+- [x] Write Web Development: professional websites, e-commerce, portals. Digital marketing named here as a capability.
+- [x] Write IT Consulting: technology advisory, digital transformation, IT strategy. Cybersecurity named here as a capability.
+- [x] Write Technology Training: professional technology and digital skills training, with the course catalogue call to action pointing at `edu.bitnoxsolution.com`
+- [x] Add `Service` and `BreadcrumbList` JSON-LD per page, and unique title and description metadata
+- [x] Cross-link services to each other and to relevant blog posts. Internal linking is a ranking input, not decoration.
+- [x] `generateStaticParams` over the four slugs
+- [x] Copy review pass on all four pages
 
 ---
 

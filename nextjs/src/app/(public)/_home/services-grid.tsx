@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { ArrowRight, Code2, Compass, GraduationCap, Globe } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { StaggerGroup } from "@/components/motion";
 import { GlassCard, SectionHeading } from "@/components/site";
+import { SERVICE_ICONS } from "@/components/site/service-icons";
 import { SERVICES, servicePath } from "@/content/services";
-import type { ServiceSlug } from "@/lib/constants";
 
 /**
  * The four services.
@@ -19,17 +18,10 @@ import type { ServiceSlug } from "@/lib/constants";
  * rather than as cards of their own, which is where the keywords live without the site
  * pretending to have seven services.
  *
- * The icons are here rather than in `src/content/services.ts`. That module is text, read by
- * the nav, the footer and the sitemap, none of which draw anything, and putting a component
- * reference in it would drag Lucide into all three.
+ * The icons come from `components/site/service-icons.ts`, which the services hub reads as
+ * well. They are not in the content module: that one is text, read by the nav, the footer and
+ * the sitemap, none of which draw anything.
  */
-const ICONS: Record<ServiceSlug, LucideIcon> = {
-  "software-development": Code2,
-  "web-development": Globe,
-  "it-consulting": Compass,
-  "technology-training": GraduationCap,
-};
-
 export function ServicesGrid() {
   return (
     <section id="services" className="section-y">
@@ -43,11 +35,11 @@ export function ServicesGrid() {
         <StaggerGroup asChild className="mt-section-sm grid gap-6 md:grid-cols-2">
           <ul>
             {SERVICES.map((service) => {
-              const Icon = ICONS[service.slug];
+              const Icon = SERVICE_ICONS[service.slug];
 
               return (
                 <li key={service.slug} className="h-full">
-                  <GlassCard asChild interactive padding="lg" className="h-full">
+                  <GlassCard asChild interactive padding="lg" className="h-full bg-transparent!">
                     <Link href={servicePath(service.slug)} className="flex h-full flex-col">
                       <Icon className="text-primary size-6" aria-hidden />
 
