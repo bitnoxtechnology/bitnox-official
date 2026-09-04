@@ -222,20 +222,20 @@ Covers all four services. No laundry or cleaning content on this page at all.
 
 The highest-leverage SEO asset here, and the only page with a physical location to rank on locally.
 
-- [ ] Build `/event-space`. Title targets local booking intent, for example "Event Space in Abeokuta for Conferences, Training and Meetings, 60 Capacity".
-- [ ] Dynamic gallery driven by the `EventSpaceImage` collection, any number of images, ordered by `sortOrder`. `next/image`, priority on the cover, lightbox on the rest, descriptive alt text on every image.
-- [ ] Capacity and layouts (theatre, classroom, boardroom, U-shape), amenities grid, availability explanation covering non-class days
-- [ ] Use cases section: conferences, tech meetups, workshops, seminars, corporate meetings, training sessions, product launches
-- [ ] Location block: address, embedded map, directions, parking, nearby landmarks
-- [ ] Booking enquiry form: name, email, phone, event type, preferred date, expected attendees, notes. Validated by a shared Zod schema, persisted as an `Enquiry`, acknowledged by email to the sender and notified to the team.
-- [ ] Pricing is on request. Publish no rates, no ranges and no "from" figures anywhere on the page. The enquiry form is the pricing mechanism, so it carries the weight that a rate card normally would: make it short, visible above the fold on mobile, and repeated after the gallery.
-- [ ] Copy handles the absent price honestly. State that rates depend on date, duration and setup, and that a quote comes back quickly. Do not use "affordable", "competitive" or "budget-friendly" as a substitute for a number.
-- [ ] JSON-LD: `EventVenue` and `LocalBusiness` with address, geo coordinates, `maximumAttendeeCapacity: 60`, amenity features and opening hours. Omit `priceRange` and `offers` rather than guessing values, since incorrect price markup is worse than none.
-- [ ] `ImageObject` annotations on the gallery so the photographs are eligible for image search
-- [ ] H2 headings that capture adjacent search intent (conference hall, meeting room hire, training room) without renaming the space
-- [ ] Link here from the landing page section, the nav and the footer
+- [x] Build `/event-space`. Title targets local booking intent, for example "Event Space in Abeokuta for Conferences, Training and Meetings, 60 Capacity".
+- [x] Dynamic gallery driven by the `EventSpaceImage` collection, any number of images, ordered by `sortOrder`. `next/image`, priority on the cover, lightbox on the rest, descriptive alt text on every image.
+- [x] Capacity and layouts (theatre, classroom, boardroom, U-shape), amenities grid, availability explanation covering non-class days
+- [x] Use cases section: conferences, tech meetups, workshops, seminars, corporate meetings, training sessions, product launches
+- [x] Location block: address, embedded map, directions, parking, nearby landmarks
+- [x] Booking enquiry form: name, email, phone, event type, preferred date, expected attendees, notes. Validated by a shared Zod schema, persisted as an `Enquiry`, acknowledged by email to the sender and notified to the team.
+- [x] Pricing is on request. Publish no rates, no ranges and no "from" figures anywhere on the page. The enquiry form is the pricing mechanism, so it carries the weight that a rate card normally would: make it short, visible above the fold on mobile, and repeated after the gallery.
+- [x] Copy handles the absent price honestly. State that rates depend on date, duration and setup, and that a quote comes back quickly. Do not use "affordable", "competitive" or "budget-friendly" as a substitute for a number.
+- [x] JSON-LD: `EventVenue` and `LocalBusiness` with address, geo coordinates, `maximumAttendeeCapacity: 60`, amenity features and opening hours. Omit `priceRange` and `offers` rather than guessing values, since incorrect price markup is worse than none.
+- [x] `ImageObject` annotations on the gallery so the photographs are eligible for image search
+- [x] H2 headings that capture adjacent search intent (conference hall, meeting room hire, training room) without renaming the space
+- [x] Link here from the landing page section, the nav and the footer
 - [ ] Verify the page passes the Rich Results Test
-- [ ] Copy review pass
+- [x] Copy review pass
 
 ---
 

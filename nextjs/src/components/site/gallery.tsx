@@ -26,6 +26,15 @@ type GalleryProps = {
   columns?: 2 | 3;
   /** Used in the lightbox heading, so a screen reader knows which gallery opened. */
   label: string;
+  /**
+   * Whether the first tile is eager and high priority.
+   *
+   * On by default, for a gallery that is the first thing on its page. Turn it off where
+   * something above the gallery already holds that claim, such as the Event Space page,
+   * whose hero carries the cover photograph and the LCP with it. Two priority images on one
+   * page is one preload spent on something below the fold.
+   */
+  priorityFirst?: boolean;
   className?: string;
 };
 
@@ -33,14 +42,20 @@ type GalleryProps = {
  * A grid of photographs that opens into a lightbox.
  *
  * Built for the Event Space page, reused by portfolio projects. The first image is eager and
- * high priority because on the Event Space page it is the largest thing on screen and
- * usually the LCP element; the rest are lazy.
+ * high priority when it is the largest thing on screen and therefore the likely LCP element;
+ * the rest are lazy. See `priorityFirst` for when that is not true.
  *
  * The tiles are real buttons, not clickable divs, so the whole gallery is reachable by
  * keyboard for free, and the lightbox is a Radix dialog, so focus trapping, Escape and the
  * inert background come with it. Left and right arrows move between images.
  */
-export function Gallery({ images, columns = 3, label, className }: GalleryProps) {
+export function Gallery({
+  images,
+  columns = 3,
+  label,
+  priorityFirst = true,
+  className,
+}: GalleryProps) {
   const [openIndex, setOpenIndex] = React.useState<number | null>(null);
 
   const current = openIndex === null ? undefined : images[openIndex];
@@ -85,8 +100,8 @@ export function Gallery({ images, columns = 3, label, className }: GalleryProps)
                     ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     : "(max-width: 640px) 100vw, 50vw"
                 }
-                priority={index === 0}
-                loading={index === 0 ? "eager" : "lazy"}
+                priority={priorityFirst && index === 0}
+                loading={priorityFirst && index === 0 ? "eager" : "lazy"}
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
               {image.caption ? (
