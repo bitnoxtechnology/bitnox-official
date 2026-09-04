@@ -16,21 +16,22 @@ import { SERVICES, servicePath } from "@/content/services";
 /**
  * The services hub.
  *
- * Its job is to route, and to make the shape of the business legible: four services, and the
- * named work inside each one. A visitor who arrived on a search for cybersecurity or digital
- * marketing has to be able to see which of the four pages holds what they came for.
+ * Its job is to route, and to make the shape of the business legible: what Bitnox does, and
+ * the named work inside each one. A visitor who arrived on a search for cybersecurity or
+ * digital marketing has to be able to see which page holds what they came for.
  *
- * The four are alternating bands rather than a grid of cards. A card grid gives all four the
- * same shape and the same two sentences, which is the layout that makes a page look
- * assembled; a band gives each service a turn, room for its full capability list, and the
+ * The services are alternating bands rather than a grid of cards. A card grid gives every
+ * service the same shape and the same two sentences, which is the layout that makes a page
+ * look assembled; a band gives each one a turn, room for its full capability list, and the
  * drawn interface from its own page beside it. Somebody who scrolls this page has seen the
  * dashboard, the storefront, the audit report and the syllabus before they have clicked
- * anything, which is a far better answer to "what do you actually do" than four paragraphs.
+ * anything, which is a far better answer to "what do you actually do" than a stack of
+ * paragraphs.
  *
  * The hero is the landing page's hero: centred type, one lead, two calls to action, and the
  * client marks underneath. Every public page opens this way.
  *
- * The matrix below the four is the one place on the site that states the information
+ * The matrix below the bands is the one place on the site that states the information
  * architecture outright. It exists because the decision is not self-evident: somebody looking
  * for cloud hosting would reasonably expect a cloud page, and showing them the column it lives
  * in costs less than making them search for it.
@@ -39,7 +40,7 @@ import { SERVICES, servicePath } from "@/content/services";
 const TITLE = "Software, Web, IT Consulting and Technology Training";
 
 const DESCRIPTION =
-  "The four things Bitnox does, and the work inside each one. Custom software and business systems, websites and online stores, technology advice and cybersecurity, and professional training.";
+  "What Bitnox does, and the work inside each one. Custom software and business systems, websites and online stores, technology advice and cybersecurity, and professional training.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -107,9 +108,9 @@ export default function ServicesPage() {
 
             <Reveal delay={0.35}>
               <p className="text-muted-foreground text-lead mt-stack mx-auto max-w-2xl">
-                Four services. Most projects start in one of them and end up touching a second, so
-                each page below says what the work covers, how the engagement runs and what you have
-                at the end of it.
+                Most projects start in one service and end up touching a second, so each page below
+                says what the work covers, how the engagement runs and what you have at the end of
+                it.
               </p>
             </Reveal>
 
@@ -136,7 +137,7 @@ export default function ServicesPage() {
           <SplitSection
             key={service.slug}
             id={service.slug}
-            // Alternating, so four bands in a row do not read as one repeated template.
+            // Alternating, so a run of bands does not read as one repeated template.
             reverse={index % 2 === 1}
             eyebrow={`0${index + 1} / ${service.tagline}`}
             title={
@@ -221,7 +222,7 @@ export default function ServicesPage() {
       </section>
 
       <CTABand
-        title="Not sure which of the four you need?"
+        title="Not sure which service you need?"
         description="Describe the problem rather than the solution. We will say which service it falls under, and tell you when the answer is that you do not need us yet."
         action={{ label: "Talk to us", href: "/contact" }}
         secondaryAction={{ label: "Read the blog", href: "/blog" }}

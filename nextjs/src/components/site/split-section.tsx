@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
  * A band of copy with a picture beside it.
  *
  * The workhorse of every public page below the hero, and the answer to a page made of rounded
- * cards. A card grid gives four things the same weight and the same shape, so the eye reads a
+ * cards. A card grid gives every item the same weight and the same shape, so the eye reads a
  * pattern instead of an argument. Alternating bands give each claim a turn, room to be more
  * than two sentences, and something to look at that is specific to it.
  *

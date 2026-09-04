@@ -17,12 +17,12 @@ import { BlogCardGridSkeleton, PortfolioGridSkeleton } from "@/components/skelet
 import { SERVICES, SERVICE_BY_SLUG, isServiceSlug, servicePath } from "@/content/services";
 
 /**
- * One template, four pages.
+ * One template, one page per service.
  *
  * Every word on these pages comes from `src/content/services.ts`. The template decides the
  * order of the sections, the heading ranks and the spacing; it holds no copy of its own, so
- * a correction to any of the four is a content edit rather than a React edit, and the four
- * pages cannot drift into four different shapes.
+ * a correction to any service is a content edit rather than a React edit, and the pages
+ * cannot drift into different shapes.
  *
  * The order answers the questions a buyer asks, in the order they ask them. What is this and
  * is it for me, do you understand my situation, what exactly do I get, how does the work run,
@@ -39,10 +39,10 @@ import { SERVICES, SERVICE_BY_SLUG, isServiceSlug, servicePath } from "@/content
  */
 
 /**
- * The four slugs, prerendered at build.
+ * Every service slug, prerendered at build.
  *
- * `dynamicParams = false` would be the natural companion to a fixed set of four, and Cache
- * Components rejects that segment config outright. Anything outside the four therefore
+ * `dynamicParams = false` would be the natural companion to a fixed set of slugs, and Cache
+ * Components rejects that segment config outright. Anything outside the set therefore
  * reaches the page at request time instead of being refused by the router, which is what the
  * `isServiceSlug` check in the component is for.
  */
@@ -75,7 +75,7 @@ export async function generateMetadata({
 export default async function ServicePage({ params }: PageProps<"/services/[slug]">) {
   const { slug } = await params;
 
-  // Both the 404 for a slug that is not one of the four, and the narrowing from the route's
+  // Both the 404 for a slug that is not a service, and the narrowing from the route's
   // `string` to the `ServiceSlug` the record is indexed with.
   if (!isServiceSlug(slug)) notFound();
 

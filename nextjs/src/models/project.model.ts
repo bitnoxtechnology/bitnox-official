@@ -62,7 +62,7 @@ const projectSchema = new Schema<IProject>(
     images: { type: [imageSchema], default: [] },
     client: { type: String, trim: true, maxlength: 160 },
     industry: { type: String, trim: true, maxlength: 120 },
-    // Constrained to the four service slugs so a project can be surfaced on the service page
+    // Constrained to the service slugs so a project can be surfaced on the service page
     // it belongs to without a free-text match.
     services: [{ type: String, enum: SERVICE_SLUGS }],
     techStack: [{ type: String, trim: true, maxlength: 60 }],

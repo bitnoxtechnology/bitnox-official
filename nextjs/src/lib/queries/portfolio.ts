@@ -35,7 +35,7 @@ export async function getPublishedProjects(limit?: number): Promise<ProjectCardD
 /**
  * Published projects tagged with one service, for that service's page.
  *
- * The `services` field on a project is constrained to the four slugs, so this is an index
+ * The `services` field on a project is constrained to the service slugs, so this is an index
  * lookup rather than a text match on a free-form field, and `{ services: 1, status: 1 }` is
  * the compound index the model declares for exactly this query.
  *

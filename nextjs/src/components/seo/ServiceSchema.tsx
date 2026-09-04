@@ -8,8 +8,8 @@ import { clientEnv } from "@/lib/env";
  *
  * The four fields that carry weight are `serviceType`, `provider`, `areaServed` and the
  * offer catalogue. `serviceType` is the phrase a search engine matches the page against;
- * `provider` ties all four pages back to the same organisation at the same address, which is
- * the association the Event Space page's local ranking also depends on; `areaServed` states
+ * `provider` ties every service page back to the same organisation at the same address, which
+ * is the association the Event Space page's local ranking also depends on; `areaServed` states
  * that this is not only an Abeokuta business, which the office address on its own implies.
  *
  * The catalogue lists the named capabilities: cloud infrastructure, digital marketing and

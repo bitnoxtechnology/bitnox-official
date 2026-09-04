@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
  * them to the right one, which is also why cleaning gets no space anywhere else on this site:
  * one honest signpost is worth more than cleaning copy diluting a technology landing page.
  *
- * Two shapes for two places. The header has no room for three destinations beside the four
+ * Two shapes for two places. The header has no room for three destinations beside the
  * services, so it gets the menu. The footer has room, so it gets the list with the
  * descriptions visible, where somebody scanning for "laundry" will actually find the word.
  */

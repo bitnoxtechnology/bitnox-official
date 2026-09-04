@@ -65,9 +65,11 @@ landing band and in the footer.
 
 ---
 
-## The Four Services
+## The Services
 
-Exactly four, everywhere. Service pages, landing cards, nav dropdown, footer and sitemap.
+The same set everywhere: service pages, landing cards, nav dropdown, footer and sitemap all
+read `src/content/services.ts`. Nothing states how many there are, in copy or in code, so a
+service can be added by adding an entry there and a slug in `src/lib/constants.ts`.
 
 | Service | Slug | Covers |
 |---|---|---|
@@ -111,9 +113,9 @@ guessing, because incorrect price markup is worse than absent markup.
 
 | Route | Notes |
 |---|---|
-| `/` | All four services. No cleaning content of any kind. |
+| `/` | Every service. No cleaning content of any kind. |
 | `/services` | Hub |
-| `/services/[slug]` | Four pages, statically generated |
+| `/services/[slug]` | One page per service, statically generated |
 | `/event-space` | Gallery, capacity, layouts, amenities, location, enquiry form |
 | `/blog`, `/blog/[slug]`, `/blog/tag/[tag]` | Static, revalidated by tag |
 | `/portfolio`, `/portfolio/[slug]` | Indexable project pages |
@@ -232,7 +234,7 @@ nextjs/src/
 │   ├── editor/              # Tiptap, admin only
 │   └── skeleton/
 ├── content/
-│   ├── services.ts          # The four services as typed content
+│   ├── services.ts          # The services as typed content
 │   └── copy-standards.md
 ├── lib/
 │   ├── db.ts                # Cached Mongoose connection
@@ -301,7 +303,7 @@ starting point to redecorate.
 
 ## Page Composition
 
-Every public page is built from the same parts, in the same order. The services hub and the four
+Every public page is built from the same parts, in the same order. The services hub and the
 service pages are the reference implementation; every page built after them follows it.
 
 **The hero is the landing page hero.** Centred, on the page's centre line: an optional breadcrumb,

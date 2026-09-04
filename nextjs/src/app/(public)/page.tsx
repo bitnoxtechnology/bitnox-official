@@ -21,7 +21,7 @@ import {
 /**
  * The landing page.
  *
- * It covers all four services and carries no laundry or cleaning content of any kind: no
+ * It covers every service and carries no laundry or cleaning content of any kind: no
  * copy, no imagery, no link. Cleaning is a real part of the business with its own domain,
  * and the footer's property switcher is the one place on this site that points at it.
  * Mixing it into a page about software is what made the old landing page hard to read and

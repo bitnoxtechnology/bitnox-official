@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
  *
  * This replaced three cards explaining where cloud infrastructure, digital marketing and
  * cybersecurity live. Cards were the wrong shape for it: the question a visitor has is
- * comparative ("which of these four is mine?"), and a comparison is a table.
+ * comparative ("which of these is mine?"), and a comparison is a table.
  *
  * It reads from `SERVICES`, so it cannot drift from the nav, the footer or the service pages,
  * and it happens to work as a grid because each service carries exactly five capabilities.
@@ -19,9 +19,12 @@ import { cn } from "@/lib/utils";
  * arrived searching for one of them can find it in the column that owns it, in one glance,
  * which is the only job this section has.
  *
- * It scrolls sideways on a phone rather than stacking. Four columns collapsed into four lists
- * is the card layout again, and a comparison a reader cannot see side by side is not a
+ * It scrolls sideways on a phone rather than stacking. Columns collapsed into a list each is
+ * the card layout again, and a comparison a reader cannot see side by side is not a
  * comparison.
+ *
+ * Nothing here is told how many services there are. The columns come from `SERVICES` and
+ * share the width between them, so a fifth is a content edit and not a layout one.
  */
 
 /** The capabilities that carry search terms with no page of their own. */
@@ -37,11 +40,16 @@ export function CapabilityMatrix() {
   return (
     <div className="-mx-gutter px-gutter overflow-x-auto lg:mx-0 lg:px-0">
       <table className="w-full min-w-3xl border-collapse text-left">
-        <caption className="sr-only">The four Bitnox services and the work each one covers</caption>
+        <caption className="sr-only">The Bitnox services and the work each one covers</caption>
         <thead>
           <tr>
             {SERVICES.map((service) => (
-              <th key={service.slug} scope="col" className="border-border w-1/4 border-b p-0">
+              <th
+                key={service.slug}
+                scope="col"
+                className="border-border border-b p-0"
+                style={{ width: `${100 / SERVICES.length}%` }}
+              >
                 <Link
                   href={servicePath(service.slug)}
                   className="hover:bg-muted/50 block px-4 py-4 transition-colors sm:px-5"

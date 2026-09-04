@@ -74,9 +74,10 @@ hire) is captured in H2 headings and body copy, never by renaming the space.
 **Event Space pricing is on request.** No rates, ranges or "from" figures anywhere on the site. The
 enquiry form is the pricing mechanism.
 
-**The four services.** Software Development, Web Development, IT Consulting, Technology Training.
-Exactly four, everywhere. Cloud infrastructure, digital marketing and cybersecurity are named
-capabilities inside a parent service page, never top-level services.
+**The services.** Software Development, Web Development, IT Consulting, Technology Training.
+The same set everywhere, read from `src/content/services.ts`. Copy never states how many there
+are, so a service can be added without a rewrite. Cloud infrastructure, digital marketing and
+cybersecurity are named capabilities inside a parent service page, never top-level services.
 
 **NAP, verbatim.** This must match the Google Business Profile character for character.
 

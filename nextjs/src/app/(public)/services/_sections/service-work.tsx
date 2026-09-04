@@ -8,7 +8,7 @@ import { getProjectsByService } from "@/lib/queries/portfolio";
 /**
  * Portfolio work tagged with this service.
  *
- * A project carries the four slugs on its `services` field, so this is the same rows the
+ * A project carries service slugs on its `services` field, so this is the same rows the
  * portfolio index shows, filtered to the ones that prove what the page above them claims.
  * The read is cached under the `portfolio` tag, which is what an admin publishing a project
  * already invalidates.

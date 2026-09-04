@@ -7,7 +7,7 @@ import { SERVICE_ICONS } from "@/components/site/service-icons";
 import { SERVICES, servicePath } from "@/content/services";
 
 /**
- * The four services.
+ * The services.
  *
  * Each card carries the name, what it covers, and three of the capabilities inside it, then
  * links to the page that has the rest. A card with an icon, two words and a sentence of
@@ -28,7 +28,7 @@ export function ServicesGrid() {
       <div className="container-page">
         <SectionHeading
           eyebrow="What we do"
-          title="Four services, and the work that sits inside each one"
+          title="Our services, and the work that sits inside each one"
           description="Most projects start in one of these and end up touching two. The pages below say what each covers, how the work runs and what you get at the end."
         />
 

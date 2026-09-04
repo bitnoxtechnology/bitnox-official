@@ -10,7 +10,7 @@ application in `nextjs/`, with SEO as the primary driver.
 This document is the build sequence only. Standing information lives elsewhere and is not repeated
 here, so that there is one place to correct each fact:
 
-- **`CLAUDE.md`** for conventions: the four services, the Event Space naming rule, business NAP,
+- **`CLAUDE.md`** for conventions: the services, the Event Space naming rule, business NAP,
   sister properties, the route map, architectural conventions, folder structure, naming, the
   content and UI standards, and brand identity.
 - **`tech-stack.md`** for the stack: libraries, environment variables, the legacy-to-new env
@@ -297,7 +297,7 @@ Starting from an empty collection, so there is no legacy content to accommodate.
 
 - [ ] Root `metadata` with `metadataBase`, title template, description, OG and Twitter defaults, and `robots` directives
 - [ ] Unique, hand-written title and description on every route. No templated filler.
-- [ ] `app/sitemap.ts`: static routes, the four service slugs, published blog slugs, portfolio slugs, with real `lastModified` values
+- [ ] `app/sitemap.ts`: static routes, the service slugs, published blog slugs, portfolio slugs, with real `lastModified` values
 - [ ] `app/robots.ts`: allow public routes, disallow `/admin` and `/api`, reference the sitemap
 - [ ] Canonical URLs on every page, self-referencing canonicals on paginated routes
 - [ ] JSON-LD components in `src/components/seo/`: `Organization`, `WebSite` with `SearchAction`, `LocalBusiness`, `EventVenue`, `Service`, `Article`, `FAQPage`, `BreadcrumbList`
@@ -305,7 +305,7 @@ Starting from an empty collection, so there is no legacy content to accommodate.
 - [ ] Search Console verification via `metadata.verification.google` and the env token
 - [ ] A typed `pushDataLayer()` helper wired to form submissions, call-to-action clicks, outbound clicks to `edu.` and `cleaning.`, and Event Space booking submissions
 - [ ] Consent-aware GTM loading if you operate in the UK or EU, deferring non-essential tags until consent
-- [ ] `opengraph-image.tsx` for the home page, the four services and the Event Space
+- [ ] `opengraph-image.tsx` for the home page, the services and the Event Space
 - [ ] Redirect map in `next.config.ts`. `/blogs` to `/blog`. Old blog slugs to `/blog` and old project URLs to `/portfolio`, since the database is new and none of that content carries over. Pull the live URL list from Search Console rather than guessing.
 - [ ] Submit the sitemap in Search Console after launch and confirm indexing of the Event Space and service pages
 

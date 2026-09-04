@@ -24,7 +24,7 @@ export const HOME_FAQS: readonly Faq[] = [
   {
     question: "What does Bitnox Technology Solutions do?",
     answer:
-      "Four things: software development, web development, IT consulting and technology training. We build business management systems, custom applications, websites and online stores, advise on technology decisions, and teach the skills behind all of it. We also run an Event Space that seats 60.",
+      "Software development, web development, IT consulting and technology training. We build business management systems, custom applications, websites and online stores, advise on technology decisions, and teach the skills behind all of it. We also run an Event Space that seats 60.",
   },
   {
     question: "Can I book the Event Space?",

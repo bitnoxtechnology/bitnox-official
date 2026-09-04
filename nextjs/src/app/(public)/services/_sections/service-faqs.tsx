@@ -7,11 +7,11 @@ import type { Service } from "@/content/services";
 /**
  * The service-specific questions, and the `FAQPage` markup describing them.
  *
- * Different questions per service, not the landing page's nine repeated four times. The
- * questions here are the ones asked on a first call about this particular service, which is
- * also what makes them worth marking up: duplicate `FAQPage` blocks across five pages is a
- * quality problem, five sets of distinct answers is five more chances to be the result that
- * answers the query.
+ * Different questions per service, not the landing page's nine repeated on every one of
+ * them. The questions here are the ones asked on a first call about this particular service,
+ * which is also what makes them worth marking up: the same `FAQPage` block duplicated across
+ * pages is a quality problem, a distinct set per service is another chance on each page to be
+ * the result that answers the query.
  *
  * Every answer that could carry a price says what the price depends on instead of naming a
  * figure or calling it affordable, which is the same rule the Event Space page follows.

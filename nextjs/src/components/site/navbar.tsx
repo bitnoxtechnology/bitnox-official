@@ -34,9 +34,9 @@ import { cn } from "@/lib/utils";
  * The public header.
  *
  * Five destinations and one call to action, which is as many as a header can carry before it
- * stops being navigable. The four services sit inside one dropdown rather than as four
- * top-level entries, because four service links plus four page links is eight items and
- * nobody reads eight.
+ * stops being navigable. The services sit inside one dropdown rather than as top-level
+ * entries, because a link per service on top of the page links is more than anybody reads,
+ * and it is a count that grows every time a service is added.
  *
  * Courses are the exception that earns its own button. A visitor looking for training is on
  * the wrong domain and has no way of knowing it, so the route to `edu.bitnoxsolution.com`
@@ -160,7 +160,7 @@ export function Navbar() {
                   <li className="col-span-2">
                     <NavigationMenuLink asChild>
                       <Link href="/services" className="text-primary text-xs font-medium">
-                        See how the four fit together
+                        See how they fit together
                       </Link>
                     </NavigationMenuLink>
                   </li>
@@ -227,7 +227,7 @@ export function Navbar() {
                       href="/services"
                       className="text-primary -mx-2 px-2 py-2 text-xs font-medium"
                     >
-                      See how the four fit together
+                      See how they fit together
                     </Link>
                   </SheetClose>
                 </div>

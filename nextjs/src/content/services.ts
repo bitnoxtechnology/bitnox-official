@@ -3,20 +3,22 @@ import { EDU_URL } from "@/content/properties";
 import { SERVICE_SLUGS, type ServiceSlug } from "@/lib/constants";
 
 /**
- * The four services, as typed content.
+ * The services, as typed content.
  *
- * Exactly four, everywhere: the nav dropdown, the landing grid, the services hub, the
- * footer and the sitemap all read this array, so the set cannot drift between them.
+ * One array, read everywhere: the nav dropdown, the landing grid, the services hub, the
+ * footer and the sitemap all read it, so the set cannot drift between them. Adding a service
+ * is an entry here and a slug in `lib/constants.ts`, and nothing else, because nothing
+ * outside this file states how many there are.
  *
  * Cloud infrastructure, digital marketing and cybersecurity are deliberately absent as
  * entries and present as capabilities inside their parent service. They are real work and
  * real search terms, but promoting them to top-level services would give the site seven
- * competing pages where four is already the honest number.
+ * competing pages where this list is already the honest answer.
  *
  * Everything a service page renders is here rather than in the page component, for two
- * reasons. The four pages share one template, so copy written into the template would have
- * to be written four times or reduced to whatever the four have in common. And copy that
- * lives in a content module can be read, reviewed and corrected without opening a React
+ * reasons. The service pages share one template, so copy written into the template would
+ * have to be repeated per service or reduced to whatever they all have in common. And copy
+ * that lives in a content module can be read, reviewed and corrected without opening a React
  * file, which is what makes the copy review pass at the end of a phase practical.
  *
  * Icons are not here. This module is text, and the landing grid decides how it is drawn.
@@ -669,7 +671,7 @@ export function serviceName(slug: ServiceSlug): string {
 /**
  * Narrows a route segment to a slug.
  *
- * `generateStaticParams` returns the four, but a dynamic segment still accepts anything a
+ * `generateStaticParams` returns the whole set, but a dynamic segment still accepts anything a
  * visitor types, so the page needs a way to call `notFound()` instead of indexing the record
  * with a string that is not in it.
  */
@@ -678,12 +680,12 @@ export function isServiceSlug(value: string): value is ServiceSlug {
 }
 
 /**
- * The two lists must hold the same four slugs.
+ * The two lists must hold the same slugs.
  *
  * `SERVICE_SLUGS` is in `lib/constants.ts` because the Mongoose models validate against it
  * before this module exists. Two lists means they can disagree, so the disagreement is made
  * to fail loudly at import time rather than quietly at render time.
  */
 if (SERVICES.length !== SERVICE_SLUGS.length) {
-  throw new Error("SERVICES and SERVICE_SLUGS have drifted apart. They must hold the same four.");
+  throw new Error("SERVICES and SERVICE_SLUGS have drifted apart. They must hold the same slugs.");
 }
