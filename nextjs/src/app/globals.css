@@ -50,6 +50,36 @@
 }
 
 /* ---------------------------------------------------------------------------------------
+ * The dashed rules
+ *
+ * One hairline of short dashes, drawn as a repeating gradient rather than as a dashed
+ * border. A `border-style: dashed` hairline is rendered by the browser, and each engine
+ * picks its own dash length: Chrome draws a 1px dashed border as something close to a dotted
+ * one, Safari draws it longer, and neither can be told otherwise. The gradient states the
+ * dash and the gap, so the same rhythm renders everywhere.
+ *
+ * `rule-x` runs left to right and is used on a `h-px` box, `rule-y` top to bottom on a
+ * `w-px` box. The colour is the brand hairline, the same one every border on the site uses,
+ * so a background grid and a card edge cannot drift apart. Broken into dashes it reads far
+ * lighter than a solid border at that value, which is what a backdrop wants.
+ * ------------------------------------------------------------------------------------ */
+@utility rule-x {
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--color-brand-line) 0 var(--rule-dash, 3px),
+    transparent var(--rule-dash, 3px) var(--rule-period, 7px)
+  );
+}
+
+@utility rule-y {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--color-brand-line) 0 var(--rule-dash, 3px),
+    transparent var(--rule-dash, 3px) var(--rule-period, 7px)
+  );
+}
+
+/* ---------------------------------------------------------------------------------------
  * The logo marquee
  *
  * One keyframe, used by the trusted-by row under the hero. The track holds the logo list

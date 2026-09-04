@@ -1,3 +1,4 @@
+import { HeroGrid } from "@/app/(public)/_home/hero-grid";
 import { Reveal, SplitText } from "@/components/motion";
 import { ActionButton } from "@/components/site/action-button";
 import { LogoMarquee } from "@/components/site/logo-marquee";
@@ -37,10 +38,16 @@ import { EDU_URL } from "@/content/properties";
  *
  * The top padding is lighter than the bottom, because the sticky header above already holds
  * its own 5.5rem clear of the headline and the two together are the gap the eye reads.
+ *
+ * Behind all of it, `HeroGrid` draws the page's construction lines as dashed hairlines. The
+ * section is `isolate` so that layer's negative z-index stays inside this stacking context
+ * and sits behind the type rather than behind the page.
  */
 export function Hero() {
   return (
-    <section className="pt-section-sm pb-section lg:pt-section">
+    <section className="pt-section-sm pb-section lg:pt-section relative isolate">
+      <HeroGrid />
+
       <div className="container-page">
         <div className="mx-auto max-w-4xl text-center">
           <SplitText
