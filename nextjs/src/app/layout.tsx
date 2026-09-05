@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Sora } from "next/font/google";
 
+import { ConsentDefaults } from "@/components/site/consent-defaults";
 import { GoogleTagManager, GoogleTagManagerNoScript } from "@/components/site/google-tag-manager";
 import { SkipToContent } from "@/components/site/skip-to-content";
 import { Toaster } from "@/components/ui/sonner";
@@ -57,6 +58,13 @@ const SITE_DESCRIPTION =
  * `robots` is permissive here and overridden to `noindex` in the admin layout, which is the
  * right way round: a new public route is indexable by default and a new admin route inherits
  * the block from the segment above it.
+ *
+ * One thing this file cannot decide on its own: `twitter.card`. A page that declares a
+ * `twitter` object replaces this one rather than merging into it, so a page setting only a
+ * title and a description would silently drop back to X's small square card and crop a
+ * 1200x630 image into a thumbnail. Every page therefore restates
+ * `card: "summary_large_image"` alongside its title. The same is true of `openGraph`, which
+ * is why each page repeats `url`, `title` and `description` there.
  */
 export const metadata: Metadata = {
   metadataBase: new URL(clientEnv.NEXT_PUBLIC_SITE_URL),
@@ -123,6 +131,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <body>
+        {/*
+          Before Tag Manager, and before anything else. Consent Mode defaults that arrive
+          after the container has initialised are not defaults. See `consent-defaults.tsx`.
+        */}
+        <ConsentDefaults />
         <GoogleTagManagerNoScript />
         <SkipToContent />
         {children}

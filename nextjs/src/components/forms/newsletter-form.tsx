@@ -31,6 +31,9 @@ import { cn } from "@/lib/utils";
 export function NewsletterForm({ source, className }: { source: string; className?: string }) {
   const fieldId = `newsletter-email-${source}`;
   const { form, state, pending, submit } = useActionForm<SubscribeInput>({
+    // `source` again, so a footer signup and one taken at the end of a post are separable in
+    // the report the same way they are separable in the list.
+    analytics: { event: "form_submit", form_name: "newsletter", form_location: source },
     schema: subscribeSchema,
     action: subscribeAction,
     defaultValues: { email: "" },

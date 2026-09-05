@@ -100,6 +100,9 @@ export function EventVenueSchema({
           name: BUSINESS.legalName,
           url: clientEnv.NEXT_PUBLIC_SITE_URL,
         },
+        // The room is inside the premises described on the contact page. Naming that node is
+        // what stops one street address appearing in three blocks as three businesses.
+        containedInPlace: { "@id": `${clientEnv.NEXT_PUBLIC_SITE_URL}#localbusiness` },
       }}
     />
   );

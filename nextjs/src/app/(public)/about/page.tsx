@@ -51,7 +51,11 @@ export const metadata: Metadata = {
   description: ABOUT_SEO.description,
   alternates: { canonical: "/about" },
   openGraph: { url: "/about", title: ABOUT_SEO.title, description: ABOUT_SEO.description },
-  twitter: { title: ABOUT_SEO.title, description: ABOUT_SEO.description },
+  twitter: {
+    card: "summary_large_image",
+    title: ABOUT_SEO.title,
+    description: ABOUT_SEO.description,
+  },
 };
 
 export default function AboutPage() {

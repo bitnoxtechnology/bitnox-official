@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useActionState, useEffect, useTransition } from "react";
+import { useActionState, useEffect, useRef, useTransition } from "react";
 import {
   useForm,
   type DefaultValues,
@@ -13,6 +13,7 @@ import {
 import type { ZodType } from "zod";
 
 import { idleState, type ActionState } from "@/lib/actions/action-state";
+import { pushDataLayer, type DataLayerEvent } from "@/lib/analytics";
 
 /**
  * One Zod schema, two consumers, wired up once.
@@ -22,6 +23,11 @@ import { idleState, type ActionState } from "@/lib/actions/action-state";
  * amount of glue that keeps both honest: the client check runs first and, if it fails, the
  * action is never dispatched; whatever the server rejects afterwards is written back onto the
  * same fields, so a server-side error and a client-side one look identical to the user.
+ *
+ * It is also where a form submission reaches analytics, for the same reason: every form on
+ * the site goes through this hook, so the event fires in one place, only on a success the
+ * server actually returned, and never on a validation failure or on a retry of one. A form
+ * that reports a conversion the server rejected is worse than a form that reports nothing.
  */
 
 export type FormAction = (state: ActionState, formData: FormData) => Promise<ActionState>;
@@ -47,6 +53,8 @@ export function useActionForm<TValues extends FieldValues>(options: {
   schema: ZodType<unknown, TValues>;
   action: FormAction;
   defaultValues: DefaultValues<TValues>;
+  /** Pushed to the `dataLayer` once, when the server returns a success. */
+  analytics?: DataLayerEvent;
 }): ActionForm<TValues> {
   const [state, dispatch, actionPending] = useActionState(options.action, idleState);
   const [transitionPending, startTransition] = useTransition();
@@ -58,6 +66,29 @@ export function useActionForm<TValues extends FieldValues>(options: {
   });
 
   const { setError } = form;
+
+  /**
+   * One event per success, not one per render.
+   *
+   * The event is written as an object literal at the call site, so its identity changes on
+   * every render and this effect runs again each time. The flag is what makes that harmless:
+   * a success that stays on screen reports one conversion, and the flag clears when the form
+   * leaves the success state, so a second submission is reported again.
+   */
+  const { analytics } = options;
+  const reported = useRef(false);
+
+  useEffect(() => {
+    if (state.status !== "success") {
+      reported.current = false;
+      return;
+    }
+
+    if (reported.current || !analytics) return;
+
+    reported.current = true;
+    pushDataLayer(analytics);
+  }, [state, analytics]);
 
   useEffect(() => {
     if (state.status !== "error" || !state.fieldErrors) return;

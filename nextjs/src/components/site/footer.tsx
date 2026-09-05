@@ -3,6 +3,8 @@ import Link from "next/link";
 import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 
 import { NewsletterForm } from "@/components/forms/newsletter-form";
+import { ConsentSettingsLink } from "@/components/site/consent-banner";
+import { analyticsContainerId } from "@/components/site/google-tag-manager";
 import { PropertyList } from "@/components/site/property-switcher";
 import { BUSINESS } from "@/content/business";
 import { EDU_URL } from "@/content/properties";
@@ -51,7 +53,10 @@ const LEGAL_LINKS = [
  * nothing, keeps every page invalidated only by tag, and removes the one failure mode a
  * cached year has, which is showing the wrong one every January.
  */
-export function Footer() {
+export async function Footer() {
+  // Only worth offering where there is a container to consent to. See `ConsentDefaults`.
+  const analyticsConfigured = Boolean(await analyticsContainerId());
+
   return (
     <footer className="border-border/60 mt-section border-t">
       <div className="container-page py-section-sm">
@@ -163,7 +168,7 @@ export function Footer() {
           <p className="text-muted-foreground text-xs">
             Copyright {BUSINESS.legalName}. All rights reserved.
           </p>
-          <ul className="flex gap-6">
+          <ul className="flex flex-wrap gap-6">
             {LEGAL_LINKS.map((link) => (
               <li key={link.href}>
                 <FooterLink href={link.href} className="text-xs">
@@ -171,6 +176,11 @@ export function Footer() {
                 </FooterLink>
               </li>
             ))}
+            {analyticsConfigured ? (
+              <li>
+                <ConsentSettingsLink className="text-muted-foreground hover:text-primary text-xs transition-colors" />
+              </li>
+            ) : null}
           </ul>
         </div>
       </div>

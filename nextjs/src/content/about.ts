@@ -20,7 +20,10 @@ export interface AboutPrinciple {
 }
 
 export const ABOUT_SEO = {
-  title: "About Bitnox Technology Solutions",
+  // Not "About Bitnox Technology Solutions". The root title template appends the company
+  // name to every page, so that one renders as the name twice in one line, which spends the
+  // characters a search result actually shows on saying nothing new.
+  title: "About the company, how we work and where to find us",
   description:
     "A technology company in Abeokuta, Ogun State, building software and websites, advising on technology and running professional training. How we work, what we will say no to, and where to find us.",
 } as const;

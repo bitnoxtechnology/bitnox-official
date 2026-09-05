@@ -53,6 +53,9 @@ export function EventSpaceEnquiryForm({
   className?: string;
 }) {
   const { form, state, pending, submit } = useActionForm<EventSpaceEnquiryInput>({
+    // The conversion the site exists for, so it is an event of its own rather than a
+    // `form_submit` a container has to filter for. See `src/lib/analytics.ts`.
+    analytics: { event: "event_space_enquiry" },
     schema: eventSpaceEnquirySchema,
     action: eventSpaceEnquiryAction,
     defaultValues: { name: "", email: "", phone: "", preferredDate: "", message: "" },

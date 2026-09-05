@@ -47,20 +47,34 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: PageProps<"/blog/tag/[tag]">): Promise<Metadata> {
-  const { tag } = await params;
+  const [{ tag }, query] = await Promise.all([params, searchParams]);
   const readable = readableTag(decodeURIComponent(tag));
 
-  const title = `Posts about ${readable}`;
+  // Page two of an archive canonicalises to itself, the same as page two of the index. It is
+  // the only URL from which the posts on it are reachable.
+  //
+  // The number is taken from the cached read rather than from the URL, so `?page=99` on a
+  // two-page archive canonicalises to the page it actually renders instead of minting a URL
+  // for every number anybody types.
+  const rawPage = Array.isArray(query.page) ? query.page[0] : query.page;
+  const parsed = Number.parseInt(rawPage ?? "", 10);
+  const { page } = await getBlogPage({
+    page: Number.isFinite(parsed) && parsed > 1 ? parsed : 1,
+    tag: decodeURIComponent(tag).toLowerCase(),
+  });
+
+  const title = page > 1 ? `Posts about ${readable}, page ${page}` : `Posts about ${readable}`;
   const description = `Everything the Bitnox team has written about ${readable}. Practical notes from building software, websites and business systems for clients in Nigeria and the UK.`;
-  const path = `/blog/tag/${tag}`;
+  const path = page > 1 ? `/blog/tag/${tag}?page=${page}` : `/blog/tag/${tag}`;
 
   return {
     title,
     description,
     alternates: { canonical: path },
     openGraph: { url: path, title, description },
-    twitter: { title, description },
+    twitter: { card: "summary_large_image", title, description },
   };
 }
 
@@ -162,7 +176,9 @@ async function TagResults({
   return (
     <section className="pb-section">
       <div className="container-page">
-        <BlogFilters activeTag={tag} />
+        {/* No search box here: it posts to `/blog`, and a box on an archive that quietly
+            widened the list to the whole blog would be a trap rather than a shortcut. */}
+        <BlogFilters activeTag={tag} searchable={false} />
 
         <p className="text-muted-foreground mt-10 text-sm">
           {total === 1 ? `One post about ${readable}` : `${total} posts about ${readable}`}

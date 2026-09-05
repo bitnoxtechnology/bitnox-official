@@ -19,19 +19,22 @@ import {
  * one either side, with an ellipsis over the gaps. Forty numbered links across the foot of a
  * page is a navigation aid nobody uses and forty more links for a crawler to weigh.
  *
- * Every link carries the active filter forward, which is what stops page two of a filtered
- * view silently reverting to everything.
+ * Every link carries the active filter and the search term forward, which is what stops page
+ * two of a filtered view silently reverting to everything.
  */
 export function BlogPagination({
   page,
   pageCount,
   category,
+  query,
   basePath = "/blog",
 }: {
   page: number;
   pageCount: number;
   /** Carried through so a filtered list stays filtered on page two. */
   category?: string;
+  /** The search term, carried the same way and for the same reason. */
+  query?: string;
   /** `/blog` for the index, `/blog/tag/<tag>` for an archive. */
   basePath?: string;
 }) {
@@ -40,10 +43,11 @@ export function BlogPagination({
   const href = (target: number): string => {
     const params = new URLSearchParams();
     if (category) params.set("category", category);
+    if (query) params.set("q", query);
     if (target > 1) params.set("page", String(target));
 
-    const query = params.toString();
-    return query ? `${basePath}?${query}` : basePath;
+    const search = params.toString();
+    return search ? `${basePath}?${search}` : basePath;
   };
 
   return (

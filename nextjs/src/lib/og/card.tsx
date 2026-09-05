@@ -63,72 +63,141 @@ export interface OgCardProps {
   title: string;
   /** The line along the bottom right: a date, a reading time, a client name. */
   meta?: string;
+  /**
+   * A photograph to set the card on, as a data URI from `photoDataUri` below.
+   *
+   * Used by the one page whose subject is a physical thing: the Event Space is a room, and a
+   * picture of the room says more in a chat window than a sentence about it. Everywhere else
+   * the subject is work rather than a place, and a stock-looking photograph behind a headline
+   * would be the decoration the design standards rule out.
+   *
+   * A scrim is painted over it rather than trusting the photograph to be dark enough. The
+   * text has to stay readable over a picture nobody has checked the histogram of.
+   */
+  photo?: string;
 }
 
-export function renderOgCard({ eyebrow, title, meta }: OgCardProps): ImageResponse {
+/**
+ * A file from `public/` as a data URI, for `photo` above.
+ *
+ * Satori fetches a remote `src` over the network, which at build time means a request to a
+ * server that may not be running yet. Reading the bytes off disk removes that entirely.
+ */
+export async function photoDataUri(publicPath: string): Promise<string> {
+  const bytes = await readFile(join(process.cwd(), "public", publicPath.replace(/^\//, "")));
+  return `data:image/jpeg;base64,${bytes.toString("base64")}`;
+}
+
+export function renderOgCard({ eyebrow, title, meta, photo }: OgCardProps): ImageResponse {
   return new ImageResponse(
     <div
       style={{
         width: "100%",
         height: "100%",
         display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
+        position: "relative",
         background: BACKGROUND,
-        padding: "72px 80px",
         // The one piece of brand furniture on the card: a cyan rule down the left edge,
         // the same hairline that separates every section on the site.
         borderLeft: `10px solid ${ACCENT}`,
         fontFamily: "Geist",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
-          <span style={{ fontFamily: "Sora", fontSize: 34, color: TEXT, letterSpacing: "-0.02em" }}>
-            Bitnox
-          </span>
-          <span style={{ fontFamily: "Sora", fontSize: 34, color: ACCENT }}>.</span>
-        </div>
-
-        <span
+      {photo ? (
+        // This JSX is rendered by Satori into a PNG, not into a document. `next/image` has
+        // nothing to optimise here and there is no assistive technology reading a raster
+        // image, so both rules below are answering a question this file does not ask. The
+        // description of the card lives in the route's exported `alt`.
+        // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+        <img
+          src={photo}
+          width={OG_SIZE.width}
+          height={OG_SIZE.height}
           style={{
-            fontSize: 20,
-            color: ACCENT,
-            letterSpacing: "0.16em",
-            textTransform: "uppercase",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
           }}
-        >
-          {eyebrow}
-        </span>
-      </div>
+        />
+      ) : null}
 
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      {photo ? (
         <div
           style={{
-            fontFamily: "Sora",
-            fontSize: title.length > 60 ? 62 : 74,
-            lineHeight: 1.12,
-            color: TEXT,
-            letterSpacing: "-0.03em",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background: "rgba(10, 10, 10, 0.78)",
           }}
-        >
-          {clampTitle(title)}
-        </div>
-      </div>
+        />
+      ) : null}
 
       <div
         style={{
+          position: "relative",
           display: "flex",
-          alignItems: "center",
+          flexDirection: "column",
           justifyContent: "space-between",
-          borderTop: `1px solid ${HAIRLINE}`,
-          paddingTop: 28,
-          fontSize: 24,
-          color: MUTED,
+          width: "100%",
+          height: "100%",
+          padding: "72px 80px",
         }}
       >
-        <span>bitnoxsolution.com</span>
-        {meta ? <span>{meta}</span> : null}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
+            <span
+              style={{ fontFamily: "Sora", fontSize: 34, color: TEXT, letterSpacing: "-0.02em" }}
+            >
+              Bitnox
+            </span>
+            <span style={{ fontFamily: "Sora", fontSize: 34, color: ACCENT }}>.</span>
+          </div>
+
+          <span
+            style={{
+              fontSize: 20,
+              color: ACCENT,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+            }}
+          >
+            {eyebrow}
+          </span>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div
+            style={{
+              fontFamily: "Sora",
+              fontSize: title.length > 60 ? 62 : 74,
+              lineHeight: 1.12,
+              color: TEXT,
+              letterSpacing: "-0.03em",
+            }}
+          >
+            {clampTitle(title)}
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            borderTop: `1px solid ${HAIRLINE}`,
+            paddingTop: 28,
+            fontSize: 24,
+            color: MUTED,
+          }}
+        >
+          <span>bitnoxsolution.com</span>
+          {meta ? <span>{meta}</span> : null}
+        </div>
       </div>
     </div>,
     {

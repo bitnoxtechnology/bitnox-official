@@ -1,5 +1,8 @@
 import Link from "next/link";
+import { Search } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { getPublishedCategories, getPublishedTags } from "@/lib/queries/blog";
 import { cn } from "@/lib/utils";
 
@@ -18,6 +21,11 @@ import { cn } from "@/lib/utils";
  * worth knowing about before the click. They come from the same aggregation the archive
  * pages are generated from, so the number cannot disagree with the page it leads to.
  *
+ * The search box is a plain `form` with `method="get"`, which is why it ships no JavaScript
+ * either: the browser turns the field into `?q=` and navigates, exactly as the filter links
+ * do. It is also what the `SearchAction` in `WebSiteSchema` points at, so a sitelinks search
+ * box in Google's results lands on a page that really searches.
+ *
  * Categories link back into the index with a query string, tags link to their own archive
  * page. That asymmetry is deliberate. A tag archive is a page worth indexing, with its own
  * title and description; a category is a coarser cut of the same list and does not need
@@ -26,9 +34,14 @@ import { cn } from "@/lib/utils";
 export async function BlogFilters({
   activeTag,
   activeCategory,
+  query,
+  /** The archive pages narrow by tag in the path, so the box would search the wrong list. */
+  searchable = true,
 }: {
   activeTag?: string;
   activeCategory?: string;
+  query?: string;
+  searchable?: boolean;
 }) {
   const [tags, categories] = await Promise.all([getPublishedTags(), getPublishedCategories()]);
 
@@ -36,6 +49,33 @@ export async function BlogFilters({
 
   return (
     <div className="border-border border-y">
+      {searchable ? (
+        <form
+          method="get"
+          action="/blog"
+          role="search"
+          className="border-border flex items-center gap-3 border-b py-3"
+        >
+          <label htmlFor="blog-search" className="sr-only">
+            Search the blog
+          </label>
+          <Search className="text-muted-foreground size-4 shrink-0" aria-hidden />
+          <Input
+            id="blog-search"
+            type="search"
+            name="q"
+            defaultValue={query ?? ""}
+            placeholder="Search posts"
+            className="h-9 border-0 bg-transparent px-0 shadow-none focus-visible:ring-0 dark:bg-transparent"
+          />
+          {/* Keeps the section narrowed when somebody searches from inside one. */}
+          {activeCategory ? <input type="hidden" name="category" value={activeCategory} /> : null}
+          <Button type="submit" variant="outline" size="sm">
+            Search
+          </Button>
+        </form>
+      ) : null}
+
       {categories.length > 0 ? (
         <div className="divide-border flex flex-wrap items-center divide-x">
           <span className="text-2xs text-primary py-4 pr-5 font-medium tracking-[0.14em] uppercase">

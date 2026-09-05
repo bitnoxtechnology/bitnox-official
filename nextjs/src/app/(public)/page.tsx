@@ -12,6 +12,7 @@ import { ServicesGrid } from "@/app/(public)/_home/services-grid";
 import { TestimonialsBand } from "@/app/(public)/_home/testimonials-band";
 import { TrainingBand } from "@/app/(public)/_home/training-band";
 import { WhyBitnox } from "@/app/(public)/_home/why-bitnox";
+import { WebSiteSchema } from "@/components/seo/WebSiteSchema";
 import {
   BlogCardGridSkeleton,
   PortfolioGridSkeleton,
@@ -48,12 +49,17 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: { canonical: "/" },
   openGraph: { url: "/", title: TITLE, description: DESCRIPTION },
-  twitter: { title: TITLE, description: DESCRIPTION },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
 export default function HomePage() {
   return (
     <>
+      {/*
+        The site as an entity, with the search box it actually has. The company itself is
+        described on `/about` and the premises on `/contact`, so nothing is repeated here.
+      */}
+      <WebSiteSchema />
       <Hero />
       <ServicesGrid />
       <AboutBand />

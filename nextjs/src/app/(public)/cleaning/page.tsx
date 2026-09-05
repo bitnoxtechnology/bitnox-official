@@ -42,7 +42,11 @@ export const metadata: Metadata = {
   description: CLEANING_SEO.description,
   alternates: { canonical: CLEANING_SUBDOMAIN_CONFIRMED ? CLEANING_URL : "/cleaning" },
   openGraph: { url: "/cleaning", title: CLEANING_SEO.title, description: CLEANING_SEO.description },
-  twitter: { title: CLEANING_SEO.title, description: CLEANING_SEO.description },
+  twitter: {
+    card: "summary_large_image",
+    title: CLEANING_SEO.title,
+    description: CLEANING_SEO.description,
+  },
 };
 
 export default function CleaningPage() {

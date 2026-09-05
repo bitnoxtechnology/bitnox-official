@@ -87,6 +87,14 @@ export async function getPostsByTags(tags: readonly string[], limit = 3): Promis
  * Tag and category are applied here rather than filtered in the page, so the total matches
  * what is shown and a filtered view is paginated correctly instead of claiming four pages
  * over six posts.
+ *
+ * `query` is the site search, and it is the reason the `SearchAction` in `WebSiteSchema` is a
+ * true statement rather than markup pointing at a page that does not search anything. It is a
+ * case-insensitive match across the title, the excerpt, the category and the tags: a regex
+ * rather than a `$text` index, because the collection is small, because a text index would
+ * stem "training" into something that no longer matches the tag, and because a substring is
+ * what somebody typing three letters into a box expects. It stays a cached read under the
+ * `blog` tag, so a repeated search costs nothing.
  */
 export interface BlogPage {
   posts: BlogCardDTO[];
@@ -98,7 +106,7 @@ export interface BlogPage {
 export const POSTS_PER_PAGE = 9;
 
 export async function getBlogPage(
-  options: { page?: number; tag?: string; category?: string } = {},
+  options: { page?: number; tag?: string; category?: string; query?: string } = {},
 ): Promise<BlogPage> {
   "use cache";
   cacheTag(CACHE_TAGS.blog);
@@ -113,6 +121,18 @@ export async function getBlogPage(
 
   if (options.tag) filter.tags = options.tag;
   if (options.category) filter.category = options.category;
+
+  const query = options.query?.trim();
+
+  if (query) {
+    const pattern = new RegExp(escapeRegExp(query), "i");
+    filter.$or = [
+      { title: pattern },
+      { excerpt: pattern },
+      { category: pattern },
+      { tags: pattern },
+    ];
+  }
 
   const total = await Blog.countDocuments(filter).exec();
   const pageCount = Math.max(1, Math.ceil(total / POSTS_PER_PAGE));
@@ -326,4 +346,16 @@ export async function getPublishedCategories(): Promise<string[]> {
   return (categories as (string | null)[])
     .filter((category): category is string => Boolean(category))
     .sort((a, b) => a.localeCompare(b, "en-GB"));
+}
+
+/**
+ * Everything a visitor types is data, never pattern syntax.
+ *
+ * A search box feeding straight into `new RegExp` is a denial of service waiting to be typed:
+ * `(a+)+$` is a valid search term and an exponential backtrack against every document in the
+ * collection. Escaping the metacharacters turns the whole string back into the literal
+ * somebody meant.
+ */
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
 }

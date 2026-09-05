@@ -6,11 +6,13 @@ import { OpeningHours } from "@/app/(public)/contact/_sections/opening-hours";
 import { ContactForm } from "@/components/forms/contact-form";
 import { Reveal, SplitText } from "@/components/motion";
 import { BreadcrumbListSchema } from "@/components/seo/BreadcrumbListSchema";
+import { LocalBusinessSchema } from "@/components/seo/LocalBusinessSchema";
 import { CTABand, SectionHeading } from "@/components/site";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BUSINESS } from "@/content/business";
 import { EDU_URL } from "@/content/properties";
 import { EVENT_SPACE_CAPACITY } from "@/lib/constants";
+import { getSiteSettings } from "@/lib/queries/site-settings";
 
 /**
  * Contact.
@@ -31,6 +33,11 @@ import { EVENT_SPACE_CAPACITY } from "@/lib/constants";
  * page points at it rather than duplicating it, because two enquiry forms on one site is two
  * sets of fields to keep in step and a sender filling in the wrong one.
  *
+ * `LocalBusinessSchema` is here rather than on the home page, because this is the page that
+ * carries the address, the hours and the map, and structured data describing a place belongs
+ * on the page that describes the place. It is the middle of the three nodes that describe
+ * Bitnox: the company on `/about`, the premises here, the bookable room on `/event-space`.
+ *
  * Only the opening hours are dynamic, because they come from `SiteSettings` and are still an
  * outstanding input. Everything else is prerendered.
  */
@@ -45,14 +52,19 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: { canonical: "/contact" },
   openGraph: { url: "/contact", title: TITLE, description: DESCRIPTION },
-  twitter: { title: TITLE, description: DESCRIPTION },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
 const MAP_QUERY = `${BUSINESS.latitude},${BUSINESS.longitude}`;
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  // A cached read, and the same one `OpeningHours` makes further down the page, so awaiting
+  // it here costs one query rather than two and does not put the page on a timer.
+  const settings = await getSiteSettings();
+
   return (
     <>
+      <LocalBusinessSchema openingHours={settings?.openingHours ?? []} />
       <BreadcrumbListSchema
         crumbs={[
           { name: "Home", path: "/" },

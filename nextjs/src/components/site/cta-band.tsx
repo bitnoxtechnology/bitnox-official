@@ -28,6 +28,9 @@ type CTABandProps = {
  *
  * One primary action, at most one secondary. Three buttons of equal weight is the same as
  * none, since the visitor then has to decide instead of act.
+ *
+ * `data-cta` marks both for `AnalyticsListener`, which is how a click on the band that closes
+ * every page is reported without this component or its callers becoming client components.
  */
 export function CTABand({ title, description, action, secondaryAction, className }: CTABandProps) {
   return (
@@ -43,12 +46,12 @@ export function CTABand({ title, description, action, secondaryAction, className
           ) : null}
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Button asChild size="lg">
+            <Button asChild size="lg" data-cta="primary">
               <CTALink action={action} />
             </Button>
 
             {secondaryAction ? (
-              <Button asChild size="lg" variant="outline">
+              <Button asChild size="lg" variant="outline" data-cta="secondary">
                 <CTALink action={secondaryAction} />
               </Button>
             ) : null}

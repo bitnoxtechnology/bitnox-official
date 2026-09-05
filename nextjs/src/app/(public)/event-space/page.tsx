@@ -66,11 +66,12 @@ export const metadata: Metadata = {
     url: "/event-space",
     title: EVENT_SPACE_SEO.title,
     description: EVENT_SPACE_SEO.description,
-    images: EVENT_SPACE_PHOTOS[0]
-      ? [{ url: EVENT_SPACE_PHOTOS[0].url, alt: EVENT_SPACE_PHOTOS[0].alt }]
-      : undefined,
   },
-  twitter: { title: EVENT_SPACE_SEO.title, description: EVENT_SPACE_SEO.description },
+  twitter: {
+    card: "summary_large_image",
+    title: EVENT_SPACE_SEO.title,
+    description: EVENT_SPACE_SEO.description,
+  },
 };
 
 export default async function EventSpacePage() {

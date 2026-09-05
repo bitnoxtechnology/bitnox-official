@@ -68,7 +68,11 @@ export async function generateMetadata({
       title: service.seo.title,
       description: service.seo.description,
     },
-    twitter: { title: service.seo.title, description: service.seo.description },
+    twitter: {
+      card: "summary_large_image",
+      title: service.seo.title,
+      description: service.seo.description,
+    },
   };
 }
 

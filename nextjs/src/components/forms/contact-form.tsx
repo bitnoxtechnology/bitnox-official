@@ -34,6 +34,7 @@ export function ContactForm({
   className?: string;
 }) {
   const { form, state, pending, submit } = useActionForm<ContactEnquiryInput>({
+    analytics: { event: "form_submit", form_name: "contact" },
     schema: contactEnquirySchema,
     action: contactEnquiryAction,
     defaultValues: { name: "", email: "", phone: "", subject: "", message: "" },

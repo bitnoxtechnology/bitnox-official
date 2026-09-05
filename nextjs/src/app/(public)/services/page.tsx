@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: { canonical: "/services" },
   openGraph: { url: "/services", title: TITLE, description: DESCRIPTION },
-  twitter: { title: TITLE, description: DESCRIPTION },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
 /**

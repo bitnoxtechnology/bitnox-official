@@ -19,7 +19,11 @@ export const metadata: Metadata = {
   description: TERMS.seo.description,
   alternates: { canonical: "/terms" },
   openGraph: { url: "/terms", title: TERMS.seo.title, description: TERMS.seo.description },
-  twitter: { title: TERMS.seo.title, description: TERMS.seo.description },
+  twitter: {
+    card: "summary_large_image",
+    title: TERMS.seo.title,
+    description: TERMS.seo.description,
+  },
 };
 
 export default function TermsPage() {

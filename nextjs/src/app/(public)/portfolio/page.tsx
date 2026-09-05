@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: { canonical: "/portfolio" },
   openGraph: { url: "/portfolio", title: TITLE, description: DESCRIPTION },
-  twitter: { title: TITLE, description: DESCRIPTION },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
 export default function PortfolioPage({ searchParams }: PageProps<"/portfolio">) {

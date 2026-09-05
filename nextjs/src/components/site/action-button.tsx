@@ -23,6 +23,10 @@ import { cn } from "@/lib/utils";
  * outlined one it is cyan with a dark arrow. Both pairs are the same two brand colours the
  * variants already use, so nothing here pins a new hex.
  *
+ * `data-cta` is the marker `AnalyticsListener` looks for. It is an attribute rather than an
+ * `onClick`, so this component and everything that renders it stay on the server: one
+ * delegated listener in the public layout reads it from whatever was clicked.
+ *
  * The arrow is decorative and marked `aria-hidden`. It says "this goes somewhere", which the
  * label has already said, and announcing "arrow up right" after every button is noise.
  *
@@ -104,6 +108,7 @@ export function ActionButton({
         variant={variant}
         onClick={props.onClick}
         className={shape}
+        data-cta={variant === "outline" ? "secondary" : "primary"}
       >
         {content}
       </Button>
@@ -111,7 +116,12 @@ export function ActionButton({
   }
 
   return (
-    <Button asChild variant={variant} className={shape}>
+    <Button
+      asChild
+      variant={variant}
+      className={shape}
+      data-cta={variant === "outline" ? "secondary" : "primary"}
+    >
       {props.external ? (
         <a href={props.href} rel="noopener">
           {content}

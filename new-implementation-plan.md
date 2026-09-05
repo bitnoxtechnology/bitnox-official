@@ -295,18 +295,18 @@ Starting from an empty collection, so there is no legacy content to accommodate.
 
 ## Phase 12: SEO and Analytics Infrastructure
 
-- [ ] Root `metadata` with `metadataBase`, title template, description, OG and Twitter defaults, and `robots` directives
-- [ ] Unique, hand-written title and description on every route. No templated filler.
-- [ ] `app/sitemap.ts`: static routes, the service slugs, published blog slugs, portfolio slugs, with real `lastModified` values
-- [ ] `app/robots.ts`: allow public routes, disallow `/admin` and `/api`, reference the sitemap
-- [ ] Canonical URLs on every page, self-referencing canonicals on paginated routes
-- [ ] JSON-LD components in `src/components/seo/`: `Organization`, `WebSite` with `SearchAction`, `LocalBusiness`, `EventVenue`, `Service`, `Article`, `FAQPage`, `BreadcrumbList`
-- [ ] Google Tag Manager via `next/script` with `strategy="afterInteractive"`, plus the `<noscript>` iframe in the body
-- [ ] Search Console verification via `metadata.verification.google` and the env token
-- [ ] A typed `pushDataLayer()` helper wired to form submissions, call-to-action clicks, outbound clicks to `edu.` and `cleaning.`, and Event Space booking submissions
-- [ ] Consent-aware GTM loading if you operate in the UK or EU, deferring non-essential tags until consent
-- [ ] `opengraph-image.tsx` for the home page, the services and the Event Space
-- [ ] Redirect map in `next.config.ts`. `/blogs` to `/blog`. Old blog slugs to `/blog` and old project URLs to `/portfolio`, since the database is new and none of that content carries over. Pull the live URL list from Search Console rather than guessing.
+- [x] Root `metadata` with `metadataBase`, title template, description, OG and Twitter defaults, and `robots` directives
+- [x] Unique, hand-written title and description on every route. No templated filler.
+- [x] `app/sitemap.ts`: static routes, the service slugs, published blog slugs, portfolio slugs, with real `lastModified` values
+- [x] `app/robots.ts`: allow public routes, disallow `/admin` and `/api`, reference the sitemap
+- [x] Canonical URLs on every page, self-referencing canonicals on paginated routes
+- [x] JSON-LD components in `src/components/seo/`: `Organization`, `WebSite` with `SearchAction`, `LocalBusiness`, `EventVenue`, `Service`, `Article`, `FAQPage`, `BreadcrumbList`
+- [x] Google Tag Manager via `next/script` with `strategy="afterInteractive"`, plus the `<noscript>` iframe in the body
+- [x] Search Console verification via `metadata.verification.google` and the env token
+- [x] A typed `pushDataLayer()` helper wired to form submissions, call-to-action clicks, outbound clicks to `edu.` and `cleaning.`, and Event Space booking submissions
+- [x] Consent-aware GTM loading if you operate in the UK or EU, deferring non-essential tags until consent
+- [x] `opengraph-image.tsx` for the home page, the services and the Event Space
+- [x] Redirect map in `next.config.ts`. `/blogs` to `/blog`. Old blog slugs to `/blog` and old project URLs to `/portfolio`, since the database is new and none of that content carries over. Pull the live URL list from Search Console rather than guessing.
 - [ ] Submit the sitemap in Search Console after launch and confirm indexing of the Event Space and service pages
 
 ---

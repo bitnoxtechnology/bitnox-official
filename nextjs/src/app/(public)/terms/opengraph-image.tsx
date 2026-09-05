@@ -1,0 +1,25 @@
+import { TERMS } from "@/content/legal";
+import { OG_CONTENT_TYPE, OG_SIZE, renderOgCard } from "@/lib/og/card";
+
+/**
+ * The social card for the terms of service.
+ *
+ * One file per route segment, because Open Graph images do not cascade: a card in a parent
+ * segment covers that segment's own page and nothing below it. The alternative is a page
+ * whose link pastes into a chat as a bare URL, which is the state every one of these was in.
+ *
+ * The headline is the page's own, so the card argues what the page argues rather than
+ * repeating the company name.
+ */
+
+export const alt = "Bitnox Technology Solutions terms of service";
+export const size = OG_SIZE;
+export const contentType = OG_CONTENT_TYPE;
+
+export default function TermsOgImage() {
+  return renderOgCard({
+    eyebrow: "Legal",
+    title: TERMS.seo.title,
+    meta: `Last updated ${TERMS.lastUpdated}`,
+  });
+}
