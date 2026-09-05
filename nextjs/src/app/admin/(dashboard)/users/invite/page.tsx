@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
+import { ArrowLeft } from "lucide-react";
 
-import { InviteForm } from "@/app/admin/users/invite/invite-form";
+import { InviteForm } from "@/app/admin/(dashboard)/users/invite/invite-form";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { requireSuperAdmin } from "@/lib/auth/guards";
 
@@ -20,18 +22,18 @@ export const metadata: Metadata = { title: "Invite an admin" };
  */
 export default function InviteUserPage() {
   return (
-    <main className="mx-auto w-full max-w-xl px-6 py-16">
-      <Link
-        href="/admin"
-        className="text-muted-foreground hover:text-primary text-sm transition-colors"
-      >
-        Back to dashboard
-      </Link>
+    <div className="mx-auto w-full max-w-xl">
+      <Button variant="ghost" size="sm" asChild className="-ml-2">
+        <Link href="/admin/users">
+          <ArrowLeft aria-hidden />
+          Back to the users
+        </Link>
+      </Button>
 
       <Suspense fallback={<InviteSkeleton />}>
         <InvitePanel />
       </Suspense>
-    </main>
+    </div>
   );
 }
 

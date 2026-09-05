@@ -2,31 +2,36 @@
 
 import {
   errorState,
+  fail,
+  ok,
   successState,
   text,
   toActionState,
   validate,
   type ActionState,
 } from "@/lib/actions/action-state";
+import { withAuth } from "@/lib/actions/with-auth";
 import { requestMetadata } from "@/lib/auth/cookies";
 import { enforceRateLimits, RATE_LIMITS, retryAfterMessage } from "@/lib/auth/rate-limit";
-import { EVENT_SPACE_CAPACITY } from "@/lib/constants";
+import { EVENT_SPACE_CAPACITY, type EnquiryStatus } from "@/lib/constants";
 import { connectToDatabase } from "@/lib/db";
 import {
   sendContactAcknowledgement,
   sendEnquiryNotification,
   sendEventSpaceAcknowledgement,
 } from "@/lib/mail/site-mail";
+import { enquiryStatusSchema, idSchema } from "@/lib/validations/admin-schema";
 import { contactEnquirySchema, eventSpaceEnquirySchema } from "@/lib/validations/enquiry-schema";
 import { checkSpamGuard, spamMessage } from "@/lib/validations/spam-guard";
 import { Enquiry } from "@/models";
 
 /**
- * The public enquiry forms.
+ * The enquiry forms and the inbox they land in.
  *
- * Public, so nothing here is behind a guard and everything assumes the caller is hostile
- * until the spam guard and the rate limiter have had their say. The admin side of the inbox,
- * which needs `requireUser()`, is built with the rest of the admin.
+ * The two submission actions are public, so they assume the caller is hostile until the spam
+ * guard and the rate limiter have had their say. The admin actions at the foot of the file
+ * are guarded by `withAuth`, and the two halves live together because they are one domain:
+ * the shape an enquiry is written in is the shape the inbox reads back.
  *
  * The enquiry is written before either email is sent, and neither email can fail the
  * submission: `sendMail` returns a result rather than throwing, and a booking request that is
@@ -236,3 +241,84 @@ export async function contactEnquiryAction(
 
   return successState(CONTACT_CONFIRMED);
 }
+
+// --- The admin inbox --------------------------------------------------------
+
+/**
+ * The other half of this domain: what happens to an enquiry after it arrives.
+ *
+ * Guarded by wrapping rather than by remembering, like every other admin action. Nothing here
+ * revalidates a cache tag, because an enquiry changes nothing a public page renders.
+ */
+
+/**
+ * New, read, responded.
+ *
+ * Three states rather than a "done" checkbox, because the middle one is the useful one: it
+ * separates a message somebody has looked at from one that has actually been answered, which
+ * is the difference between an inbox and a pile.
+ */
+export const setEnquiryStatusAction = withAuth<[string, EnquiryStatus], { status: EnquiryStatus }>(
+  async (_user, id, status) => {
+    const parsed = validate(enquiryStatusSchema, { id, status });
+    if (!parsed.ok) return parsed;
+
+    await connectToDatabase();
+
+    const enquiry = await Enquiry.findByIdAndUpdate(
+      parsed.data.id,
+      { $set: { status: parsed.data.status } },
+      { new: true },
+    )
+      .lean()
+      .exec();
+
+    if (!enquiry) return fail("That enquiry no longer exists.");
+
+    return ok({ status: enquiry.status });
+  },
+);
+
+/**
+ * Marking one read as it is opened.
+ *
+ * Separate from the action above and conditional, so that opening a message a colleague has
+ * already replied to does not quietly move it back from `responded` to `read`.
+ */
+export const markEnquiryReadAction = withAuth<[string], { status: EnquiryStatus }>(
+  async (_user, id) => {
+    const parsed = validate(idSchema, { id });
+    if (!parsed.ok) return parsed;
+
+    await connectToDatabase();
+
+    const enquiry = await Enquiry.findOneAndUpdate(
+      { _id: parsed.data.id, status: "new" },
+      { $set: { status: "read" } },
+      { new: true },
+    )
+      .lean()
+      .exec();
+
+    return ok({ status: enquiry?.status ?? "read" });
+  },
+);
+
+/**
+ * Deleted, not archived.
+ *
+ * An enquiry is somebody's message and the honest reasons to remove one are spam and a
+ * request to erase personal data, both of which mean gone rather than hidden. `responded` is
+ * where a message that has been dealt with goes.
+ */
+export const deleteEnquiryAction = withAuth<[string], { id: string }>(async (_user, id) => {
+  const parsed = validate(idSchema, { id });
+  if (!parsed.ok) return parsed;
+
+  await connectToDatabase();
+
+  const removed = await Enquiry.findByIdAndDelete(parsed.data.id).lean().exec();
+  if (!removed) return fail("That enquiry no longer exists.");
+
+  return ok({ id }, "Enquiry deleted.");
+});

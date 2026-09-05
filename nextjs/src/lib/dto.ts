@@ -444,6 +444,7 @@ export interface SiteSettingsDTO {
   socialLinks: ISiteSettings["socialLinks"];
   sisterSites: ISiteSettings["sisterSites"];
   defaultOgImage?: ImageDTO;
+  gtmId?: string;
   eventSpace: {
     capacity: number;
     amenities: string[];
@@ -458,6 +459,7 @@ export function toSiteSettings(settings: ISiteSettings): SiteSettingsDTO {
     socialLinks: { ...settings.socialLinks },
     sisterSites: { ...settings.sisterSites },
     defaultOgImage: toImage(settings.defaultOgImage),
+    gtmId: settings.gtmId,
     eventSpace: {
       capacity: settings.eventSpace.capacity,
       amenities: [...settings.eventSpace.amenities],

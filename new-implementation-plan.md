@@ -275,21 +275,21 @@ Starting from an empty collection, so there is no legacy content to accommodate.
 
 ## Phase 11: Admin Dashboard
 
-- [ ] Admin layout: collapsible sidebar, breadcrumb header, current-user menu, mobile drawer, ported from `AdminLayout.css` into Tailwind
-- [ ] Dashboard home: content counts, recent posts, recent enquiries, quick actions
-- [ ] **Tiptap v3 editor** with headings, bold, italic, underline, strikethrough, lists, blockquote, horizontal rule, link with an edit and unlink bubble, image via signed Cloudinary upload, YouTube embed, table, task list, text align, highlight, subscript and superscript, undo and redo
-- [ ] **Code block with language selection**: `CodeBlockLowlight` with an explicit language list (JavaScript, TypeScript, JSX, TSX, Python, Java, PHP, C#, Go, Rust, SQL, HTML, CSS, JSON, YAML, Bash, Dockerfile), a per-block language dropdown and copy to clipboard
-- [ ] Editor UX: sticky toolbar, slash command menu, bubble menu on selection, character and word count, autosave draft to localStorage, unsaved-changes guard
-- [ ] Blog admin: list with search, filter and pagination, create, edit, duplicate, status transitions across draft, scheduled, published and archived, delete with confirmation, and an SEO panel with a live SERP preview
-- [ ] On save, render Tiptap JSON to HTML server-side, store both, then `revalidateTag('blog')` plus the per-slug tag
-- [ ] **Event Space admin**: gallery management with upload, drag-to-reorder, alt text, captions, cover selection and delete, plus capacity, amenities and rate copy
-- [ ] Portfolio admin: CRUD with multi-image upload and ordering
-- [ ] Testimonials admin: CRUD with avatar upload and a featured flag
-- [ ] Users admin (super_admin only): invite by email, role assignment, activate and deactivate. No admin ever sets another user's password.
-- [ ] Newsletter admin (super_admin only): list, search, unsubscribe, CSV export
-- [ ] **Enquiries inbox**: unified list across contact, Event Space and cleaning, filterable by type and status, with new, read and responded states and a detail view
-- [ ] Site settings: NAP, social links, sister-site URLs, GTM ID, default OG image, all DB-backed so copy changes do not require a deploy
-- [ ] Every admin mutation goes through a server action that calls `requireUser()` or `requireSuperAdmin()` and re-validates with the shared Zod schema
+- [x] Admin layout: collapsible sidebar, breadcrumb header, current-user menu, mobile drawer, ported from `AdminLayout.css` into Tailwind
+- [x] Dashboard home: content counts, recent posts, recent enquiries, quick actions
+- [x] **Tiptap v3 editor** with headings, bold, italic, underline, strikethrough, lists, blockquote, horizontal rule, link with an edit and unlink bubble, image via signed Cloudinary upload, YouTube embed, table, task list, text align, highlight, subscript and superscript, undo and redo
+- [x] **Code block with language selection**: `CodeBlockLowlight` with an explicit language list (JavaScript, TypeScript, JSX, TSX, Python, Java, PHP, C#, Go, Rust, SQL, HTML, CSS, JSON, YAML, Bash, Dockerfile), a per-block language dropdown and copy to clipboard
+- [x] Editor UX: sticky toolbar, slash command menu, bubble menu on selection, character and word count, autosave draft to localStorage, unsaved-changes guard
+- [x] Blog admin: list with search, filter and pagination, create, edit, duplicate, status transitions across draft, scheduled, published and archived, delete with confirmation, and an SEO panel with a live SERP preview
+- [x] On save, render Tiptap JSON to HTML server-side, store both, then `revalidateTag('blog')` plus the per-slug tag
+- [x] **Event Space admin**: gallery management with upload, drag-to-reorder, alt text, captions, cover selection and delete, plus capacity, amenities and rate copy
+- [x] Portfolio admin: CRUD with multi-image upload and ordering
+- [x] Testimonials admin: CRUD with avatar upload and a featured flag
+- [x] Users admin (super_admin only): invite by email, role assignment, activate and deactivate. No admin ever sets another user's password.
+- [x] Newsletter admin (super_admin only): list, search, unsubscribe, CSV export
+- [x] **Enquiries inbox**: unified list across contact, Event Space and cleaning, filterable by type and status, with new, read and responded states and a detail view
+- [x] Site settings: NAP, social links, sister-site URLs, GTM ID, default OG image, all DB-backed so copy changes do not require a deploy
+- [x] Every admin mutation goes through a server action that calls `requireUser()` or `requireSuperAdmin()` and re-validates with the shared Zod schema
 
 ---
 

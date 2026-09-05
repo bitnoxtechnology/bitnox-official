@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Suspense } from "react";
 
-import { ChangePasswordForm } from "@/app/admin/profile/change-password-form";
+import { ChangePasswordForm } from "@/app/admin/(dashboard)/profile/change-password-form";
+import { PageHeader } from "@/components/admin/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { requireUser } from "@/lib/auth/guards";
 
@@ -19,18 +19,14 @@ const dateFormat = new Intl.DateTimeFormat("en-GB", {
  *
  * The heading and the form are static. Only the details block reads the session, so only it
  * waits, and the form below is usable while the four lines above it are still arriving.
+ *
+ * The page frame, the navigation and the breadcrumb trail come from the dashboard shell, so
+ * there is no back link here: the trail above already is one.
  */
 export default function ProfilePage() {
   return (
-    <main className="mx-auto w-full max-w-xl px-6 py-16">
-      <Link
-        href="/admin"
-        className="text-muted-foreground hover:text-primary text-sm transition-colors"
-      >
-        Back to dashboard
-      </Link>
-
-      <h1 className="text-foreground mt-6 text-2xl font-semibold tracking-tight">Your profile</h1>
+    <div className="mx-auto w-full max-w-xl">
+      <PageHeader title="Your profile" />
 
       <Suspense fallback={<AccountSkeleton />}>
         <AccountDetails />
@@ -44,7 +40,7 @@ export default function ProfilePage() {
         </p>
         <ChangePasswordForm />
       </section>
-    </main>
+    </div>
   );
 }
 

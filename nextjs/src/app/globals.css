@@ -429,6 +429,118 @@
 }
 
 /* ---------------------------------------------------------------------------------------
+ * The editor surface
+ *
+ * The admin only. None of this reaches a public page, because nothing public renders a
+ * ProseMirror document: a reader gets `contentHtml`, the snapshot rendered at save time, and
+ * that is styled by `prose-post` above.
+ *
+ * It starts from `prose-post` on purpose, so the writer is looking at the type scale, the
+ * spacing and the colours the published post will actually have. An editor styled separately
+ * drifts, and the drift is only discovered after publishing.
+ *
+ * What is added here is the handful of things that exist while a document is being edited and
+ * not after: the placeholder, the checkbox in a task item, the outline on a selected node, and
+ * the column handles on a table. Element selectors again, and for the same reason: the markup
+ * belongs to ProseMirror and there is no JSX to hang a class on.
+ * ------------------------------------------------------------------------------------ */
+@utility prose-editor {
+  @apply prose-post;
+
+  font-size: var(--text-base);
+
+  /* Written by the Placeholder extension onto the empty node the caret is in. A pseudo
+     element rather than real text, so it is never selectable and never saved. */
+  & p.is-empty::before,
+  & h2.is-empty::before,
+  & h3.is-empty::before {
+    content: attr(data-placeholder);
+    color: var(--muted-foreground);
+    opacity: 0.6;
+    float: inline-start;
+    height: 0;
+    pointer-events: none;
+  }
+
+  /* Task lists carry their own marker, so the disc inherited from `ul` would double it. */
+  & ul[data-type="taskList"] {
+    list-style: none;
+    padding-inline-start: 0;
+  }
+
+  & ul[data-type="taskList"] li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6em;
+    padding-inline-start: 0;
+  }
+
+  & ul[data-type="taskList"] li > label {
+    margin-block-start: 0.35em;
+  }
+
+  & input[type="checkbox"] {
+    accent-color: var(--primary);
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+
+  /* A node selected as a whole, such as an image or an embed. The outline says which block
+     the next keystroke will replace. */
+  & .ProseMirror-selectednode {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-md);
+  }
+
+  & iframe {
+    aspect-ratio: 16 / 9;
+    inline-size: 100%;
+    block-size: auto;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+  }
+
+  /* A table being edited needs the cell boundaries visible even where a cell is empty, and
+     it needs somewhere to grab for the column resize handle. */
+  & table {
+    display: table;
+    table-layout: fixed;
+  }
+
+  & .selectedCell::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: color-mix(in oklab, var(--primary) 12%, transparent);
+    pointer-events: none;
+  }
+
+  & th,
+  & td {
+    position: relative;
+  }
+
+  & .column-resize-handle {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: -2px;
+    inline-size: 4px;
+    background: var(--primary);
+    cursor: col-resize;
+  }
+
+  /* The node view draws its own frame and caption, so the block styling that `prose-post`
+     puts on a bare `pre` would be a second border inside the first. The padding stays, since
+     it is the gutter the code sits in either way. */
+  & pre {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------
  * Fonts
  *
  * The three `--font-*-src` variables are written onto <html> by `next/font` in the root

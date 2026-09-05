@@ -52,6 +52,12 @@ export interface ISiteSettings extends Timestamped {
     cleaning: string;
   };
   defaultOgImage?: SiteImage;
+  /**
+   * The Tag Manager container, held here as well as in the environment so an analytics
+   * change does not need a deploy. The environment value is the fallback, which is what
+   * keeps a preview deployment reporting into the container its own env names.
+   */
+  gtmId?: string;
   eventSpace: {
     capacity: number;
     amenities: string[];
@@ -99,6 +105,9 @@ const siteSettingsSchema = new Schema<ISiteSettings>(
       cleaning: { type: String, default: "https://cleaning.bitnoxsolution.com" },
     },
     defaultOgImage: { type: imageSchema },
+    // Validated against `GTM-XXXXXXX` before it is written. It is interpolated into a script
+    // URL on every page, so a free-text field here would be a script injection site wide.
+    gtmId: { type: String, trim: true, maxlength: 20 },
     eventSpace: {
       capacity: { type: Number, default: EVENT_SPACE_CAPACITY, min: 1 },
       amenities: { type: [String], default: [] },

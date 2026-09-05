@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 
 import { ADMIN_ROOT, LOGIN_PATH } from "@/lib/auth/config";
 import { readSessionCookie } from "@/lib/auth/cookies";
@@ -20,7 +21,25 @@ import type { UserDTO } from "@/lib/dto";
  * same render share one database read.
  */
 
+/**
+ * Who is signed in, or nobody.
+ *
+ * `connection()` first, and it is not a formality. Reading the cookie already makes this
+ * request-bound, but the session check also compares the stored expiry against the clock, and
+ * Cache Components refuses to prerender a render that reaches an unstable value like
+ * `Date.now()` without being told the render is happening per request. Without this line the
+ * first route to call a guard outside a cached function fails to prerender, and the message it
+ * fails with points at a Mongoose line rather than at the session read that caused it.
+ *
+ * Declaring it here rather than in each caller is what makes it reliable. A page that reads the
+ * session alongside another query issues both at once, so whether anything had yet marked the
+ * render dynamic came down to which promise resolved first.
+ *
+ * It costs nothing that was not already true: every route that asks who is signed in is a route
+ * that cannot be part of a static shell.
+ */
 export const getSessionContext = cache(async (): Promise<SessionContext | null> => {
+  await connection();
   return readSession(await readSessionCookie());
 });
 

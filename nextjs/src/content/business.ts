@@ -21,6 +21,6 @@ export const BUSINESS = {
   latitude: 7.1353256,
   longitude: 3.3390519,
 } as const;
-// 7.1353256,3.3390519
+
 /** The address as one line, for the footer and anywhere a single string is wanted. */
 export const BUSINESS_ADDRESS_LINE = `${BUSINESS.streetAddress}, ${BUSINESS.locality}, ${BUSINESS.region}, ${BUSINESS.country}`;
