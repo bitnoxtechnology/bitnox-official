@@ -18,9 +18,9 @@ export const BUSINESS = {
   countryCode: "NG",
   phone: "+234 813 719 2766",
   email: "info@bitnoxsolution.com",
-  latitude: 7.1352459,
-  longitude: 3.3390846,
+  latitude: 7.1353256,
+  longitude: 3.3390519,
 } as const;
-
+// 7.1353256,3.3390519
 /** The address as one line, for the footer and anywhere a single string is wanted. */
 export const BUSINESS_ADDRESS_LINE = `${BUSINESS.streetAddress}, ${BUSINESS.locality}, ${BUSINESS.region}, ${BUSINESS.country}`;
