@@ -243,33 +243,33 @@ The highest-leverage SEO asset here, and the only page with a physical location 
 
 Starting from an empty collection, so there is no legacy content to accommodate.
 
-- [ ] `/blog` index: paginated, server-rendered, with tag and category filtering
-- [ ] `/blog/[slug]`: renders the stored HTML snapshot, shipping zero editor JavaScript to the browser
-- [ ] Server-side syntax highlighting for Tiptap code blocks (Shiki), matching the editor's language set
-- [ ] `/blog/tag/[tag]` archive pages
-- [ ] Reading time, published and updated dates, author byline, share links
-- [ ] Related-posts block driven by shared tags
-- [ ] `Article` and `BreadcrumbList` JSON-LD, canonical URL, per-post OG and Twitter metadata
-- [ ] Dynamic OG image generation via `opengraph-image.tsx` (`next/og`) using the post title and brand
-- [ ] `generateStaticParams` over published slugs, `use cache` with `cacheTag('blog')` and a per-slug tag
-- [ ] Handle non-published states: 404 for anonymous visitors, previewable by authenticated admins via a preview token
-- [ ] Scheduled publishing: a cron route handler that promotes `scheduled` posts whose `scheduledFor` has passed, then revalidates
-- [ ] Write three launch posts so the blog does not ship empty
+- [x] `/blog` index: paginated, server-rendered, with tag and category filtering
+- [x] `/blog/[slug]`: renders the stored HTML snapshot, shipping zero editor JavaScript to the browser
+- [x] Server-side syntax highlighting for Tiptap code blocks (Shiki), matching the editor's language set
+- [x] `/blog/tag/[tag]` archive pages
+- [x] Reading time, published and updated dates, author byline, share links
+- [x] Related-posts block driven by shared tags
+- [x] `Article` and `BreadcrumbList` JSON-LD, canonical URL, per-post OG and Twitter metadata
+- [x] Dynamic OG image generation via `opengraph-image.tsx` (`next/og`) using the post title and brand
+- [x] `generateStaticParams` over published slugs, `use cache` with `cacheTag('blog')` and a per-slug tag
+- [x] Handle non-published states: 404 for anonymous visitors, previewable by authenticated admins via a preview token
+- [x] Scheduled publishing: a cron route handler that promotes `scheduled` posts whose `scheduledFor` has passed, then revalidates
+- [x] Write three launch posts so the blog does not ship empty
 
 ---
 
 ## Phase 10: Remaining Public Pages
 
-- [ ] `/about`: ported and rewritten, with `Organization` and `AboutPage` schema
-- [ ] `/contact`: contact form (server action to `Enquiry` plus emails), NAP, map, hours
-- [ ] `/cleaning`: a short overview page, not a full service page. States that Bitnox offers laundry and cleaning, summarises the offering in a few lines, and hands off to `cleaning.bitnoxsolution.com` as the primary and repeated call to action. No pricing, no quote form, no service detail that competes with the subdomain.
-- [ ] `/cleaning` carries `<link rel="canonical">` pointing at `cleaning.bitnoxsolution.com`, so the subdomain accumulates the ranking signal rather than splitting it. Add the canonical only once the subdomain is confirmed live (Phase 0).
-- [ ] Keep `/cleaning` in the sitemap and indexable. It exists to route visitors who land on the main domain, and a canonical is sufficient without also removing it from the index.
-- [ ] No `Service` or `LocalBusiness` schema on `/cleaning`. That markup belongs on the subdomain, and duplicating it here competes with the page being pointed at.
-- [ ] `/portfolio` and `/portfolio/[slug]` project detail pages. Only a landing section exists today, and dedicated pages add indexable URLs.
-- [ ] `/terms` and `/privacy`: ported, indexable, with a last-updated date
-- [ ] Global 404 page with useful navigation rather than a dead end
-- [ ] Copy review pass on all pages in this phase
+- [x] `/about`: ported and rewritten, with `Organization` and `AboutPage` schema
+- [x] `/contact`: contact form (server action to `Enquiry` plus emails), NAP, map, hours
+- [x] `/cleaning`: a short overview page, not a full service page. States that Bitnox offers laundry and cleaning, summarises the offering in a few lines, and hands off to `cleaning.bitnoxsolution.com` as the primary and repeated call to action. No pricing, no quote form, no service detail that competes with the subdomain.
+- [x] `/cleaning` carries `<link rel="canonical">` pointing at `cleaning.bitnoxsolution.com`, so the subdomain accumulates the ranking signal rather than splitting it. Add the canonical only once the subdomain is confirmed live (Phase 0).
+- [x] Keep `/cleaning` in the sitemap and indexable. It exists to route visitors who land on the main domain, and a canonical is sufficient without also removing it from the index.
+- [x] No `Service` or `LocalBusiness` schema on `/cleaning`. That markup belongs on the subdomain, and duplicating it here competes with the page being pointed at.
+- [x] `/portfolio` and `/portfolio/[slug]` project detail pages. Only a landing section exists today, and dedicated pages add indexable URLs.
+- [x] `/terms` and `/privacy`: ported, indexable, with a last-updated date
+- [x] Global 404 page with useful navigation rather than a dead end
+- [x] Copy review pass on all pages in this phase
 
 ---
 

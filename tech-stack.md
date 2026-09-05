@@ -116,6 +116,7 @@ origin, which is the main operational difference from the legacy setup.
 | `npm run lint` | ESLint directly, since `next lint` was removed in Next 16 |
 | `npm run db:reset -- --confirm` | Drops every collection. Guarded by a database-name allowlist. |
 | `npm run db:seed` | Creates the first super_admin and the SiteSettings singleton |
+| `npm run db:seed:blog` | Writes the three launch posts from `src/content/launch-posts.ts`. Skips any whose slug already exists, so it never overwrites an edit. |
 | `npm run db:fresh` | Reset then seed, for development only |
 | `npm run test:auth` | Auth integration tests against `bitnox-official-test` |
 

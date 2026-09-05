@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { NotFoundLinks } from "@/components/site/not-found-links";
 import { StatusPage } from "@/components/site/status-page";
 
 /**
@@ -20,12 +21,15 @@ export const metadata: Metadata = {
 
 export default function PublicNotFound() {
   return (
-    <StatusPage
-      code="404"
-      title="That page is not here"
-      description="The link may be old, or the address may have a typo in it. The pages below are the usual starting points."
-      action={{ href: "/", label: "Go to the home page" }}
-      secondaryAction={{ href: "/contact", label: "Tell us what you were looking for" }}
-    />
+    <>
+      <StatusPage
+        code="404"
+        title="That page is not here"
+        description="The link may be old, or the address may have a typo in it. The pages below are the usual starting points."
+        action={{ href: "/", label: "Go to the home page" }}
+        secondaryAction={{ href: "/contact", label: "Tell us what you were looking for" }}
+      />
+      <NotFoundLinks />
+    </>
   );
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { Footer } from "@/components/site/footer";
 import { Navbar } from "@/components/site/navbar";
+import { NotFoundLinks } from "@/components/site/not-found-links";
 import { StatusPage } from "@/components/site/status-page";
 
 /**
@@ -31,6 +32,7 @@ export default function NotFound() {
           action={{ href: "/", label: "Go to the home page" }}
           secondaryAction={{ href: "/contact", label: "Tell us what you were looking for" }}
         />
+        <NotFoundLinks />
       </main>
       <Footer />
     </div>

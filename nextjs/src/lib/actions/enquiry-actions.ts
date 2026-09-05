@@ -12,8 +12,12 @@ import { requestMetadata } from "@/lib/auth/cookies";
 import { enforceRateLimits, RATE_LIMITS, retryAfterMessage } from "@/lib/auth/rate-limit";
 import { EVENT_SPACE_CAPACITY } from "@/lib/constants";
 import { connectToDatabase } from "@/lib/db";
-import { sendEnquiryNotification, sendEventSpaceAcknowledgement } from "@/lib/mail/site-mail";
-import { eventSpaceEnquirySchema } from "@/lib/validations/enquiry-schema";
+import {
+  sendContactAcknowledgement,
+  sendEnquiryNotification,
+  sendEventSpaceAcknowledgement,
+} from "@/lib/mail/site-mail";
+import { contactEnquirySchema, eventSpaceEnquirySchema } from "@/lib/validations/enquiry-schema";
 import { checkSpamGuard, spamMessage } from "@/lib/validations/spam-guard";
 import { Enquiry } from "@/models";
 
@@ -31,6 +35,9 @@ import { Enquiry } from "@/models";
  *
  * No cache tag is revalidated here. An enquiry changes nothing a public page renders.
  */
+
+const CONTACT_CONFIRMED =
+  "Thank you, your message is with us. We read every enquiry and reply within one to two working days, usually with a question or two before a number.";
 
 const CONFIRMED =
   "Your enquiry is with us. We will confirm whether the room is free on that date and come back with a rate, usually within one working day.";
@@ -153,4 +160,79 @@ function formatDay(day: string): string {
     month: "long",
     year: "numeric",
   }).format(date);
+}
+
+/**
+ * The general contact form.
+ *
+ * The same shape as the Event Space action above and deliberately so: spam guard, shared Zod
+ * schema, rate limit, write, then two emails that cannot fail the submission. What differs is
+ * that this one asks for less. A contact form is the first thing somebody sends before they
+ * know what they need, and every field beyond the four here is a reason to close the tab.
+ *
+ * The subject is optional and is used as the enquiry's subject when it is given. When it is
+ * not, the inbox falls back to a label naming where the message came from, so a list of
+ * enquiries never has a blank line in it.
+ */
+export async function contactEnquiryAction(
+  _previous: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const guard = checkSpamGuard(formData);
+  if (!guard.ok) return errorState(spamMessage(guard.reason));
+
+  const parsed = validate(contactEnquirySchema, {
+    name: text(formData, "name"),
+    email: text(formData, "email"),
+    phone: text(formData, "phone"),
+    subject: text(formData, "subject"),
+    message: text(formData, "message"),
+    source: text(formData, "source"),
+  });
+
+  if (!parsed.ok) return toActionState(parsed);
+
+  const { name, email, phone, subject, message, source } = parsed.data;
+
+  const { ip } = await requestMetadata();
+
+  const limit = await enforceRateLimits([
+    [`enquiry:ip:${ip}`, RATE_LIMITS.enquiryPerIp],
+    [`enquiry:email:${email}`, RATE_LIMITS.enquiryPerEmail],
+  ]);
+
+  if (!limit.allowed) {
+    return errorState(
+      `You have sent several messages already. ${retryAfterMessage(limit.retryAfterSeconds)} If it is urgent, call the office instead.`,
+    );
+  }
+
+  await connectToDatabase();
+
+  const enquiry = await Enquiry.create({
+    type: "contact",
+    status: "new",
+    name,
+    email,
+    phone,
+    subject,
+    message,
+    source,
+  });
+
+  await Promise.all([
+    sendContactAcknowledgement({ to: email, name, subject, message }),
+    sendEnquiryNotification({
+      heading: "New enquiry",
+      subject: subject ? `Enquiry: ${subject}` : `Enquiry from ${name}`,
+      name,
+      email,
+      phone,
+      details: subject ? [{ label: "Subject", value: subject }] : [],
+      message,
+      enquiryId: String(enquiry._id),
+    }),
+  ]);
+
+  return successState(CONTACT_CONFIRMED);
 }

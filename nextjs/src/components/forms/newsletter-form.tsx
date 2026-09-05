@@ -22,8 +22,14 @@ import { cn } from "@/lib/utils";
  * On success the form is replaced by the confirmation rather than sitting there with a
  * message beside it, because leaving a filled-in input on screen invites a second submission
  * of the same address.
+ *
+ * The field id is derived from `source` rather than fixed, because a blog post carries this
+ * form twice: once under the last paragraph and once in the footer. Two inputs sharing an id
+ * make the second label point at the first input, so tapping one label focuses the wrong box
+ * and a screen reader reads the same field twice.
  */
 export function NewsletterForm({ source, className }: { source: string; className?: string }) {
+  const fieldId = `newsletter-email-${source}`;
   const { form, state, pending, submit } = useActionForm<SubscribeInput>({
     schema: subscribeSchema,
     action: subscribeAction,
@@ -46,10 +52,10 @@ export function NewsletterForm({ source, className }: { source: string; classNam
       <input type="hidden" name="source" value={source} />
 
       <Field data-invalid={Boolean(errors.email)}>
-        <FieldLabel htmlFor="newsletter-email">Email address</FieldLabel>
+        <FieldLabel htmlFor={fieldId}>Email address</FieldLabel>
         <div className="flex flex-col gap-2 sm:flex-row">
           <Input
-            id="newsletter-email"
+            id={fieldId}
             type="email"
             autoComplete="email"
             placeholder="you@company.com"
