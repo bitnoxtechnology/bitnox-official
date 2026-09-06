@@ -186,7 +186,13 @@ export function AdminShell({
           </DropdownMenu>
         </header>
 
-        <main id="main" className="min-w-0 flex-1 px-4 py-8 sm:px-6 lg:px-8">
+        {/*
+          `main-content`, not `main`. The skip link lives in the root layout and is therefore
+          on the admin as well as on the public site, and it targets `#main-content`. This
+          said `id="main"`, so tabbing into an admin page and pressing enter on the first
+          control moved focus nowhere and left the visitor at the top of the sidebar.
+        */}
+        <main id="main-content" className="min-w-0 flex-1 px-4 py-8 sm:px-6 lg:px-8">
           {children}
         </main>
       </div>

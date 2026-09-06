@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
+import { InlineLink } from "@/components/site/inline-link";
 import { EDU_URL } from "@/content/properties";
 
 /**
@@ -74,11 +75,7 @@ export function NotFoundLinks() {
           <p className="text-muted-foreground mt-8 text-center text-sm">
             Individual services live under{" "}
             <span className="text-foreground font-mono text-xs">/services/</span>, and the ones we
-            offer are listed on the{" "}
-            <Link href="/services" className="text-primary font-medium">
-              services page
-            </Link>
-            .
+            offer are listed on the <InlineLink href="/services">services page</InlineLink>.
           </p>
         </div>
       </div>

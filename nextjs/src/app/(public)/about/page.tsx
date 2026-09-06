@@ -8,7 +8,7 @@ import { Reveal, SplitText, StaggerGroup } from "@/components/motion";
 import { AboutPageSchema } from "@/components/seo/AboutPageSchema";
 import { BreadcrumbListSchema } from "@/components/seo/BreadcrumbListSchema";
 import { OrganizationSchema } from "@/components/seo/OrganizationSchema";
-import { CTABand, SectionHeading } from "@/components/site";
+import { CTABand, InlineLink, SectionHeading } from "@/components/site";
 import { ActionButton } from "@/components/site/action-button";
 import { RichText } from "@/components/site/rich-text";
 import { SERVICE_ICONS } from "@/components/site/service-icons";
@@ -255,11 +255,9 @@ export default function AboutPage() {
               </h3>
               <p className="text-muted-foreground text-base">
                 The same building holds the{" "}
-                <Link href="/event-space" className="text-primary font-medium">
-                  Bitnox Event Space
-                </Link>
-                , which seats {EVENT_SPACE_CAPACITY} and is booked for conferences, meetings,
-                workshops and classes.
+                <InlineLink href="/event-space">Bitnox Event Space</InlineLink>, which seats{" "}
+                {EVENT_SPACE_CAPACITY} and is booked for conferences, meetings, workshops and
+                classes.
               </p>
             </div>
 

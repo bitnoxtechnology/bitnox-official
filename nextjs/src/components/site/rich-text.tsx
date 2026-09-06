@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { Fragment } from "react";
 
-import { isExternalHref, parseInline } from "@/lib/inline-text";
+import { InlineLink } from "@/components/site/inline-link";
+import { parseInline } from "@/lib/inline-text";
 
 /**
  * A sentence from a content module, rendered with its bold, links and inline code.
@@ -14,10 +14,10 @@ import { isExternalHref, parseInline } from "@/lib/inline-text";
  * It reads the same syntax `src/lib/blog/blocks.ts` reads, through the same parser, so a
  * paragraph moved from a blog post into the about page renders identically.
  *
- * Internal links go through `next/link` and external ones through a plain anchor, which is
- * the same split the rest of the site makes: `edu.` and `cleaning.` are separate
- * applications on separate origins, and prefetching a URL this router cannot handle is a
- * wasted request.
+ * Links go through `InlineLink`, which is what puts the underline on them. A link in a
+ * sentence cannot be distinguished by colour alone, and these are links in sentences by
+ * definition. It also owns the internal and external split, so a URL on `edu.` or
+ * `cleaning.` is a plain anchor rather than a prefetch this router cannot serve.
  *
  * A server component, and it must stay one. It is rendered inside long-form copy on every
  * static page, and there is nothing interactive in a paragraph.
@@ -27,25 +27,10 @@ export function RichText({ text }: { text: string }) {
     <>
       {parseInline(text).map((segment, index) => {
         if (segment.href) {
-          const external = isExternalHref(segment.href);
-
-          if (external) {
-            return (
-              <a
-                key={index}
-                href={segment.href}
-                rel="noopener"
-                className="text-primary font-medium"
-              >
-                {segment.text}
-              </a>
-            );
-          }
-
           return (
-            <Link key={index} href={segment.href} className="text-primary font-medium">
+            <InlineLink key={index} href={segment.href}>
               {segment.text}
-            </Link>
+            </InlineLink>
           );
         }
 

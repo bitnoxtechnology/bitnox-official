@@ -4,7 +4,7 @@ import * as React from "react";
 import { Slot } from "radix-ui";
 
 import { cn } from "@/lib/utils";
-import { ENTER, EASE, MOTION_OK, gsap, useGSAP } from "./gsap";
+import { ENTER, EASE, MOTION_OK, useGsapEffect } from "./gsap";
 
 type StaggerGroupProps = React.ComponentProps<"div"> & {
   /**
@@ -51,8 +51,8 @@ export function StaggerGroup({
   const ref = React.useRef<HTMLDivElement>(null);
   const Comp = asChild ? Slot.Root : "div";
 
-  useGSAP(
-    () => {
+  useGsapEffect(
+    (gsap) => {
       const group = ref.current;
       if (!group) return;
 

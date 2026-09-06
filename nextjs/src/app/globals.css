@@ -643,8 +643,20 @@
 
   --destructive: #ff6b6b;
 
+  /* The glass hairline. Decorative: it separates one band of the page from the next and
+     never carries information on its own, so WCAG 1.4.11 does not apply to it and the brand
+     value stands. */
   --border: rgba(5, 228, 252, 0.15);
-  --input: rgba(5, 228, 252, 0.22);
+
+  /* The edge of a text field, and a different question from the one above.
+     `Input` and `Textarea` are transparent apart from a `bg-input/30` wash, so this line is
+     the only thing that says where the box is. That makes it a user interface component
+     under WCAG 1.4.11 and puts it on a 3:1 floor. At the 0.22 it was set to it measured
+     1.59:1 against the page ground, which `npm run audit:contrast` fails on. 0.45 measures
+     3.23:1 there and clears 3:1 on the card, muted, secondary, popover and accent surfaces
+     as well, which is every ground a field is drawn on. */
+  --input: rgba(5, 228, 252, 0.45);
+
   --ring: #05e4fc;
 
   /* A single-hue ramp. Admin charts compare quantities, not categories, and five arbitrary

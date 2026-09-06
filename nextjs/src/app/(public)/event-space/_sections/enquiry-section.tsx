@@ -1,5 +1,5 @@
 import { EventSpaceEnquiryForm } from "@/components/forms/event-space-enquiry-form";
-import { SectionHeading } from "@/components/site";
+import { InlineLink, SectionHeading } from "@/components/site";
 import { QUOTE_FACTORS } from "@/content/event-space";
 import { BUSINESS } from "@/content/business";
 
@@ -46,9 +46,9 @@ export function EnquirySection() {
 
               <p className="text-muted-foreground mt-8 text-sm">
                 If your date is inside a week, call{" "}
-                <a href={`tel:${BUSINESS.phone.replace(/\s/g, "")}`} className="text-primary">
+                <InlineLink href={`tel:${BUSINESS.phone.replace(/\s/g, "")}`}>
                   {BUSINESS.phone}
-                </a>{" "}
+                </InlineLink>{" "}
                 instead. A room is either free that day or it is not, and that is a faster
                 conversation than a form.
               </p>

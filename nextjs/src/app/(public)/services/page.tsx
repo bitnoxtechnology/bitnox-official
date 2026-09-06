@@ -5,7 +5,7 @@ import { CapabilityMatrix } from "@/components/graphics/capability-matrix";
 import { ServiceGraphic } from "@/components/graphics/service-graphics";
 import { Reveal, SplitText, StaggerGroup } from "@/components/motion";
 import { BreadcrumbListSchema } from "@/components/seo/BreadcrumbListSchema";
-import { CTABand, SectionHeading } from "@/components/site";
+import { CTABand, InlineLink, SectionHeading } from "@/components/site";
 import { ActionButton } from "@/components/site/action-button";
 import { LogoMarquee } from "@/components/site/logo-marquee";
 import { SERVICE_ICONS } from "@/components/site/service-icons";
@@ -184,15 +184,9 @@ export default function ServicesPage() {
           <Reveal delay={0.1}>
             <p className="text-muted-foreground measure mt-8 text-sm">
               In-person training runs in the{" "}
-              <Link href="/event-space" className="text-primary font-medium">
-                Bitnox Event Space
-              </Link>
-              , which seats sixty and can also be booked for conferences, workshops and meetings.
-              Course listings, dates and enrolment are on{" "}
-              <a href={EDU_URL} rel="noopener" className="text-primary font-medium">
-                Bitnox Education
-              </a>
-              .
+              <InlineLink href="/event-space">Bitnox Event Space</InlineLink>, which seats sixty and
+              can also be booked for conferences, workshops and meetings. Course listings, dates and
+              enrolment are on <InlineLink href={EDU_URL}>Bitnox Education</InlineLink>.
             </p>
           </Reveal>
         </div>

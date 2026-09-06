@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { MOTION_OK, gsap, useGSAP } from "./gsap";
+import { MOTION_OK, useGsapEffect } from "./gsap";
 
 type SplitTextProps = {
   /** The heading. A newline starts a new line, which is how the hero breaks its two clauses. */
@@ -61,8 +61,8 @@ export function SplitText({
   const ref = React.useRef<HTMLElement>(null);
   const lines = text.split("\n");
 
-  useGSAP(
-    () => {
+  useGsapEffect(
+    (gsap) => {
       const element = ref.current;
       if (!element) return;
 

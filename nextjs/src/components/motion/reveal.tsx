@@ -4,7 +4,7 @@ import * as React from "react";
 import { Slot } from "radix-ui";
 
 import { cn } from "@/lib/utils";
-import { ENTER, EASE, MOTION_OK, gsap, useGSAP } from "./gsap";
+import { ENTER, EASE, MOTION_OK, useGsapEffect } from "./gsap";
 
 type RevealProps = React.ComponentProps<"div"> & {
   /** Seconds to wait after the trigger fires. For sequencing two neighbouring reveals. */
@@ -32,10 +32,10 @@ type RevealProps = React.ComponentProps<"div"> & {
  * The workhorse. Wrap a heading, a paragraph, a card, an image.
  *
  * The animation is a `from`, so the element's resting state is what the server rendered and
- * the start state is applied by GSAP before the first paint (`useGSAP` runs in a layout
- * effect). Nothing is hidden in the markup, which matters twice over: with JavaScript off,
- * or with reduced motion on, the content is simply there, and a crawler reading the HTML
- * sees a normal document rather than a page of invisible elements.
+ * the start state is applied by GSAP once the library has loaded. Nothing is hidden in the
+ * markup, which matters three times over: with JavaScript off, with reduced motion on, or in
+ * the moment before the deferred GSAP chunk arrives, the content is simply there, and a
+ * crawler reading the HTML sees a normal document rather than a page of invisible elements.
  */
 export function Reveal({
   delay = 0,
@@ -51,8 +51,8 @@ export function Reveal({
   const ref = React.useRef<HTMLDivElement>(null);
   const Comp = asChild ? Slot.Root : "div";
 
-  useGSAP(
-    () => {
+  useGsapEffect(
+    (gsap) => {
       const element = ref.current;
       if (!element) return;
 

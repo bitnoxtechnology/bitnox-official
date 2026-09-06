@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { MOTION_OK, gsap, useGSAP } from "@/components/motion/gsap";
+import { MOTION_OK, useGsapEffect } from "@/components/motion/gsap";
 
 type StatCounterProps = {
   /**
@@ -59,8 +59,8 @@ export function StatCounter({
     [decimals],
   );
 
-  useGSAP(
-    () => {
+  useGsapEffect(
+    (gsap) => {
       const element = ref.current;
       if (!element || typeof value !== "number") return;
 

@@ -4,7 +4,7 @@
  * Four primitives cover every animation on the site. A page composes them; a page never
  * imports `gsap` directly and never checks `prefers-reduced-motion` itself. If something
  * needs movement these do not express, the primitive gets a prop rather than the page
- * getting a `useGSAP` call.
+ * reaching for `useGsapEffect` on its own.
  */
 export { Reveal } from "./reveal";
 export { StaggerGroup } from "./stagger-group";

@@ -7,7 +7,7 @@ import { ContactForm } from "@/components/forms/contact-form";
 import { Reveal, SplitText } from "@/components/motion";
 import { BreadcrumbListSchema } from "@/components/seo/BreadcrumbListSchema";
 import { LocalBusinessSchema } from "@/components/seo/LocalBusinessSchema";
-import { CTABand, SectionHeading } from "@/components/site";
+import { CTABand, InlineLink, SectionHeading } from "@/components/site";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BUSINESS } from "@/content/business";
 import { EDU_URL } from "@/content/properties";
@@ -189,13 +189,10 @@ export default async function ContactPage() {
                       Booking the room
                     </dt>
                     <dd className="text-muted-foreground mt-2 text-sm">
-                      The{" "}
-                      <Link href="/event-space" className="text-primary font-medium">
-                        Event Space
-                      </Link>{" "}
-                      seats {EVENT_SPACE_CAPACITY}. Bookings go through the form on that page, which
-                      asks for the date, the layout and how many people are coming, so the first
-                      reply can be an answer.
+                      The <InlineLink href="/event-space">Event Space</InlineLink> seats{" "}
+                      {EVENT_SPACE_CAPACITY}. Bookings go through the form on that page, which asks
+                      for the date, the layout and how many people are coming, so the first reply
+                      can be an answer.
                     </dd>
                   </div>
                 </dl>

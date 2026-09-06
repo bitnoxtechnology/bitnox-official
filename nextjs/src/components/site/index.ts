@@ -15,6 +15,7 @@
  * dependencies into the bundle of every page that wanted a `SectionHeading`.
  */
 export { SectionHeading } from "./section-heading";
+export { InlineLink } from "./inline-link";
 export { GlassCard } from "./glass-card";
 export { CTABand } from "./cta-band";
 export { StatCounter } from "./stat-counter";

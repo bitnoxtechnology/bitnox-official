@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { EASE, MOTION_OK, gsap, useGSAP } from "./gsap";
+import { EASE, MOTION_OK, useGsapEffect } from "./gsap";
 
 type ParallaxProps = React.ComponentProps<"div"> & {
   /**
@@ -38,8 +38,8 @@ type ParallaxProps = React.ComponentProps<"div"> & {
 export function Parallax({ speed = 8, axis = "y", className, children, ...props }: ParallaxProps) {
   const ref = React.useRef<HTMLDivElement>(null);
 
-  useGSAP(
-    () => {
+  useGsapEffect(
+    (gsap) => {
       const element = ref.current;
       if (!element) return;
 

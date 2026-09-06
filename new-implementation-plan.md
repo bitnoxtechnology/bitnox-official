@@ -313,18 +313,23 @@ Starting from an empty collection, so there is no legacy content to accommodate.
 
 ## Phase 13: Performance, Accessibility and QA
 
-- [ ] Audit client and server component boundaries, pushing `"use client"` as far down the tree as possible
-- [ ] Verify no editor, GSAP or admin code lands in any public-page bundle, using `@next/bundle-analyzer`
-- [ ] All images through `next/image` with explicit sizes, hero images `priority`, everything else lazy
-- [ ] Lighthouse at 95 or above on Performance, Accessibility, Best Practices and SEO for the home page, a service page, the Event Space and a blog post
-- [ ] Core Web Vitals: LCP under 2.5s, CLS under 0.1, INP under 200ms on a throttled mobile profile
-- [ ] Keyboard navigation through nav, forms, editor and admin tables, with visible focus rings throughout
-- [ ] Colour contrast check. The cyan-on-dark palette needs verifying against WCAG AA, especially muted `#94a3b8` on `#0a0a0a`.
-- [ ] Semantic landmarks, one `h1` per page, descriptive alt text everywhere
-- [ ] Test on mobile Safari and Chrome Android, not just a narrow desktop viewport
-- [ ] Server-action tests for auth, blog CRUD and the enquiry flows
-- [ ] Full manual pass: every form submits, every email arrives, every admin action persists and revalidates
-- [ ] Final copy audit across the whole site against the banned-words and banned-characters lists
+Measurements, what was fixed and what is left are recorded in `phase-13-qa.md`. Four of these
+checks are now scripts that exit non-zero on a violation: `npm run audit` runs all of them,
+`npm run audit:lighthouse` takes the Lighthouse numbers, and `npm test` runs both server-side
+suites.
+
+- [x] Audit client and server component boundaries, pushing `"use client"` as far down the tree as possible
+- [x] Verify no editor, GSAP or admin code lands in any public-page bundle, using `@next/bundle-analyzer`. Editor and admin were already clean. GSAP was not: it sat in the first script tag of every public page, and now loads through a dynamic import. `npm run audit:bundles` is the re-runnable form of this check, and it is what found the GSAP problem. `@next/bundle-analyzer` itself turned out not to work here, since it is incompatible with Turbopack builds; `npm run analyze` is Next's own `experimental-analyze` instead.
+- [x] All images through `next/image` with explicit sizes, hero images `priority`, everything else lazy
+- [ ] Lighthouse at 95 or above on Performance, Accessibility, Best Practices and SEO for the home page, a service page, the Event Space and a blog post. **Accessibility, Best Practices and SEO are 100 on all four pages on both form factors. Desktop performance is 93 to 97. Mobile performance is 53 to 69 and is the one Phase 13 target not met.** GSAP costs 3.0s of main-thread CPU on the throttled mobile profile, more than react-dom's 2.3s, and it is spent on decorative entrances. `phase-13-qa.md` sets out the three ways forward; the choice is a design decision, not a QA fix.
+- [ ] Core Web Vitals: LCP under 2.5s, CLS under 0.1, INP under 200ms on a throttled mobile profile. **CLS is 0 everywhere. Desktop meets all three. Mobile LCP is 2.9 to 5.3s and TBT, the lab stand-in for INP, is 1.46 to 2.78s.** Same cause, same decision.
+- [ ] Keyboard navigation through nav, forms, editor and admin tables, with visible focus rings throughout. The decidable half is automated and passing: `npm run audit:a11y` fails on a positive `tabindex`, an unlabelled control or a link with no accessible name. It found that the skip link targeted an id no admin page rendered, that the admin auth screens had no `<main>`, and that the six-digit sign-in code had no accessible name; all three are fixed. Whether the tab order matches the reading order needs a person and a keyboard against the preview.
+- [x] Colour contrast check. The cyan-on-dark palette needs verifying against WCAG AA, especially muted `#94a3b8` on `#0a0a0a`. Measured by `npm run audit:contrast` from the tokens themselves: the muted grey is 7.72:1, which clears AAA for body copy. It also found a form field's edge at 1.59:1, below the 3:1 that WCAG 1.4.11 requires of a control's boundary, and `--input` was raised until it cleared it on every surface a field is drawn on.
+- [x] Semantic landmarks, one `h1` per page, descriptive alt text everywhere. 50 rendered pages pass, and Lighthouse scores accessibility 100 on all four sampled pages after the `link-in-text-block` fix.
+- [ ] Test on mobile Safari and Chrome Android, not just a narrow desktop viewport. Needs the devices; the checklist is in `phase-13-qa.md` and belongs against the Phase 14 preview.
+- [x] Server-action tests for auth, blog CRUD and the enquiry flows. 21 new tests in `scripts/test-actions.ts` calling the actions the way a form calls them, against a real database, alongside the 28 in `test-auth.ts`.
+- [ ] Full manual pass: every form submits, every email arrives, every admin action persists and revalidates. The action half is covered by `npm run test:actions`, including the revalidation tags. Confirming that a Resend email lands in an inbox needs the preview; checklist in `phase-13-qa.md`.
+- [x] Final copy audit across the whole site against the banned-words and banned-characters lists. `npm run audit:copy` reads the rendered prose of 27 public pages, so it covers the seeded blog posts and the metadata as well as the JSX. Clean.
 
 ---
 
