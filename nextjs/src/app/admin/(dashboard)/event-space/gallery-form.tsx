@@ -62,7 +62,7 @@ export function GalleryForm({ images }: { images: EventSpaceImageDTO[] }) {
   const rows = gallery ?? [];
 
   return (
-    <form action={submit} className="space-y-6" noValidate>
+    <form onSubmit={submit} className="space-y-6" noValidate>
       <MultiImageUpload
         name="images"
         label="Photographs"

@@ -45,7 +45,7 @@ export function EventSpaceDetailsForm({
   const { errors } = form.formState;
 
   return (
-    <form action={submit} className="max-w-xl space-y-6" noValidate>
+    <form onSubmit={submit} className="max-w-xl space-y-6" noValidate>
       <Field data-invalid={Boolean(errors.capacity)}>
         <FieldLabel htmlFor="capacity">Seated capacity</FieldLabel>
         <Input

@@ -36,12 +36,15 @@ export function InviteForm() {
     schema: inviteUserSchema,
     action: inviteUserAction,
     defaultValues: { name: "", email: "", role: "admin" },
+    // The screen stays open to invite the next person, so it empties rather than keeping the
+    // last invitation in the boxes where it can be sent twice.
+    resetOnSuccess: true,
   });
 
   const { errors } = form.formState;
 
   return (
-    <form action={submit} className="space-y-6" noValidate>
+    <form onSubmit={submit} className="space-y-6" noValidate>
       <FieldGroup>
         <Field data-invalid={Boolean(errors.name)}>
           <FieldLabel htmlFor="name">Name</FieldLabel>

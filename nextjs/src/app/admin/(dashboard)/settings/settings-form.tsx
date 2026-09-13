@@ -80,7 +80,7 @@ export function SettingsForm({ settings }: { settings: SiteSettingsDTO | null })
   const [ogImage, setOgImage] = useJsonField<SiteSettingsInput, ImageValue>(form, "defaultOgImage");
 
   return (
-    <form action={submit} className="mt-8 max-w-2xl space-y-12" noValidate>
+    <form onSubmit={submit} className="mt-8 max-w-2xl space-y-12" noValidate>
       <section aria-labelledby="nap" className="space-y-5">
         <div>
           <h2 id="nap" className="text-foreground text-sm font-semibold">

@@ -22,7 +22,7 @@ export function ForgotPasswordForm() {
   const sent = state.status === "success";
 
   return (
-    <form action={submit} className="space-y-6" noValidate>
+    <form onSubmit={submit} className="space-y-6" noValidate>
       <FieldGroup>
         <Field data-invalid={Boolean(errors.email)}>
           <FieldLabel htmlFor="email">Email</FieldLabel>

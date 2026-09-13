@@ -14,12 +14,15 @@ export function ChangePasswordForm() {
     schema: changePasswordSchema,
     action: changePasswordAction,
     defaultValues: { currentPassword: "", password: "", confirmPassword: "" },
+    // The next use of this form starts from nothing, and three filled password boxes left on
+    // screen after a successful change are three the browser may offer to save again.
+    resetOnSuccess: true,
   });
 
   const { errors } = form.formState;
 
   return (
-    <form action={submit} className="space-y-6" noValidate>
+    <form onSubmit={submit} className="space-y-6" noValidate>
       <FieldGroup>
         <Field data-invalid={Boolean(errors.currentPassword)}>
           <FieldLabel htmlFor="currentPassword">Current password</FieldLabel>

@@ -50,7 +50,7 @@ export function NewsletterForm({ source, className }: { source: string; classNam
   }
 
   return (
-    <form action={submit} className={cn("grid gap-3", className)} noValidate>
+    <form onSubmit={submit} className={cn("grid gap-3", className)} noValidate>
       <SpamGuard />
       <input type="hidden" name="source" value={source} />
 

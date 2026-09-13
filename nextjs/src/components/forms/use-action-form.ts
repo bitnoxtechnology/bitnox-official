@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useActionState, useEffect, useRef, useTransition } from "react";
+import { useActionState, useEffect, useRef, useTransition, type FormEvent } from "react";
 import {
   useForm,
   type DefaultValues,
@@ -36,8 +36,14 @@ export interface ActionForm<TValues extends FieldValues> {
   form: UseFormReturn<TValues>;
   state: ActionState;
   pending: boolean;
-  /** Pass to the form's `action` prop. */
-  submit: (formData: FormData) => void;
+  /**
+   * Pass to the form's `onSubmit` prop, never to `action`.
+   *
+   * The type is what enforces that: `action` takes a function of `FormData`, this one takes a
+   * submit event, so `action={submit}` does not typecheck. See the note on `submit` below for
+   * why the distinction matters.
+   */
+  submit: (event: FormEvent<HTMLFormElement>) => void;
 }
 
 /**
@@ -55,6 +61,24 @@ export function useActionForm<TValues extends FieldValues>(options: {
   defaultValues: DefaultValues<TValues>;
   /** Pushed to the `dataLayer` once, when the server returns a success. */
   analytics?: DataLayerEvent;
+  /**
+   * Empty the form once the server confirms a success.
+   *
+   * True for the forms whose next use starts from nothing, an invitation or a password
+   * change. False, and default, for every form that edits a record and stays on screen: there,
+   * clearing the fields after a save reads as the save having lost the content.
+   */
+  resetOnSuccess?: boolean;
+  /**
+   * A last chance to add to the posted `FormData`, run after the client-side pass has
+   * succeeded and before the action is dispatched.
+   *
+   * For a value that is read at submit time rather than rendered into the form. The sign-in
+   * forms take `next` from the address bar on purpose, so that nothing on the page depends on
+   * `searchParams` and the form is not held behind a Suspense fallback; there is therefore no
+   * input for `FormData` to pick it up from.
+   */
+  prepare?: (formData: FormData) => void;
 }): ActionForm<TValues> {
   const [state, dispatch, actionPending] = useActionState(options.action, idleState);
   const [transitionPending, startTransition] = useTransition();
@@ -65,7 +89,7 @@ export function useActionForm<TValues extends FieldValues>(options: {
     mode: "onBlur",
   });
 
-  const { setError } = form;
+  const { setError, reset } = form;
 
   /**
    * One event per success, not one per render.
@@ -75,7 +99,7 @@ export function useActionForm<TValues extends FieldValues>(options: {
    * a success that stays on screen reports one conversion, and the flag clears when the form
    * leaves the success state, so a second submission is reported again.
    */
-  const { analytics } = options;
+  const { analytics, resetOnSuccess } = options;
   const reported = useRef(false);
 
   useEffect(() => {
@@ -91,6 +115,10 @@ export function useActionForm<TValues extends FieldValues>(options: {
   }, [state, analytics]);
 
   useEffect(() => {
+    if (state.status === "success" && resetOnSuccess) reset();
+  }, [state, resetOnSuccess, reset]);
+
+  useEffect(() => {
     if (state.status !== "error" || !state.fieldErrors) return;
 
     for (const [field, messages] of Object.entries(state.fieldErrors)) {
@@ -99,12 +127,42 @@ export function useActionForm<TValues extends FieldValues>(options: {
     }
   }, [state, setError]);
 
-  const submit = (formData: FormData) => {
+  /**
+   * Submitted through `onSubmit`, and deliberately not through `<form action>`.
+   *
+   * React resets an uncontrolled form once a function passed to `action` returns. React Hook
+   * Form writes its default values straight onto each input's `value` and never onto
+   * `defaultValue`, so what the browser resets those inputs back to is the empty string. On a
+   * form that redirects away the reset is invisible. On one that edits a record and stays on
+   * screen, every registered field goes blank the moment a save succeeds, which reads as the
+   * save having thrown the content away.
+   *
+   * The second failure is the one that actually lost data. The fields go blank but the hook's
+   * own values do not, so the next save passes the client-side check against the values it
+   * still holds and posts the empty inputs. Optional fields are then written empty and
+   * required ones are rejected by the server, which is a save that appears to do nothing at
+   * all. The SEO title and the meta description on the project form were being emptied exactly
+   * this way, one save after the value was typed.
+   *
+   * `preventDefault` here is what stops the reset, because the reset belongs to the action
+   * path and this submission never enters it. `FormData` is still read from the form element,
+   * rather than assembled from the hook's values, so the fields no component registers, the
+   * honeypot and the timestamp on the public forms, still reach the server. It is read
+   * synchronously because `currentTarget` is null by the time the validation promise settles.
+   */
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
     // `trigger` is async, so the dispatch happens after an await and needs its own
     // transition. Without one React warns that the action was dispatched outside a
     // transition and the pending flag never turns on.
     void form.trigger().then((valid) => {
-      if (valid) startTransition(() => dispatch(formData));
+      if (!valid) return;
+
+      options.prepare?.(formData);
+      startTransition(() => dispatch(formData));
     });
   };
 

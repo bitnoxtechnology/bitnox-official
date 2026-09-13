@@ -128,12 +128,25 @@ export function RichTextEditor({
     },
   });
 
+  /**
+   * The instance this selector is handed is not always a live editor.
+   *
+   * `useEditorState` caches the snapshot it last emitted and replaces it only when a
+   * transaction fires, so a render that lands between one editor being thrown away and the
+   * next one producing its first transaction still runs this against the old instance. Tiptap
+   * empties `extensionStorage` as the last act of `destroy()`, which is the one thing on a
+   * discarded editor that is not merely stale but gone, so reaching straight through to
+   * `characterCount.characters()` threw and took the whole admin page down for the figure
+   * under the editor. Reading the storage into a variable first means the optional chain that
+   * was already there for the null instance covers the emptied one as well.
+   */
   const counts = useEditorState({
     editor,
-    selector: ({ editor: instance }) => ({
-      characters: instance?.storage.characterCount.characters() ?? 0,
-      words: instance?.storage.characterCount.words() ?? 0,
-    }),
+    selector: ({ editor: instance }) => {
+      const counter = instance?.storage.characterCount;
+
+      return { characters: counter?.characters() ?? 0, words: counter?.words() ?? 0 };
+    },
   });
 
   const savedAt = useDraftAutosave(draftScope, json, dirty);

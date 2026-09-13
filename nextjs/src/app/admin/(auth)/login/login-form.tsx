@@ -16,6 +16,9 @@ export function LoginForm() {
     schema: loginSchema,
     action: loginAction,
     defaultValues: { email: "", password: "" },
+    // `next` is read from the address bar rather than rendered into an input, so the form
+    // itself has nothing to post it from.
+    prepare: (formData) => formData.set("next", nextFromLocation()),
   });
 
   const { errors } = form.formState;
@@ -23,14 +26,7 @@ export function LoginForm() {
   return (
     // `noValidate` hands validation to the shared schema. The browser's own messages say
     // different things in different browsers and cannot be styled.
-    <form
-      action={(formData) => {
-        formData.set("next", nextFromLocation());
-        submit(formData);
-      }}
-      className="space-y-6"
-      noValidate
-    >
+    <form onSubmit={submit} className="space-y-6" noValidate>
       <FieldGroup>
         <Field data-invalid={Boolean(errors.email)}>
           <FieldLabel htmlFor="email">Email</FieldLabel>

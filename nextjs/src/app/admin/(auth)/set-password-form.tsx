@@ -35,7 +35,7 @@ export function SetPasswordForm({
   const { errors } = form.formState;
 
   return (
-    <form action={submit} className="space-y-6" noValidate>
+    <form onSubmit={submit} className="space-y-6" noValidate>
       <input type="hidden" {...form.register("token")} />
 
       <FieldGroup>

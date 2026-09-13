@@ -110,7 +110,7 @@ export function ProjectForm({ project, action, submitLabel }: ProjectFormProps) 
   }, [state.status, draftScope]);
 
   return (
-    <form action={submit} className="mt-8" noValidate>
+    <form onSubmit={submit} className="mt-8" noValidate>
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="min-w-0 space-y-6">
           <Field data-invalid={Boolean(errors.title)}>

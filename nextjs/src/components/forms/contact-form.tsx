@@ -52,7 +52,7 @@ export function ContactForm({
   }
 
   return (
-    <form action={submit} className={cn("grid gap-5", className)} noValidate>
+    <form onSubmit={submit} className={cn("grid gap-5", className)} noValidate>
       <SpamGuard />
       <input type="hidden" name="source" value={source} />
 

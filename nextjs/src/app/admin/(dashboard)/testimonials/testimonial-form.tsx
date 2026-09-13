@@ -79,7 +79,7 @@ export function TestimonialForm({
   const [avatar, setAvatar] = useJsonField<TestimonialInput, ImageValue>(form, "image");
 
   return (
-    <form action={submit} className="mt-8 max-w-2xl space-y-6" noValidate>
+    <form onSubmit={submit} className="mt-8 max-w-2xl space-y-6" noValidate>
       <Field data-invalid={Boolean(errors.testimonialText)}>
         <FieldLabel htmlFor="testimonialText">The quote</FieldLabel>
         <Textarea

@@ -35,6 +35,9 @@ export function OtpForm() {
     schema: otpSchema,
     action: verifyOtpAction,
     defaultValues: { code: "" },
+    // As on the sign-in form: read from the address bar at submit time, so there is no input
+    // carrying it.
+    prepare: (formData) => formData.set("next", nextFromLocation()),
   });
 
   const [resendState, resend, resending] = useActionState(resendOtpAction, idleState);
@@ -42,14 +45,7 @@ export function OtpForm() {
 
   return (
     <div className="space-y-6">
-      <form
-        action={(formData) => {
-          formData.set("next", nextFromLocation());
-          submit(formData);
-        }}
-        className="space-y-6"
-        noValidate
-      >
+      <form onSubmit={submit} className="space-y-6" noValidate>
         <Field data-invalid={Boolean(errors.code)}>
           <Controller
             control={form.control}
