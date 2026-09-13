@@ -48,3 +48,33 @@ export function useJsonField<TValues extends FieldValues, TValue>(
 
   return [value, setValue];
 }
+
+/**
+ * The message for a JSON field, wherever Zod put it.
+ *
+ * The field itself is a string in the form, but the schema pipes that string into the image
+ * object, so a failure lands on the part that failed: `ogImage.alt`, not `ogImage`. React Hook
+ * Form mirrors that shape, which means the obvious `errors.ogImage?.message` is undefined for
+ * the only failure these fields actually have. Missing alt text is then a form that refuses to
+ * submit, with nothing on the screen saying why, because the browser-side pass runs before the
+ * action is dispatched and the message it produced is rendered nowhere.
+ *
+ * Walking the tree rather than naming `.alt` keeps this true of the list fields as well, where
+ * the message sits under an index, and of any field the image schema grows later. `ref` holds a
+ * DOM node and `types` the other rules that failed, so neither is descended into.
+ */
+export function jsonFieldError(error: unknown): string | undefined {
+  if (typeof error !== "object" || error === null) return undefined;
+
+  const { message } = error as { message?: unknown };
+  if (typeof message === "string" && message !== "") return message;
+
+  for (const [key, nested] of Object.entries(error)) {
+    if (key === "ref" || key === "types" || key === "type") continue;
+
+    const found = jsonFieldError(nested);
+    if (found) return found;
+  }
+
+  return undefined;
+}

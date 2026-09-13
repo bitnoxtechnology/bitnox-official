@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { SERVICE_SLUGS } from "@/lib/constants";
+import { objectId } from "@/lib/validations/admin-schema";
 import { checkboxField, optionalText, statusField } from "@/lib/validations/content-fields";
 import { imageValueSchema, jsonField } from "@/lib/validations/image-schema";
 
@@ -13,6 +14,8 @@ import { imageValueSchema, jsonField } from "@/lib/validations/image-schema";
  *
  * `relatedProject` is an id or nothing. The select posts an empty string when nobody chose
  * one, which is not a valid ObjectId, so it becomes `undefined` before it reaches the model.
+ * Anything else is checked for the shape of an id here rather than left to Mongoose, which
+ * raises a cast error the action does not catch and the form cannot show.
  */
 export const testimonialSchema = z.object({
   clientName: z.string().trim().min(2, "Enter the name").max(160, "That name is too long"),
@@ -24,17 +27,18 @@ export const testimonialSchema = z.object({
     .min(30, "A quote of at least thirty characters")
     .max(2000, "Keep the quote under two thousand characters"),
   rating: z
-    .union([z.literal(""), z.coerce.number().int().min(1).max(5)])
+    .union([z.literal(""), z.coerce.number().int().min(1).max(5)], {
+      message: "A rating is one to five, or not given",
+    })
     .optional()
     .transform((value) => (typeof value === "number" ? value : undefined)),
   image: jsonField(imageValueSchema),
   relatedProject: z
-    .string()
-    .trim()
+    .union([z.literal(""), objectId])
     .optional()
     .transform((value) => (value ? value : undefined)),
   service: z
-    .union([z.literal(""), z.enum(SERVICE_SLUGS)])
+    .union([z.literal(""), z.enum(SERVICE_SLUGS)], { message: "Choose one of the services" })
     .optional()
     .transform((value) => (value ? value : undefined)),
   status: statusField,

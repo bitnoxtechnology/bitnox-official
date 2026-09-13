@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Controller } from "react-hook-form";
 import { ExternalLink } from "lucide-react";
 
-import { useJsonField } from "@/components/admin/json-field";
+import { jsonFieldError, useJsonField } from "@/components/admin/json-field";
 import { SerpPreview } from "@/components/admin/serp-preview";
 import { clearDraft, RichTextEditor } from "@/components/editor/rich-text-editor";
 import { FormAlert } from "@/components/forms/form-alert";
@@ -170,7 +170,7 @@ export function ProjectForm({ project, action, submitLabel }: ProjectFormProps) 
             folder="portfolio"
             value={gallery ?? []}
             onChange={setGallery}
-            error={errors.images?.message}
+            error={jsonFieldError(errors.images)}
           />
 
           <section aria-labelledby="seo-panel" className="space-y-5 pt-4">
@@ -214,6 +214,7 @@ export function ProjectForm({ project, action, submitLabel }: ProjectFormProps) 
               value={ogImage}
               onChange={setOgImage}
               description="Optional. The cover image is used when this is empty."
+              error={jsonFieldError(errors.ogImage)}
             />
           </section>
         </div>
@@ -361,7 +362,7 @@ export function ProjectForm({ project, action, submitLabel }: ProjectFormProps) 
               folder="portfolio"
               value={cover}
               onChange={setCover}
-              error={errors.coverImage?.message}
+              error={jsonFieldError(errors.coverImage)}
             />
           </div>
 

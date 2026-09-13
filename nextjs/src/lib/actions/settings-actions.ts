@@ -2,12 +2,70 @@
 
 import { revalidateTag } from "next/cache";
 
-import { ok, text, toActionState, validate, type ActionState } from "@/lib/actions/action-state";
+import {
+  ok,
+  text,
+  toActionState,
+  validate,
+  type ActionState,
+  type FormInput,
+} from "@/lib/actions/action-state";
 import { withSuperAdmin } from "@/lib/actions/with-auth";
 import { CACHE_TAGS } from "@/lib/cache";
 import { connectToDatabase } from "@/lib/db";
-import { siteSettingsSchema } from "@/lib/validations/site-settings-schema";
+import { siteSettingsSchema, type SiteSettingsInput } from "@/lib/validations/site-settings-schema";
 import { SiteSettings } from "@/models";
+
+/**
+ * The one form on the site whose fields are nested, and the one place that has to know it.
+ *
+ * `register("nap.phone")` writes that path into the input's `name`, so the browser posts
+ * `nap.phone` and a reader that asks for `phone` gets an empty string back. Every required
+ * field in the block then failed at once and the screen could not be saved at all, whatever
+ * was typed into it. The prefix is stated once per group here rather than spelled into
+ * twenty-two separate reads, so it cannot be applied to some of a group and not the rest.
+ *
+ * The return type is the keys that were actually read, which is what lets the three
+ * annotations below do the same job `FormInput` does for the flat forms: a field added to the
+ * schema and left out of the list beneath it fails `npm run typecheck` rather than saving
+ * empty. What no type can check is the prefix itself, since a wrong key is a perfectly well
+ * typed string. That is what the settings test in `scripts/test-actions.ts` is for: it builds
+ * its `FormData` with the names the form registers.
+ */
+function group<TKey extends string>(
+  formData: FormData,
+  prefix: string,
+  keys: readonly TKey[],
+): { [K in TKey]: unknown } {
+  return Object.fromEntries(keys.map((key) => [key, text(formData, `${prefix}.${key}`)])) as {
+    [K in TKey]: unknown;
+  };
+}
+
+const NAP_FIELDS = [
+  "legalName",
+  "streetAddress",
+  "locality",
+  "region",
+  "country",
+  "countryCode",
+  "phone",
+  "email",
+  "latitude",
+  "longitude",
+] as const;
+
+const SOCIAL_FIELDS = [
+  "facebook",
+  "instagram",
+  "linkedin",
+  "x",
+  "youtube",
+  "tiktok",
+  "whatsapp",
+] as const;
+
+const SISTER_SITE_FIELDS = ["education", "cleaning"] as const;
 
 /**
  * Site settings.
@@ -28,35 +86,27 @@ import { SiteSettings } from "@/models";
  */
 export const saveSiteSettingsAction = withSuperAdmin<[FormData], { ok: true }>(
   async (_user, formData) => {
-    const parsed = validate(siteSettingsSchema, {
-      nap: {
-        legalName: text(formData, "legalName"),
-        streetAddress: text(formData, "streetAddress"),
-        locality: text(formData, "locality"),
-        region: text(formData, "region"),
-        country: text(formData, "country"),
-        countryCode: text(formData, "countryCode"),
-        phone: text(formData, "phone"),
-        email: text(formData, "email"),
-        latitude: text(formData, "latitude"),
-        longitude: text(formData, "longitude"),
-      },
-      socialLinks: {
-        facebook: text(formData, "facebook"),
-        instagram: text(formData, "instagram"),
-        linkedin: text(formData, "linkedin"),
-        x: text(formData, "x"),
-        youtube: text(formData, "youtube"),
-        tiktok: text(formData, "tiktok"),
-        whatsapp: text(formData, "whatsapp"),
-      },
-      sisterSites: {
-        education: text(formData, "education"),
-        cleaning: text(formData, "cleaning"),
-      },
+    const nap: FormInput<SiteSettingsInput["nap"]> = group(formData, "nap", NAP_FIELDS);
+    const socialLinks: FormInput<SiteSettingsInput["socialLinks"]> = group(
+      formData,
+      "socialLinks",
+      SOCIAL_FIELDS,
+    );
+    const sisterSites: FormInput<SiteSettingsInput["sisterSites"]> = group(
+      formData,
+      "sisterSites",
+      SISTER_SITE_FIELDS,
+    );
+
+    const input: FormInput<SiteSettingsInput> = {
+      nap,
+      socialLinks,
+      sisterSites,
       defaultOgImage: text(formData, "defaultOgImage"),
       gtmId: text(formData, "gtmId"),
-    });
+    };
+
+    const parsed = validate(siteSettingsSchema, input);
 
     if (!parsed.ok) return parsed;
 

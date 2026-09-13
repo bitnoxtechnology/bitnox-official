@@ -2,7 +2,7 @@
 
 import { Controller } from "react-hook-form";
 
-import { useJsonField } from "@/components/admin/json-field";
+import { jsonFieldError, useJsonField } from "@/components/admin/json-field";
 import { FormAlert } from "@/components/forms/form-alert";
 import { ImageUpload } from "@/components/forms/image-upload";
 import { SubmitButton } from "@/components/forms/submit-button";
@@ -35,6 +35,15 @@ import { testimonialSchema, type TestimonialInput } from "@/lib/validations/test
  * The related project links the quote to the case study it belongs to, which is what lets a
  * reader check the claim. It is optional because plenty of good testimonials are about work
  * that has no public write-up.
+ *
+ * All three selects offer a "none" item, because Radix will not take an item whose value is
+ * empty. That item is a label and nothing more: the root's `value` stays the real field value,
+ * empty string included. Radix mirrors the root's value into the hidden native select that
+ * puts the field into `FormData`, so a root holding the sentinel posts the literal string
+ * "none" to the server. React Hook Form still holds the empty string, so the browser-side pass
+ * agreed the form was fine and the server was the only side that ever saw it: the service
+ * failed its enum and the related project reached Mongoose as an id to cast. Both of those are
+ * the ordinary case, a quote with no service and no case study behind it.
  */
 
 const STATUS_LABELS: Record<PublishStatus, string> = {
@@ -157,6 +166,7 @@ export function TestimonialForm({
         value={avatar}
         onChange={setAvatar}
         description="Optional. Their initials are shown when there is no photograph."
+        error={jsonFieldError(errors.image)}
       />
 
       <div className="grid gap-5 sm:grid-cols-2">
@@ -168,7 +178,7 @@ export function TestimonialForm({
             render={({ field }) => (
               <Select
                 name={field.name}
-                value={field.value || "none"}
+                value={field.value ?? ""}
                 onValueChange={(value) => field.onChange(value === "none" ? "" : value)}
               >
                 <SelectTrigger id="service" className="w-full" onBlur={field.onBlur}>
@@ -200,7 +210,7 @@ export function TestimonialForm({
             render={({ field }) => (
               <Select
                 name={field.name}
-                value={field.value || "none"}
+                value={field.value ?? ""}
                 onValueChange={(value) => field.onChange(value === "none" ? "" : value)}
               >
                 <SelectTrigger id="relatedProject" className="w-full" onBlur={field.onBlur}>

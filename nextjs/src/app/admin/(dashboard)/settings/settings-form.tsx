@@ -1,6 +1,6 @@
 "use client";
 
-import { useJsonField } from "@/components/admin/json-field";
+import { jsonFieldError, useJsonField } from "@/components/admin/json-field";
 import { FormAlert } from "@/components/forms/form-alert";
 import { ImageUpload } from "@/components/forms/image-upload";
 import { SubmitButton } from "@/components/forms/submit-button";
@@ -239,6 +239,7 @@ export function SettingsForm({ settings }: { settings: SiteSettingsDTO | null })
           value={ogImage}
           onChange={setOgImage}
           description="Used when a page has no image of its own. It is what appears when a link to the site is pasted into WhatsApp or LinkedIn."
+          error={jsonFieldError(errors.defaultOgImage)}
         />
       </section>
 

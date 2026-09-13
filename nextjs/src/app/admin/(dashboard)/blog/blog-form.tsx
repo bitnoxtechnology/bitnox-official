@@ -6,7 +6,7 @@ import { Controller } from "react-hook-form";
 import { ExternalLink, Eye } from "lucide-react";
 import { toast } from "sonner";
 
-import { useJsonField } from "@/components/admin/json-field";
+import { jsonFieldError, useJsonField } from "@/components/admin/json-field";
 import { SerpPreview } from "@/components/admin/serp-preview";
 import { clearDraft, RichTextEditor } from "@/components/editor/rich-text-editor";
 import { FormAlert } from "@/components/forms/form-alert";
@@ -255,6 +255,7 @@ export function BlogForm({ post, action, submitLabel }: BlogFormProps) {
               value={ogImage}
               onChange={setOgImage}
               description="Optional. The cover image is used when this is empty."
+              error={jsonFieldError(errors.ogImage)}
             />
           </section>
         </div>
@@ -346,7 +347,7 @@ export function BlogForm({ post, action, submitLabel }: BlogFormProps) {
               folder="blog"
               value={cover}
               onChange={setCover}
-              error={errors.coverImage?.message}
+              error={jsonFieldError(errors.coverImage)}
             />
           </div>
 

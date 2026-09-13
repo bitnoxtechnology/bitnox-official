@@ -38,12 +38,17 @@ import {
 } from "@/lib/actions/blog-actions";
 import { contactEnquiryAction, eventSpaceEnquiryAction } from "@/lib/actions/enquiry-actions";
 import { createProjectAction, updateProjectAction } from "@/lib/actions/portfolio-actions";
+import { saveSiteSettingsAction } from "@/lib/actions/settings-actions";
+import {
+  createTestimonialAction,
+  updateTestimonialAction,
+} from "@/lib/actions/testimonial-actions";
 import { randomToken } from "@/lib/auth/crypto";
 import { CACHE_TAGS, itemTag } from "@/lib/cache";
 import { connectToDatabase, disconnectFromDatabase } from "@/lib/db";
 import { editorExtensions } from "@/lib/blog/extensions";
 import { FORM_STARTED_FIELD, HONEYPOT_FIELD, MIN_FILL_MS } from "@/lib/validations/spam-guard";
-import { Blog, Enquiry, Project, RateLimit } from "@/models";
+import { Blog, Enquiry, Project, RateLimit, SiteSettings, Testimonial } from "@/models";
 
 const TEST_DATABASE = "bitnox-official-test";
 
@@ -64,6 +69,7 @@ const suffix = randomToken(6)
   .replace(/[^a-z0-9]/g, "");
 
 const AUTHOR = { id: "6710000000000000000000a1", role: "admin" as const };
+const OWNER = { id: "6710000000000000000000a2", role: "super_admin" as const };
 
 /**
  * The minimum Tiptap document the blog schema will accept, as the string a form posts.
@@ -139,6 +145,77 @@ function publicForm(fields: Record<string, string>): FormData {
   return form;
 }
 
+/**
+ * The settings form as the browser posts it, with the names the inputs actually carry.
+ *
+ * This is the whole point of the block below. The settings screen is the only form on the
+ * site whose fields are nested, and React Hook Form writes the path it was registered with
+ * into the input's `name`, so what arrives is `nap.phone` rather than `phone`. The action read
+ * the flat names for a while, found nothing under any of them, and failed every required field
+ * at once on a screen that had been filled in correctly. Spelling the dotted keys out here is
+ * what makes that a failing test rather than a form nobody can save.
+ */
+function settingsForm(overrides: Record<string, string> = {}): FormData {
+  const form = new FormData();
+  const fields: Record<string, string> = {
+    "nap.legalName": "Bitnox Technology Solutions",
+    "nap.streetAddress": "24 Last Floor, Majek Kembo Plaza, beside Chicken Republic, Lalubu Street",
+    "nap.locality": "Abeokuta",
+    "nap.region": "Ogun State",
+    "nap.country": "Nigeria",
+    "nap.countryCode": "NG",
+    "nap.phone": "+234 813 719 2766",
+    "nap.email": "info@bitnoxsolution.com",
+    "nap.latitude": "7.1352459",
+    "nap.longitude": "3.3390846",
+    "sisterSites.education": "https://edu.bitnoxsolution.com",
+    "sisterSites.cleaning": "https://cleaning.bitnoxsolution.com",
+    "socialLinks.facebook": "",
+    "socialLinks.instagram": "",
+    "socialLinks.linkedin": "",
+    "socialLinks.x": "",
+    "socialLinks.youtube": "",
+    "socialLinks.tiktok": "",
+    "socialLinks.whatsapp": "",
+    defaultOgImage: "",
+    gtmId: "",
+    ...overrides,
+  };
+
+  for (const [key, value] of Object.entries(fields)) form.set(key, value);
+  return form;
+}
+
+/**
+ * A testimonial as the form posts it.
+ *
+ * The three selects on that screen each offer a "none" item, because Radix will not take an
+ * item with an empty value, and the default here is what a quote with no service and no case
+ * study behind it posts: the empty string, not the sentinel. A root select holding the
+ * sentinel posts the word "none", which is what these tests exist to catch.
+ */
+function testimonialForm(overrides: Record<string, string> = {}): FormData {
+  const form = new FormData();
+  const fields: Record<string, string> = {
+    clientName: `Ada Okonkwo ${suffix}`,
+    position: "Operations Manager",
+    company: "Kembo Plant Hire",
+    testimonialText:
+      "They replaced the two spreadsheets we were reconciling by hand with one order book, and we stopped losing jobs between them.",
+    rating: "",
+    image: "",
+    relatedProject: "",
+    service: "",
+    status: "published",
+    featured: "",
+    sortOrder: "0",
+    ...overrides,
+  };
+
+  for (const [key, value] of Object.entries(fields)) form.set(key, value);
+  return form;
+}
+
 const enquiryEmail = (label: string) => `${label}-${suffix}@example.test`;
 
 /** A `YYYY-MM-DD` a given number of days from today, which is the form a date input posts. */
@@ -177,6 +254,8 @@ after(async () => {
     Project.deleteMany({ slug: new RegExp(suffix) }).exec(),
     Enquiry.deleteMany({ email: new RegExp(suffix) }).exec(),
     RateLimit.deleteMany({ key: new RegExp(suffix) }).exec(),
+    SiteSettings.deleteMany({ key: "site" }).exec(),
+    Testimonial.deleteMany({ clientName: new RegExp(suffix) }).exec(),
   ]);
   await disconnectFromDatabase();
 });
@@ -727,5 +806,138 @@ describe("the enquiry flows", () => {
       "the first four are not",
     );
     assert.equal(await Enquiry.countDocuments({ email }).exec(), 4);
+  });
+});
+// --- Site settings ------------------------------------------------------------
+
+describe("site settings", () => {
+  beforeEach(() => {
+    request.signedInAs = OWNER;
+  });
+
+  it("saves the nested blocks the form posts, and invalidates the settings tag", async () => {
+    const result = await saveSiteSettingsAction(settingsForm());
+    assert.ok(result.ok, result.ok ? "" : result.message);
+
+    const settings = await SiteSettings.findOne({ key: "site" }).exec();
+
+    assert.equal(settings?.nap.legalName, "Bitnox Technology Solutions");
+    assert.equal(settings?.nap.locality, "Abeokuta");
+    assert.equal(settings?.nap.countryCode, "NG");
+    assert.equal(settings?.nap.email, "info@bitnoxsolution.com");
+    assert.equal(settings?.nap.latitude, 7.1352459);
+    assert.equal(settings?.nap.longitude, 3.3390846);
+    assert.equal(settings?.sisterSites.education, "https://edu.bitnoxsolution.com");
+    assert.deepEqual(revalidated, [CACHE_TAGS.siteSettings]);
+  });
+
+  it("keeps a social link and the container, and clears both when they are emptied", async () => {
+    const saved = await saveSiteSettingsAction(
+      settingsForm({
+        "socialLinks.linkedin": "https://www.linkedin.com/company/bitnox",
+        gtmId: "gtm-abcd123",
+      }),
+    );
+    assert.ok(saved.ok, saved.ok ? "" : saved.message);
+
+    const withLinks = await SiteSettings.findOne({ key: "site" }).exec();
+    assert.equal(withLinks?.socialLinks.linkedin, "https://www.linkedin.com/company/bitnox");
+    // Uppercased on the way in, because the container ID is written into a script URL.
+    assert.equal(withLinks?.gtmId, "GTM-ABCD123");
+
+    const cleared = await saveSiteSettingsAction(settingsForm());
+    assert.ok(cleared.ok, cleared.ok ? "" : cleared.message);
+
+    const emptied = await SiteSettings.findOne({ key: "site" }).exec();
+    assert.equal(emptied?.socialLinks.linkedin, undefined);
+    assert.equal(emptied?.gtmId, undefined);
+  });
+
+  it("reports the field that is wrong under the name the input carries", async () => {
+    const state = await saveSiteSettingsAction(settingsForm({ "nap.countryCode": "Nigeria" }));
+
+    assert.equal(state.ok, false);
+    assert.ok(
+      state.ok ? false : state.fieldErrors?.["nap.countryCode"],
+      "the error has to be keyed the way the form registered the field, or it renders nowhere",
+    );
+  });
+
+  it("refuses an admin who is not a super admin, and writes nothing", async () => {
+    request.signedInAs = AUTHOR;
+
+    const before = await SiteSettings.findOne({ key: "site" }).exec();
+
+    assert.equal(
+      await redirectFrom(() =>
+        saveSiteSettingsAction(settingsForm({ "nap.locality": "Somewhere else" })),
+      ),
+      "/admin?denied=super_admin",
+    );
+
+    const after = await SiteSettings.findOne({ key: "site" }).exec();
+    assert.equal(after?.nap.locality, before?.nap.locality);
+    assert.deepEqual(revalidated, []);
+  });
+});
+// --- Testimonials -------------------------------------------------------------
+
+describe("testimonial CRUD", () => {
+  beforeEach(() => {
+    request.signedInAs = AUTHOR;
+  });
+
+  it("saves a quote with no service and no related project", async () => {
+    const result = await createTestimonialAction(testimonialForm());
+    assert.ok(result.ok, result.ok ? "" : result.message);
+
+    const testimonial = await Testimonial.findById(result.data.id).exec();
+    assert.equal(testimonial?.service, undefined);
+    assert.equal(testimonial?.relatedProject, undefined);
+    assert.equal(testimonial?.rating, undefined);
+    assert.deepEqual(revalidated, [CACHE_TAGS.testimonials]);
+  });
+
+  it("refuses the select's own placeholder rather than storing it", async () => {
+    const clientName = `Refused ${suffix}`;
+
+    const service = await createTestimonialAction(testimonialForm({ clientName, service: "none" }));
+    assert.equal(service.ok, false);
+    assert.ok(service.ok ? false : service.fieldErrors?.service);
+
+    // Left unchecked this one parses, and Mongoose is the first thing to object to it, by
+    // throwing a cast error out of the action where no form can show it.
+    const related = await createTestimonialAction(
+      testimonialForm({ clientName, relatedProject: "none" }),
+    );
+    assert.equal(related.ok, false);
+    assert.ok(related.ok ? false : related.fieldErrors?.relatedProject);
+
+    assert.equal(await Testimonial.countDocuments({ clientName }).exec(), 0);
+  });
+
+  it("keeps a service and a related project that were chosen", async () => {
+    const project = await createProjectAction(projectForm({ slug: `quoted-work-${suffix}` }));
+    assert.ok(project.ok, project.ok ? "" : project.message);
+    // Only the tags, not the session: `resetStubs` signs the caller out as well.
+    revalidated.length = 0;
+
+    const created = await createTestimonialAction(
+      testimonialForm({ service: "software-development", relatedProject: project.data.id }),
+    );
+    assert.ok(created.ok, created.ok ? "" : created.message);
+
+    const saved = await Testimonial.findById(created.data.id).exec();
+    assert.equal(saved?.service, "software-development");
+    assert.equal(String(saved?.relatedProject), project.data.id);
+
+    // Clearing both is the ordinary edit, and it has to remove them rather than leave the
+    // previous choice in place under an empty select.
+    const updated = await updateTestimonialAction(created.data.id, testimonialForm());
+    assert.ok(updated.ok, updated.ok ? "" : updated.message);
+
+    const cleared = await Testimonial.findById(created.data.id).exec();
+    assert.equal(cleared?.service, undefined);
+    assert.equal(cleared?.relatedProject, undefined);
   });
 });

@@ -159,7 +159,20 @@ export function useActionForm<TValues extends FieldValues>(options: {
     // transition. Without one React warns that the action was dispatched outside a
     // transition and the pending flag never turns on.
     void form.trigger().then((valid) => {
-      if (!valid) return;
+      if (!valid) {
+        /**
+         * `trigger` validates and stops there. `handleSubmit`, which this does not use because
+         * the action wants `FormData` rather than parsed values, would also move to the first
+         * field that failed. Without that step a refused save looks like a button that does
+         * nothing: the message exists, and it is wherever on the page that field happens to be.
+         * Nothing happens for a field no component registered, an image field's hidden input
+         * among them, which is why those render their message beside the control instead.
+         */
+        const [first] = Object.keys(form.formState.errors);
+        if (first) form.setFocus(first as Path<TValues>);
+
+        return;
+      }
 
       options.prepare?.(formData);
       startTransition(() => dispatch(formData));

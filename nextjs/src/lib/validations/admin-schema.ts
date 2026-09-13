@@ -15,7 +15,14 @@ import { ENQUIRY_STATUSES, ENQUIRY_TYPES, PUBLISH_STATUSES, USER_ROLES } from "@
  * a filter on a status that does not exist.
  */
 
-const objectId = z
+/**
+ * A Mongo id, checked for shape before it reaches a query or a document.
+ *
+ * Exported because it is not only an argument to a button: a content form that points at
+ * another record carries one too, and a value Mongoose cannot cast throws out of the action
+ * rather than returning a message the form can show.
+ */
+export const objectId = z
   .string()
   .trim()
   .regex(/^[0-9a-f]{24}$/i, "That record could not be found");

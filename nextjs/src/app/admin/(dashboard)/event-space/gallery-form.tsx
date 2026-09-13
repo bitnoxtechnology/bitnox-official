@@ -2,7 +2,7 @@
 
 import { Controller } from "react-hook-form";
 
-import { useJsonField } from "@/components/admin/json-field";
+import { jsonFieldError, useJsonField } from "@/components/admin/json-field";
 import { FormAlert } from "@/components/forms/form-alert";
 import { MultiImageUpload } from "@/components/forms/multi-image-upload";
 import { SubmitButton } from "@/components/forms/submit-button";
@@ -77,7 +77,7 @@ export function GalleryForm({ images }: { images: EventSpaceImageDTO[] }) {
           const current = Number(form.getValues("coverIndex") ?? 0);
           if (current >= next.length) form.setValue("coverIndex", "0");
         }}
-        error={errors.images?.message}
+        error={jsonFieldError(errors.images)}
         description="Drag a row, or use the arrows, to change the order they appear in."
       />
 
