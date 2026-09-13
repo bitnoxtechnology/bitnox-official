@@ -26,6 +26,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { getPreviewLinkAction, suggestExcerptAction } from "@/lib/actions/blog-actions";
+import { normalizeDoc } from "@/lib/blog/doc";
 import { PUBLISH_STATUSES, type PublishStatus } from "@/lib/constants";
 import { blogSchema, type BlogInput } from "@/lib/validations/blog-schema";
 import type { ImageValue } from "@/lib/validations/image-schema";
@@ -82,7 +83,7 @@ export function BlogForm({ post, action, submitLabel }: BlogFormProps) {
       title: post?.title ?? "",
       slug: post?.slug ?? "",
       excerpt: post?.excerpt ?? "",
-      contentJson: JSON.stringify(post?.contentJson ?? { type: "doc" }),
+      contentJson: JSON.stringify(normalizeDoc(post?.contentJson)),
       coverImage: post?.coverImage ? JSON.stringify(post.coverImage) : "",
       ogImage: post?.ogImage ? JSON.stringify(post.ogImage) : "",
       status: post?.status ?? "draft",

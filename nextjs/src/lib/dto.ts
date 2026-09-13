@@ -1,3 +1,4 @@
+import { normalizeDoc } from "@/lib/blog/doc";
 import type {
   EnquiryStatus,
   EnquiryType,
@@ -197,7 +198,7 @@ export function toBlog(blog: IBlog): BlogDTO {
 }
 
 export function toBlogEditor(blog: IBlog): BlogEditorDTO {
-  return { ...toBlog(blog), contentJson: blog.contentJson ?? {} };
+  return { ...toBlog(blog), contentJson: normalizeDoc(blog.contentJson) };
 }
 
 // --- Project ----------------------------------------------------------------
@@ -270,7 +271,7 @@ export function toProject(project: IProject): ProjectDTO {
 }
 
 export function toProjectEditor(project: IProject): ProjectEditorDTO {
-  return { ...toProject(project), contentJson: project.contentJson ?? {} };
+  return { ...toProject(project), contentJson: normalizeDoc(project.contentJson) };
 }
 
 // --- Testimonial ------------------------------------------------------------

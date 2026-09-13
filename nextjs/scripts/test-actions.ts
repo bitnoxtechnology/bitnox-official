@@ -26,6 +26,9 @@ import { databaseNameFromUri, fail } from "./bootstrap";
 import assert from "node:assert/strict";
 import { after, before, beforeEach, describe, it } from "node:test";
 
+import { getSchema } from "@tiptap/core";
+import { Node as ProseMirrorNode } from "@tiptap/pm/model";
+
 import {
   createBlogAction,
   deleteBlogAction,
@@ -34,11 +37,13 @@ import {
   updateBlogAction,
 } from "@/lib/actions/blog-actions";
 import { contactEnquiryAction, eventSpaceEnquiryAction } from "@/lib/actions/enquiry-actions";
+import { createProjectAction, updateProjectAction } from "@/lib/actions/portfolio-actions";
 import { randomToken } from "@/lib/auth/crypto";
 import { CACHE_TAGS, itemTag } from "@/lib/cache";
 import { connectToDatabase, disconnectFromDatabase } from "@/lib/db";
+import { editorExtensions } from "@/lib/blog/extensions";
 import { FORM_STARTED_FIELD, HONEYPOT_FIELD, MIN_FILL_MS } from "@/lib/validations/spam-guard";
-import { Blog, Enquiry, RateLimit } from "@/models";
+import { Blog, Enquiry, Project, RateLimit } from "@/models";
 
 const TEST_DATABASE = "bitnox-official-test";
 
@@ -101,6 +106,24 @@ function blogForm(overrides: Record<string, string> = {}): FormData {
   return form;
 }
 
+function projectForm(overrides: Record<string, string> = {}): FormData {
+  const form = new FormData();
+  const fields: Record<string, string> = {
+    title: `A test project ${suffix}`,
+    slug: `a-test-project-${suffix}`,
+    summary:
+      "A single order book for a plant hire office that had been running two spreadsheets and reconciling them by hand.",
+    contentJson: CONTENT,
+    status: "draft",
+    order: "0",
+    featured: "",
+    ...overrides,
+  };
+
+  for (const [key, value] of Object.entries(fields)) form.set(key, value);
+  return form;
+}
+
 /**
  * A public form as a browser would post it: past the honeypot and past the timing floor.
  *
@@ -151,6 +174,7 @@ beforeEach(resetStubs);
 after(async () => {
   await Promise.all([
     Blog.deleteMany({ slug: new RegExp(suffix) }).exec(),
+    Project.deleteMany({ slug: new RegExp(suffix) }).exec(),
     Enquiry.deleteMany({ email: new RegExp(suffix) }).exec(),
     RateLimit.deleteMany({ key: new RegExp(suffix) }).exec(),
   ]);
@@ -350,6 +374,139 @@ describe("blog CRUD", () => {
 });
 
 // --- The enquiry flows ---------------------------------------------------------
+
+// --- Portfolio ----------------------------------------------------------------
+
+/**
+ * The portfolio form, and the two ways it lost what was typed into it.
+ *
+ * Both had the same cause: a value the form collected and the action never looked at. The two
+ * SEO fields were posted by the browser on every save and dropped by the parse. The editor's
+ * placeholder document was posted in a shape the editor's own schema rejects, and stored
+ * verbatim. Neither failed loudly. The record saved, and the field looked broken rather than
+ * unread, which is why both are pinned here rather than left to be noticed again.
+ */
+describe("portfolio CRUD", () => {
+  const schema = getSchema(editorExtensions);
+
+  /**
+   * Throws unless the stored document is one the editor will actually open.
+   *
+   * `check` is ProseMirror's own validator and the same rules the browser enforces, so this
+   * catches a document that violates the schema without needing a DOM to open it in.
+   */
+  function assertEditable(contentJson: unknown, message: string): void {
+    assert.ok(contentJson, message);
+    ProseMirrorNode.fromJSON(schema, contentJson as Record<string, unknown>).check();
+  }
+
+  beforeEach(() => {
+    request.signedInAs = AUTHOR;
+  });
+
+  it("keeps the SEO title and the meta description a create posted", async () => {
+    const slug = `seo-created-${suffix}`;
+    const result = await createProjectAction(
+      projectForm({
+        slug,
+        seoTitle: "Plant Hire Order Book, Built in Abeokuta",
+        seoDescription:
+          "How a plant hire office replaced two spreadsheets with one order book, and what it changed about booking a job.",
+      }),
+    );
+
+    assert.ok(result.ok, result.ok ? "" : result.message);
+
+    const project = await Project.findById(result.data.id).exec();
+    assert.equal(project?.seoTitle, "Plant Hire Order Book, Built in Abeokuta");
+    assert.match(project?.seoDescription ?? "", /^How a plant hire office replaced/);
+  });
+
+  it("keeps them across an update, and clears them when they are emptied", async () => {
+    const slug = `seo-updated-${suffix}`;
+    const created = await createProjectAction(projectForm({ slug }));
+    assert.ok(created.ok, created.ok ? "" : created.message);
+
+    const updated = await updateProjectAction(
+      created.data.id,
+      projectForm({
+        slug,
+        seoTitle: "One Order Book Instead of Two Spreadsheets",
+        seoDescription: "What the plant hire office asked for, and what was built for it.",
+      }),
+    );
+    assert.ok(updated.ok, updated.ok ? "" : updated.message);
+
+    const saved = await Project.findById(created.data.id).exec();
+    assert.equal(saved?.seoTitle, "One Order Book Instead of Two Spreadsheets");
+    assert.equal(
+      saved?.seoDescription,
+      "What the plant hire office asked for, and what was built for it.",
+    );
+
+    // Blank means "use the title and the summary", so the override is removed rather than kept
+    // as an empty string that the public page would then render as an empty meta tag.
+    const cleared = await updateProjectAction(
+      created.data.id,
+      projectForm({ slug, seoTitle: "", seoDescription: "" }),
+    );
+    assert.ok(cleared.ok, cleared.ok ? "" : cleared.message);
+
+    const reread = await Project.findById(created.data.id).exec();
+    assert.equal(reread?.seoTitle, undefined);
+    assert.equal(reread?.seoDescription, undefined);
+  });
+
+  it("refuses an SEO title longer than a search result shows, and writes nothing", async () => {
+    const slug = `seo-too-long-${suffix}`;
+    const result = await createProjectAction(projectForm({ slug, seoTitle: "A".repeat(71) }));
+
+    assert.equal(result.ok, false);
+    assert.ok(!result.ok && result.fieldErrors?.seoTitle, "the message names the field");
+    assert.equal(await Project.countDocuments({ slug }).exec(), 0);
+  });
+
+  it("stores an untouched editor as a document the editor can reopen", async () => {
+    const slug = `empty-body-${suffix}`;
+
+    // What an editor that was opened and never typed into posts. A `doc` with no blocks in it
+    // violates the schema's `block+` rule, so storing it verbatim is what left the edit screen
+    // holding a document ProseMirror will not edit.
+    const created = await createProjectAction(
+      projectForm({ slug, contentJson: JSON.stringify({ type: "doc" }) }),
+    );
+
+    assert.ok(created.ok, created.ok ? "" : created.message);
+
+    const project = await Project.findById(created.data.id).exec();
+    assertEditable(project?.contentJson, "the stored document is valid against the schema");
+
+    // The document is valid and still empty, so there is no snapshot to render. The portfolio
+    // page shows the case study whenever `contentHtml` is set, and an empty paragraph would
+    // open a blank prose block under the facts strip.
+    assert.equal(project?.contentHtml, "");
+
+    const updated = await updateProjectAction(
+      created.data.id,
+      projectForm({ slug, contentJson: JSON.stringify({ type: "doc", content: [] }) }),
+    );
+    assert.ok(updated.ok, updated.ok ? "" : updated.message);
+
+    const resaved = await Project.findById(created.data.id).exec();
+    assertEditable(resaved?.contentJson, "and so is the one an update stored");
+  });
+
+  it("stores the model default as a document the editor can reopen", async () => {
+    const project = await Project.create({
+      title: `A seeded project ${suffix}`,
+      slug: `seeded-${suffix}`,
+      summary:
+        "Written straight to the model, the way a seed script writes it, with no body supplied at all.",
+    });
+
+    assertEditable(project.contentJson, "the model default is a valid document");
+  });
+});
 
 describe("the enquiry flows", () => {
   it("writes an Event Space enquiry and sends both emails", async () => {

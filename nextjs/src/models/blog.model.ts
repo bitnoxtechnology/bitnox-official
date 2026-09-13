@@ -1,5 +1,6 @@
 import { Schema, type Model, type Types } from "mongoose";
 
+import { emptyDoc } from "@/lib/blog/doc";
 import { PUBLISH_STATUSES, type PublishStatus } from "@/lib/constants";
 import { estimateReadingMinutes, generateUniqueSlug, slugify } from "@/lib/slug";
 import {
@@ -46,7 +47,7 @@ const blogSchema = new Schema<IBlog>(
     title: { type: String, required: true, trim: true, maxlength: 200 },
     slug: { type: String, required: true, unique: true, lowercase: true, trim: true },
     excerpt: { type: String, required: true, trim: true, maxlength: 400 },
-    contentJson: { type: Schema.Types.Mixed, required: true, default: () => ({}) },
+    contentJson: { type: Schema.Types.Mixed, required: true, default: emptyDoc },
     contentHtml: { type: String, required: true, default: "" },
     // The cover carries its own alt text, so the alt cannot go missing when the image changes.
     coverImage: { type: imageSchema },

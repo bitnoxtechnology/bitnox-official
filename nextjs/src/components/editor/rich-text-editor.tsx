@@ -15,6 +15,7 @@ import {
 } from "@/components/editor/use-draft-store";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { normalizeDoc } from "@/lib/blog/doc";
 import { cn } from "@/lib/utils";
 import type { TiptapDoc } from "@/models/shared";
 
@@ -73,7 +74,17 @@ export function RichTextEditor({
   label = "Post body",
   className,
 }: RichTextEditorProps) {
-  const [json, setJson] = React.useState(() => JSON.stringify(initialContent ?? { type: "doc" }));
+  /**
+   * Normalised before anything sees it, including the hidden input.
+   *
+   * A stored `{ "type": "doc" }` with no blocks is not a document ProseMirror will edit, and
+   * writing the same value straight back into the hidden input is how a record that was saved
+   * once without a body stays unopenable. `normalizeDoc` turns every empty variant into the
+   * one valid empty document, so the editor, the autosaved draft and the value the form
+   * posts are all the same thing.
+   */
+  const content = React.useMemo(() => normalizeDoc(initialContent), [initialContent]);
+  const [json, setJson] = React.useState(() => JSON.stringify(content));
   const [dirty, setDirty] = React.useState(false);
   /**
    * A draft newer than what the server sent, offered rather than applied.
@@ -91,7 +102,7 @@ export function RichTextEditor({
     if (typeof window === "undefined") return null;
 
     const stored = readDraft(draftScope);
-    const current = JSON.stringify(initialContent ?? { type: "doc" });
+    const current = JSON.stringify(normalizeDoc(initialContent));
 
     return stored && stored.json !== current ? stored.json : null;
   });
@@ -101,7 +112,7 @@ export function RichTextEditor({
 
   const editor = useEditor({
     extensions: clientExtensions,
-    content: initialContent ?? { type: "doc", content: [{ type: "paragraph" }] },
+    content,
     immediatelyRender: false,
     editorProps: {
       attributes: {

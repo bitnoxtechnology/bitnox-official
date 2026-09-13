@@ -11,6 +11,7 @@ import {
   validate,
   type ActionResult,
   type ActionState,
+  type FormInput,
 } from "@/lib/actions/action-state";
 import { withAuth } from "@/lib/actions/with-auth";
 import { requireUser } from "@/lib/auth/guards";
@@ -20,7 +21,12 @@ import { CACHE_TAGS, itemTag } from "@/lib/cache";
 import type { PublishStatus } from "@/lib/constants";
 import { connectToDatabase, isDuplicateKeyError } from "@/lib/db";
 import { idSchema } from "@/lib/validations/admin-schema";
-import { blogSchema, blogStatusSchema, type BlogData } from "@/lib/validations/blog-schema";
+import {
+  blogSchema,
+  blogStatusSchema,
+  type BlogData,
+  type BlogInput,
+} from "@/lib/validations/blog-schema";
 import { Blog } from "@/models";
 import type { TiptapDoc } from "@/models/shared";
 
@@ -80,7 +86,7 @@ function documentFrom(data: BlogData, authorId: string) {
 }
 
 function parseBlogForm(formData: FormData): ActionResult<BlogData> {
-  return validate(blogSchema, {
+  const input: FormInput<BlogInput> = {
     title: text(formData, "title"),
     slug: text(formData, "slug"),
     excerpt: text(formData, "excerpt"),
@@ -95,7 +101,9 @@ function parseBlogForm(formData: FormData): ActionResult<BlogData> {
     seoDescription: text(formData, "seoDescription"),
     canonicalUrl: text(formData, "canonicalUrl"),
     featured: text(formData, "featured"),
-  });
+  };
+
+  return validate(blogSchema, input);
 }
 
 const SLUG_TAKEN = "A post already uses that slug. Choose another.";

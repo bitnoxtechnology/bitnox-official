@@ -91,6 +91,23 @@ export function toActionState(result: ActionResult<unknown>, successMessage?: st
   return successState(result.message ?? successMessage);
 }
 
+/**
+ * Every key a schema accepts, so a field left out of a parse is a compile error.
+ *
+ * The actions below read `FormData` one key at a time, which is the only way to read it:
+ * `Object.fromEntries` collapses a checkbox group to its last value, and a schema has fields
+ * that a browser posts as several entries under one name. The cost of reading key by key is
+ * that a field added to a form and to its schema, and forgotten here, is silently dropped.
+ * Nothing fails. The form saves, the value does not, and the field looks broken rather than
+ * unread, which is exactly what happened to the two SEO fields on the portfolio form.
+ *
+ * Annotating the parsed object with this type is what makes that impossible. Every key of the
+ * schema's input becomes required, and the values stay `unknown` because the schema is what
+ * decides their shape. A missing key and a key that the schema does not have are both caught
+ * by `npm run typecheck` rather than by somebody noticing a blank field in production.
+ */
+export type FormInput<TInput> = { [K in keyof TInput]-?: unknown };
+
 /** Reads a text field out of `FormData` without the `File | string` union at every call. */
 export function text(formData: FormData, key: string): string {
   const value = formData.get(key);

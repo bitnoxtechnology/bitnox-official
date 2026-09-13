@@ -11,12 +11,17 @@ import {
   validate,
   type ActionResult,
   type ActionState,
+  type FormInput,
 } from "@/lib/actions/action-state";
 import { withAuth } from "@/lib/actions/with-auth";
 import { CACHE_TAGS } from "@/lib/cache";
 import { connectToDatabase } from "@/lib/db";
 import { idSchema, reorderSchema } from "@/lib/validations/admin-schema";
-import { testimonialSchema, type TestimonialData } from "@/lib/validations/testimonial-schema";
+import {
+  testimonialSchema,
+  type TestimonialData,
+  type TestimonialInput,
+} from "@/lib/validations/testimonial-schema";
 import { Testimonial } from "@/models";
 
 /**
@@ -48,7 +53,7 @@ function documentFrom(data: TestimonialData) {
 }
 
 function parseTestimonialForm(formData: FormData): ActionResult<TestimonialData> {
-  return validate(testimonialSchema, {
+  const input: FormInput<TestimonialInput> = {
     clientName: text(formData, "clientName"),
     position: text(formData, "position"),
     company: text(formData, "company"),
@@ -60,7 +65,9 @@ function parseTestimonialForm(formData: FormData): ActionResult<TestimonialData>
     status: text(formData, "status"),
     featured: text(formData, "featured"),
     sortOrder: text(formData, "sortOrder") || "0",
-  });
+  };
+
+  return validate(testimonialSchema, input);
 }
 
 export const createTestimonialAction = withAuth<[FormData], { id: string }>(

@@ -1,5 +1,6 @@
 import { Schema, type Model, type Types } from "mongoose";
 
+import { emptyDoc } from "@/lib/blog/doc";
 import {
   PUBLISH_STATUSES,
   SERVICE_SLUGS,
@@ -54,7 +55,7 @@ const projectSchema = new Schema<IProject>(
     title: { type: String, required: true, trim: true, maxlength: 200 },
     slug: { type: String, required: true, unique: true, lowercase: true, trim: true },
     summary: { type: String, required: true, trim: true, maxlength: 400 },
-    contentJson: { type: Schema.Types.Mixed, default: () => ({}) },
+    contentJson: { type: Schema.Types.Mixed, default: emptyDoc },
     contentHtml: { type: String, default: "" },
     coverImage: { type: imageSchema },
     // Objects rather than the legacy `string[]`, so every image carries alt text and the

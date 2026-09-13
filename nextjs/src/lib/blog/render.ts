@@ -3,6 +3,7 @@ import "server-only";
 import { generateHTML } from "@tiptap/html/server";
 import type { JSONContent } from "@tiptap/core";
 
+import { isTiptapDoc } from "@/lib/blog/doc";
 import { editorExtensions } from "@/lib/blog/extensions";
 import type { TiptapDoc } from "@/models/shared";
 
@@ -20,15 +21,21 @@ import type { TiptapDoc } from "@/models/shared";
  * there is one list and both sides import it.
  */
 
-/** An empty document, for a post whose body has been cleared rather than never written. */
-const EMPTY_DOC: TiptapDoc = { type: "doc", content: [] };
-
 function isDoc(value: unknown): value is JSONContent {
-  return typeof value === "object" && value !== null && (value as JSONContent).type === "doc";
+  return isTiptapDoc(value);
 }
 
+/**
+ * An empty body has no snapshot.
+ *
+ * The empty document is one empty paragraph, because that is the smallest document the
+ * editor's schema allows. Rendering it produces `<p></p>`, which is not nothing: the
+ * portfolio page shows the case study when `contentHtml` is set, so a project saved without a
+ * body would open a prose block with a blank paragraph in it. `isEmptyDoc` is the same
+ * question the editor's placeholder asks, and the answer here is an empty string.
+ */
 export function renderContentHtml(doc: TiptapDoc | undefined): string {
-  if (!isDoc(doc)) return "";
+  if (!isDoc(doc) || isEmptyDoc(doc)) return "";
 
   try {
     return generateHTML(doc, editorExtensions);
@@ -64,10 +71,6 @@ export function docToPlainText(doc: TiptapDoc | undefined): string {
   walk(doc);
 
   return parts.join(" ").replace(/\s+/g, " ").trim();
-}
-
-export function emptyDoc(): TiptapDoc {
-  return { ...EMPTY_DOC };
 }
 
 /** True for a document with no text and no media in it, which is what an untouched editor holds. */

@@ -11,6 +11,7 @@ import {
   validate,
   type ActionResult,
   type ActionState,
+  type FormInput,
 } from "@/lib/actions/action-state";
 import { withAuth } from "@/lib/actions/with-auth";
 import { renderContentHtml } from "@/lib/blog/render";
@@ -18,7 +19,11 @@ import { CACHE_TAGS, itemTag } from "@/lib/cache";
 import { SERVICE_SLUGS, type PublishStatus, type ServiceSlug } from "@/lib/constants";
 import { connectToDatabase, isDuplicateKeyError } from "@/lib/db";
 import { idSchema } from "@/lib/validations/admin-schema";
-import { projectSchema, type ProjectData } from "@/lib/validations/project-schema";
+import {
+  projectSchema,
+  type ProjectData,
+  type ProjectInput,
+} from "@/lib/validations/project-schema";
 import { Project } from "@/models";
 import type { TiptapDoc } from "@/models/shared";
 
@@ -74,6 +79,11 @@ function documentFrom(data: ProjectData) {
  *
  * A checkbox group posts one `FormData` entry per ticked box, so `getAll` is what reads it.
  * Everything else on this form is a single value.
+ *
+ * Typed as `FormInput<ProjectInput>` so that every field the schema accepts has to be read
+ * here. The two SEO fields were rendered by the form, posted by the browser and never read by
+ * this function, which saved without them and without complaining. The annotation is what
+ * turns that into a build failure instead of a field that quietly does nothing.
  */
 function parseProjectForm(formData: FormData): ActionResult<ProjectData> {
   const services = formData
@@ -81,7 +91,7 @@ function parseProjectForm(formData: FormData): ActionResult<ProjectData> {
     .filter((value): value is string => typeof value === "string")
     .filter((value): value is ServiceSlug => (SERVICE_SLUGS as readonly string[]).includes(value));
 
-  return validate(projectSchema, {
+  const input: FormInput<ProjectInput> = {
     title: text(formData, "title"),
     slug: text(formData, "slug"),
     summary: text(formData, "summary"),
@@ -100,7 +110,11 @@ function parseProjectForm(formData: FormData): ActionResult<ProjectData> {
     status: text(formData, "status"),
     featured: text(formData, "featured"),
     order: text(formData, "order") || "0",
-  });
+    seoTitle: text(formData, "seoTitle"),
+    seoDescription: text(formData, "seoDescription"),
+  };
+
+  return validate(projectSchema, input);
 }
 
 const SLUG_TAKEN = "A project already uses that slug. Choose another.";

@@ -27,6 +27,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { SERVICES } from "@/content/services";
 import type { ActionState } from "@/lib/actions/action-state";
+import { normalizeDoc } from "@/lib/blog/doc";
 import { PUBLISH_STATUSES, type PublishStatus, type ServiceSlug } from "@/lib/constants";
 import type { ProjectEditorDTO } from "@/lib/dto";
 import { slugify } from "@/lib/slug";
@@ -77,7 +78,7 @@ export function ProjectForm({ project, action, submitLabel }: ProjectFormProps) 
       title: project?.title ?? "",
       slug: project?.slug ?? "",
       summary: project?.summary ?? "",
-      contentJson: JSON.stringify(project?.contentJson ?? { type: "doc" }),
+      contentJson: JSON.stringify(normalizeDoc(project?.contentJson)),
       coverImage: project?.coverImage ? JSON.stringify(project.coverImage) : "",
       images: JSON.stringify(project?.images ?? []),
       ogImage: project?.ogImage ? JSON.stringify(project.ogImage) : "",
@@ -92,6 +93,8 @@ export function ProjectForm({ project, action, submitLabel }: ProjectFormProps) 
       status: project?.status ?? "draft",
       featured: project?.featured ? "on" : "",
       order: String(project?.order ?? 0),
+      seoTitle: project?.seoTitle ?? "",
+      seoDescription: project?.seoDescription ?? "",
     },
   });
 
@@ -185,13 +188,22 @@ export function ProjectForm({ project, action, submitLabel }: ProjectFormProps) 
 
             <Field data-invalid={Boolean(errors.seoTitle)}>
               <FieldLabel htmlFor="seoTitle">SEO title</FieldLabel>
-              <Input id="seoTitle" {...form.register("seoTitle")} />
+              <Input
+                id="seoTitle"
+                aria-invalid={Boolean(errors.seoTitle)}
+                {...form.register("seoTitle")}
+              />
               <FieldError errors={[errors.seoTitle]} />
             </Field>
 
             <Field data-invalid={Boolean(errors.seoDescription)}>
               <FieldLabel htmlFor="seoDescription">Meta description</FieldLabel>
-              <Textarea id="seoDescription" rows={2} {...form.register("seoDescription")} />
+              <Textarea
+                id="seoDescription"
+                rows={2}
+                aria-invalid={Boolean(errors.seoDescription)}
+                {...form.register("seoDescription")}
+              />
               <FieldError errors={[errors.seoDescription]} />
             </Field>
 

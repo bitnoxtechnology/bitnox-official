@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { normalizeDoc } from "@/lib/blog/doc";
 import { PUBLISH_STATUSES } from "@/lib/constants";
 import { slugify } from "@/lib/slug";
 
@@ -123,6 +124,12 @@ export const dateTimeField = z
  * would be a second schema that drifts from the first. What matters here is that the value
  * parses, is a document, and is small enough not to be an attack, and the renderer refuses
  * anything it cannot make sense of.
+ *
+ * The one shape that is corrected rather than accepted is the empty document. A `doc` with no
+ * blocks in it violates the editor's own `block+` content rule, and an editor that was opened
+ * and never typed into submits exactly that. Storing it means the next person to open the
+ * record gets a document ProseMirror will not edit, so it is normalised here, at the boundary
+ * every save passes through.
  */
 export const tiptapDocField = z
   .string()
@@ -140,7 +147,7 @@ export const tiptapDocField = z
         return z.NEVER;
       }
 
-      return parsed as Record<string, unknown>;
+      return normalizeDoc(parsed);
     } catch {
       ctx.addIssue({ code: "custom", message: "The editor content could not be read" });
       return z.NEVER;
