@@ -13,10 +13,17 @@ import { Blog, User } from "@/models";
  *
  * Separate from `db:seed` on purpose. That script brings a database to the point where
  * somebody can sign in and creates nothing else, so that there is no placeholder content to
- * find and delete later. These three posts are not placeholders: they are finished writing,
- * they are what stops the blog shipping empty, and three of the four service pages draw their
- * reading lists from their tags. Keeping them in their own command means a database can be
- * seeded without them if that is ever wanted.
+ * find and delete later. These posts are not placeholders: they are finished writing, they
+ * are what stops the blog shipping empty, and all four service pages draw their reading
+ * lists from their tags. Keeping them in their own command means a database can be seeded
+ * without them if that is ever wanted.
+ *
+ * Each post carries its own `publishedAt`, and it is written to `createdAt` and `updatedAt`
+ * as well. Mongoose stamps both of those with the moment of the insert, which would date a
+ * post written last year to the afternoon the database was filled, put every post in the
+ * sitemap on the same day, and make `ArticleSchema` emit a `dateModified` claiming a post
+ * nobody has touched was revised on import. `save({ timestamps: false })` is what stops the
+ * schema overwriting the dates set here.
  *
  *   npm run db:seed:blog
  *   npm run db:seed:blog -- --author you@bitnoxsolution.com
@@ -72,7 +79,19 @@ async function main(): Promise<void> {
       continue;
     }
 
-    await Blog.create({
+    const publishedAt = new Date(post.publishedAt);
+
+    if (Number.isNaN(publishedAt.getTime())) {
+      fail(`${post.slug} has an unreadable publishedAt: ${post.publishedAt}`);
+    }
+
+    // A date in the future would seed a post the public queries filter out, and it would do
+    // it silently, so it is a stop rather than a warning. Schedule a post in the admin.
+    if (publishedAt.getTime() > Date.now()) {
+      fail(`${post.slug} is dated ${post.publishedAt}, which is in the future.`);
+    }
+
+    const doc = new Blog({
       title: post.title,
       slug: post.slug,
       excerpt: post.excerpt,
@@ -82,7 +101,7 @@ async function main(): Promise<void> {
       contentJson: blocksToTiptap(post.blocks),
       contentHtml: blocksToHtml(post.blocks),
       status: "published",
-      publishedAt: new Date(),
+      publishedAt,
       tags: post.tags,
       category: post.category,
       author: author._id,
@@ -90,7 +109,12 @@ async function main(): Promise<void> {
       seoDescription: post.seoDescription,
     });
 
-    info(`Created ${post.slug}`);
+    doc.set("createdAt", publishedAt);
+    doc.set("updatedAt", publishedAt);
+
+    await doc.save({ timestamps: false });
+
+    info(`Created ${post.slug} (${publishedAt.toISOString().slice(0, 10)})`);
     created += 1;
   }
 

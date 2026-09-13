@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Sora } from "next/font/google";
+import localFont from "next/font/local";
 
 import { ConsentDefaults } from "@/components/site/consent-defaults";
 import { GoogleTagManager, GoogleTagManagerNoScript } from "@/components/site/google-tag-manager";
@@ -11,36 +11,53 @@ import { cn } from "@/lib/utils";
 import "./globals.css";
 
 /**
- * Three faces, loaded through `next/font` so the files are self-hosted, hashed and served
- * from this origin. No connection to fonts.googleapis.com is made at runtime, which removes
- * a third-party round trip from the critical path and a consent question from the privacy
- * page.
+ * Three faces, loaded through `next/font/local` from files committed under `src/assets/fonts/`.
+ *
+ * They are the same faces Google Fonts serves, latin subset, variable weight axis, one woff2
+ * each. Holding the files in the repository rather than fetching them from
+ * `fonts.googleapis.com` at build time means a build never depends on that host being
+ * reachable: behind a proxy, on a restricted network or offline, `next/font/google` silently
+ * falls back to a system face and the site ships in the wrong type. The output is otherwise
+ * identical, since `next/font/google` self-hosts the files it downloads anyway.
+ *
+ * Replacing a face means replacing the file. The latin `woff2` URL for a family comes from
+ * `https://fonts.googleapis.com/css2?family=<Family>&display=swap` requested with a browser
+ * user agent, which is what pins the version in the filename above it.
  *
  * `display: "swap"` renders the fallback immediately and swaps when the face arrives, so a
  * slow font never blocks first paint. `preload` is on for the two faces that appear above
  * the fold on every page. Geist Mono only shows inside blog code blocks, so preloading it
  * would spend bandwidth on most visits for nothing.
  */
-const sans = Geist({
-  subsets: ["latin"],
+const sans = localFont({
+  src: "../assets/fonts/Geist-Variable.woff2",
+  weight: "100 900",
+  style: "normal",
   variable: "--font-sans-src",
   display: "swap",
   preload: true,
 });
 
-const heading = Sora({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
+const heading = localFont({
+  src: "../assets/fonts/Sora-Variable.woff2",
+  weight: "100 800",
+  style: "normal",
   variable: "--font-heading-src",
   display: "swap",
   preload: true,
 });
 
-const mono = Geist_Mono({
-  subsets: ["latin"],
+const mono = localFont({
+  src: "../assets/fonts/GeistMono-Variable.woff2",
+  weight: "100 900",
+  style: "normal",
   variable: "--font-mono-src",
   display: "swap",
   preload: false,
+  // The metric adjustment Next.js applies to a fallback is measured against Arial, which is
+  // proportional. Matching a monospace face to it would misreport the advance width of every
+  // glyph, so the fallback here is the plain ui-monospace stack from globals.css.
+  adjustFontFallback: false,
 });
 
 const SITE_DESCRIPTION =

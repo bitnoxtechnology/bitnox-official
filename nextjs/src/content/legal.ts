@@ -348,7 +348,7 @@ export const PRIVACY: LegalDocument = {
   title: "Privacy Policy",
   path: "/privacy",
   headline: "What we collect, why we hold it, and how to get it back",
-  lead: "This covers the data Bitnox handles through this website, through enquiries and newsletter signups, and in the course of a project. It is written to the Nigeria Data Protection Act 2023.",
+  lead: "This covers the data Bitnox handles through this website, through enquiries and newsletter signups, and in the course of a project.",
   effective: EFFECTIVE,
   lastUpdated: LAST_UPDATED,
   seo: {
@@ -367,7 +367,7 @@ export const PRIVACY: LegalDocument = {
         },
         {
           type: "callout",
-          text: "It is made under the Nigeria Data Protection Act 2023 and the guidance of the Nigeria Data Protection Commission. Using the site or sending us your details means you have been told what is in it.",
+          text: "It is made under the Nigeria Data Protection Act 2023. Using the site or sending us your details means you have been told what is in it.",
         },
         {
           type: "paragraph",
@@ -388,7 +388,6 @@ export const PRIVACY: LegalDocument = {
             "Your email address alone, when you subscribe to the newsletter.",
             "Briefs, specifications, files and content you send us during a project.",
             "Billing details needed to invoice you and record the payment.",
-            "A name, email address and password, for the small number of accounts that can sign in to the admin. Passwords are stored only as an Argon2 hash and are never readable by us.",
           ],
         },
         { type: "subheading", text: "What is collected automatically" },
@@ -416,7 +415,6 @@ export const PRIVACY: LegalDocument = {
             "**Answering enquiries.** Replying to what you sent, confirming an Event Space date, and quoting for work.",
             "**Delivering a project.** Doing the work, managing it, and handing over what was agreed.",
             "**Billing.** Issuing invoices and keeping the financial records Nigerian law requires.",
-            "**Signing in.** Authenticating the accounts that can reach the admin, and keeping those sessions secure.",
             "**Newsletter.** Sending the newsletter you asked for, until you stop it.",
             "**Security.** Rate-limiting forms, detecting abuse and protecting the site and its data.",
             "**Legal obligations.** Meeting our obligations and responding to lawful requests.",
@@ -474,7 +472,6 @@ export const PRIVACY: LegalDocument = {
             "**Financial and billing records**: **7 years**, under the Federal Inland Revenue Service Act and the Companies and Allied Matters Act.",
             "**Enquiries**, including Event Space bookings: **24 months** after the last contact, so we can pick up a conversation that resumes.",
             "**Newsletter subscriptions**: until you unsubscribe. The record of the unsubscribe itself is kept, so you are not added back by mistake.",
-            "**Admin accounts and their sessions**: for as long as the account is active. Sessions expire on their own and are removed.",
             "**Rate-limiting records**: hours, not days. They exist only for the window they cover.",
           ],
         },
@@ -499,10 +496,7 @@ export const PRIVACY: LegalDocument = {
             "**Correct** anything inaccurate or incomplete.",
             "**Erase** your data, subject to the retention periods above where the law requires us to keep something.",
             "**Restrict** how we use it, in defined circumstances.",
-            "**Portability**: receive your data in a structured, machine-readable format.",
-            "**Object** to processing based on legitimate interests, including any direct marketing.",
             "**Withdraw consent** at any time, without affecting anything done lawfully before you did.",
-            "**Complain** to the Nigeria Data Protection Commission at ndpc.gov.ng if you believe your rights have been breached.",
           ],
         },
         {
@@ -545,41 +539,13 @@ export const PRIVACY: LegalDocument = {
           type: "list",
           items: [
             "Data in transit is encrypted with TLS.",
-            "Passwords are hashed with **Argon2**, which is designed to be expensive to attack, and are never stored or logged in a readable form.",
-            "Signing in uses a one-time code sent by email in addition to the password.",
-            "One-time codes and links are stored as keyed hashes, so a copy of the database does not reveal them.",
             "Admin access is limited by role, and every action that changes data checks the session on the server rather than trusting the browser.",
             "Public forms are rate-limited by address and by email, to cap what an abusive run can cost.",
-            "Uploads are signed on the server, so nothing can be written to our image storage without our key.",
           ],
         },
         {
           type: "callout",
           text: "No system is completely secure. If a personal data breach occurs, we will notify the people affected and the NDPC within 72 hours of becoming aware of it, as the NDPA requires.",
-        },
-      ],
-    },
-    {
-      id: "children",
-      title: "Children",
-      blocks: [
-        {
-          type: "paragraph",
-          text: "This website and our services are for people aged 18 and over, and we do not knowingly collect data from anyone younger. If you believe a child has given us personal data, write to info@bitnoxsolution.com and we will delete it.",
-        },
-        {
-          type: "paragraph",
-          text: "Where a training course may be attended by somebody under 18, a parent or guardian must give consent at enrolment. Enrolment is handled on edu.bitnoxsolution.com under that site's terms.",
-        },
-      ],
-    },
-    {
-      id: "transfers",
-      title: "Data leaving Nigeria",
-      blocks: [
-        {
-          type: "paragraph",
-          text: "Some of the providers we depend on operate outside Nigeria, so personal data may be stored or processed abroad. Where that happens we make sure the recipient offers protection adequate under Nigerian law, that a data processing agreement with appropriate contractual safeguards is in place, and that the provider is contractually bound to NDPA standards.",
         },
       ],
     },

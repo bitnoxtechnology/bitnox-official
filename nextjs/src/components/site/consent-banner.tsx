@@ -65,8 +65,7 @@ export function ConsentBanner() {
         <p className="text-muted-foreground mt-2 text-sm">
           We use Google Analytics to see which pages people read and which ones they leave. Nothing
           is stored in your browser until you accept, and we do not use advertising or cross-site
-          trackers either way. The admin sign-in cookie is separate and always on, because signing
-          in needs it.{" "}
+          trackers either way.{" "}
           <Link href="/privacy#cookies" className="text-primary underline-offset-4 hover:underline">
             Read the privacy policy
           </Link>
