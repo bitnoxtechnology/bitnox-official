@@ -117,7 +117,18 @@ export function Gallery({
       <Dialog open={openIndex !== null} onOpenChange={(open) => !open && setOpenIndex(null)}>
         <DialogContent
           showCloseButton
-          className="w-[min(96vw,72rem)] max-w-none gap-3 bg-transparent p-0 ring-0"
+          // `sm:max-w-none` is not redundant next to `max-w-none`. `DialogContent` ships
+          // `sm:max-w-sm` for the ordinary small dialog, and tailwind-merge treats a
+          // different modifier as a different property, so an unprefixed `max-w-none`
+          // does not displace it and the lightbox stays clamped to 24rem above 640px.
+          // The override has to carry the same `sm:` to win.
+          //
+          // The frame is then sized off the viewport height as well as its width, so it
+          // keeps growing on a large monitor instead of stopping at a fixed cap, and never
+          // grows past the fold on a short one. The middle term is the width a 3:2 box may
+          // take before it would be taller than the height budget; the caption sits in what
+          // is left. `min()` picks whichever of the three runs out first.
+          className="w-[min(96vw,calc(85vh*1.5),96rem)] max-w-none gap-3 bg-transparent p-0 ring-0 sm:max-w-none"
           onKeyDown={(event) => {
             if (event.key === "ArrowRight") step(1);
             if (event.key === "ArrowLeft") step(-1);
@@ -136,7 +147,7 @@ export function Gallery({
                   src={current.url}
                   alt={current.alt}
                   fill
-                  sizes="96vw"
+                  sizes="(min-width: 1600px) 1536px, 96vw"
                   className="object-contain"
                 />
               </div>
