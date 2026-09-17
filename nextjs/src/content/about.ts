@@ -31,7 +31,7 @@ export const ABOUT_SEO = {
 export const ABOUT_HERO = {
   eyebrow: "About Bitnox",
   headline: "A technology company you can\nactually get hold of.",
-  lead: "Bitnox Technology Solutions builds software and websites, advises on technology decisions, and teaches the skills behind both. The office is in Oke-Ilewo, Abeokuta, and so is the Event Space.",
+  lead: "Bitnox Technology Solutions builds software and websites, advises on technology decisions, and teaches the skills behind both.",
 } as const;
 
 /**

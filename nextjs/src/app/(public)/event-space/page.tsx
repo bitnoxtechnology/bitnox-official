@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import { AmenitiesSection } from "@/app/(public)/event-space/_sections/amenities-section";
-import { AvailabilitySection } from "@/app/(public)/event-space/_sections/availability-section";
 import { EnquirySection } from "@/app/(public)/event-space/_sections/enquiry-section";
 import {
   EventSpaceFacts,
@@ -9,18 +8,13 @@ import {
 } from "@/app/(public)/event-space/_sections/event-space-hero";
 import { FaqsSection } from "@/app/(public)/event-space/_sections/faqs-section";
 import { GallerySection } from "@/app/(public)/event-space/_sections/gallery-section";
-import { LayoutsSection } from "@/app/(public)/event-space/_sections/layouts-section";
 import { LocationSection } from "@/app/(public)/event-space/_sections/location-section";
 import { UsesSection } from "@/app/(public)/event-space/_sections/uses-section";
 import { BreadcrumbListSchema } from "@/components/seo/BreadcrumbListSchema";
 import { EventVenueSchema } from "@/components/seo/EventVenueSchema";
 import { CTABand } from "@/components/site";
 import type { GalleryImage } from "@/components/site/gallery";
-import {
-  DEFAULT_AMENITIES,
-  DEFAULT_AVAILABILITY_COPY,
-  EVENT_SPACE_SEO,
-} from "@/content/event-space";
+import { DEFAULT_AMENITIES, EVENT_SPACE_SEO } from "@/content/event-space";
 import { EVENT_SPACE_PHOTOS } from "@/content/event-space-media";
 import { EVENT_SPACE_CAPACITY } from "@/lib/constants";
 import { getEventSpaceImages } from "@/lib/queries/event-space";
@@ -97,8 +91,6 @@ export default async function EventSpacePage() {
       ? settings.eventSpace.amenities
       : DEFAULT_AMENITIES;
 
-  const availabilityCopy = settings?.eventSpace.availabilityCopy || DEFAULT_AVAILABILITY_COPY;
-
   return (
     <>
       <EventVenueSchema
@@ -117,11 +109,9 @@ export default async function EventSpacePage() {
       {cover ? <EventSpaceHero photo={cover} /> : null}
       <EventSpaceFacts capacity={capacity} />
       <GallerySection images={images} />
-      <EnquirySection />
-      <LayoutsSection capacity={capacity} />
+      <EnquirySection capacity={capacity} />
       <AmenitiesSection amenities={amenities} />
       <UsesSection />
-      <AvailabilitySection availabilityCopy={availabilityCopy} />
       <LocationSection />
       <FaqsSection />
 

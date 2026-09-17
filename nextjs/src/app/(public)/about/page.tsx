@@ -138,7 +138,7 @@ export default function AboutPage() {
           <SectionHeading
             eyebrow="What we do"
             title="Four services, and the work inside each one"
-            description="Most projects start in one and end up touching a second, which is why each has a page of its own rather than a paragraph here."
+            description="Most projects start in one and end up touching a second."
           />
 
           <StaggerGroup asChild selector="li" className="border-border mt-section-sm border-t">
@@ -231,7 +231,7 @@ export default function AboutPage() {
         <div className="container-page">
           <SectionHeading
             eyebrow="Where we are"
-            title={`Abeokuta, Ogun State, and a room that seats ${EVENT_SPACE_CAPACITY}`}
+            title={`Abeokuta, Nigeria`}
             description={ABOUT_LOCATION}
           />
 

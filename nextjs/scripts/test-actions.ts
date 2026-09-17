@@ -599,6 +599,7 @@ describe("the enquiry flows", () => {
         email,
         phone: "08137192766",
         eventType: "Conference",
+        layout: "Theatre",
         preferredDate,
         expectedAttendees: "45",
         message: "We need the room for a one day conference, with the chairs in rows.",
@@ -613,6 +614,7 @@ describe("the enquiry flows", () => {
     assert.equal(enquiry.type, "event_space");
     assert.equal(enquiry.status, "new");
     assert.equal(enquiry.details?.expectedAttendees, 45);
+    assert.equal(enquiry.details?.layout, "Theatre");
 
     // Midday UTC, so the calendar day survives every offset a reader is in. Midnight would
     // read back as the previous evening in the Americas.
@@ -723,6 +725,7 @@ describe("the enquiry flows", () => {
         email,
         phone: "08137192766",
         eventType: "Conference",
+        layout: "Theatre",
         preferredDate: futureDay(30),
         expectedAttendees: "80",
         message: "We expect about eighty people and wanted to ask what the room can take.",
@@ -747,6 +750,7 @@ describe("the enquiry flows", () => {
         email,
         phone: "08137192766",
         eventType: "Conference",
+        layout: "Theatre",
         preferredDate: futureDay(30),
         expectedAttendees: "4500",
         message: "We would like to bring four thousand five hundred people on that date, please.",
@@ -769,6 +773,7 @@ describe("the enquiry flows", () => {
         email,
         phone: "08137192766",
         eventType: "Meeting",
+        layout: "Boardroom",
         preferredDate: futureDay(-7),
         expectedAttendees: "20",
         message: "We would like the room for a meeting on the date given above, for two hours.",

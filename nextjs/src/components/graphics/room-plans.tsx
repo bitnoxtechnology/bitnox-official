@@ -1,5 +1,5 @@
 import { WindowFrame } from "@/components/graphics/window-frame";
-import { ROOM_LAYOUTS } from "@/content/event-space";
+import { ROOM_LAYOUTS, type RoomLayoutName } from "@/content/event-space";
 
 /**
  * The four layouts, drawn as plans.
@@ -23,7 +23,7 @@ import { ROOM_LAYOUTS } from "@/content/event-space";
  */
 
 /** The plan bodies, keyed by the layout name in `src/content/event-space.ts`. */
-const PLANS: Record<string, React.ReactNode> = {
+const PLANS: Record<RoomLayoutName, React.ReactNode> = {
   Theatre: (
     <>
       {[18, 29, 40, 51].map((y) => (
@@ -81,39 +81,50 @@ export function RoomPlans() {
             key={layout.name}
             className="border-border px-4 py-5 [&:nth-child(-n+2)]:border-b @2xl:[&:nth-child(-n+2)]:border-b-0"
           >
-            <svg
-              viewBox="0 0 100 70"
-              className="text-primary w-full"
-              role="presentation"
-              focusable="false"
-            >
-              {/* The room, and the screen on its front wall. */}
-              <rect
-                x={4}
-                y={4}
-                width={92}
-                height={62}
-                rx={2}
-                className="fill-transparent stroke-current opacity-25"
-                strokeWidth={1}
-              />
-              <line
-                x1={36}
-                y1={7}
-                x2={64}
-                y2={7}
-                className="stroke-current"
-                strokeWidth={2.5}
-                strokeLinecap="round"
-              />
-              {PLANS[layout.name]}
-            </svg>
+            <RoomPlan name={layout.name} className="text-primary w-full" />
 
             <p className="text-foreground mt-3 text-xs font-medium">{layout.name}</p>
           </li>
         ))}
       </ul>
     </WindowFrame>
+  );
+}
+
+/**
+ * One layout, drawn as a plan.
+ *
+ * Exported on its own because the enquiry form uses the same four drawings as the faces of
+ * its layout picker. One drawing per layout, in one place, so the plan somebody chooses on
+ * the form is the plan they saw in the table above it.
+ *
+ * The furniture takes `currentColor`, so the caller sets the colour with a text utility and
+ * a selected tile can brighten its plan without the drawing knowing it has been selected.
+ */
+export function RoomPlan({ name, className }: { name: RoomLayoutName; className?: string }) {
+  return (
+    <svg viewBox="0 0 100 70" className={className} role="presentation" focusable="false">
+      {/* The room, and the screen on its front wall. */}
+      <rect
+        x={4}
+        y={4}
+        width={92}
+        height={62}
+        rx={2}
+        className="fill-transparent stroke-current opacity-25"
+        strokeWidth={1}
+      />
+      <line
+        x1={36}
+        y1={7}
+        x2={64}
+        y2={7}
+        className="stroke-current"
+        strokeWidth={2.5}
+        strokeLinecap="round"
+      />
+      {PLANS[name]}
+    </svg>
   );
 }
 

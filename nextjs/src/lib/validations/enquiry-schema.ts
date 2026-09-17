@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { ROOM_LAYOUT_NAMES } from "@/content/event-space";
 import {
   emailField,
   messageField,
@@ -53,6 +54,21 @@ export const EVENT_TYPES = [
 export type EventType = (typeof EVENT_TYPES)[number];
 
 /**
+ * How the room should be set out.
+ *
+ * The four layouts from the content module, plus one honest answer for the person who does
+ * not know yet. The setup is one of the three things a rate depends on, so it is asked for
+ * here rather than in the message, where it is missed as often as it is given. "Not sure yet"
+ * is a real choice rather than a blank, because a blank reads as a question the visitor
+ * forgot rather than one they have deferred to us.
+ */
+export const LAYOUT_UNDECIDED = "Not sure yet";
+
+export const LAYOUT_OPTIONS = [...ROOM_LAYOUT_NAMES, LAYOUT_UNDECIDED] as const;
+
+export type LayoutOption = (typeof LAYOUT_OPTIONS)[number];
+
+/**
  * A date on today or after it, in the browser's own `YYYY-MM-DD` form.
  *
  * Compared as a plain string rather than parsed into a `Date`, so a visitor in London and
@@ -71,6 +87,7 @@ export const eventSpaceEnquirySchema = z.object({
   email: emailField,
   phone: optionalPhoneField,
   eventType: z.enum(EVENT_TYPES, { message: "Choose what the room is for" }),
+  layout: z.enum(LAYOUT_OPTIONS, { message: "Choose a layout, or say you are not sure yet" }),
   preferredDate: preferredDateField,
   expectedAttendees: z.coerce
     .number({ message: "Enter how many people are coming" })

@@ -22,7 +22,7 @@ import { BUSINESS } from "@/content/business";
  * phone call, not a form, and somebody in that position should not have to hunt for the
  * number.
  */
-export function EnquirySection() {
+export function EnquirySection({ capacity }: { capacity: number }) {
   return (
     <section id="enquire" className="section-y scroll-mt-24">
       <div className="container-page">
@@ -56,7 +56,7 @@ export function EnquirySection() {
           </div>
 
           <div className="lg:col-span-7">
-            <EventSpaceEnquiryForm source="event-space" />
+            <EventSpaceEnquiryForm source="event-space" capacity={capacity} />
           </div>
         </div>
       </div>

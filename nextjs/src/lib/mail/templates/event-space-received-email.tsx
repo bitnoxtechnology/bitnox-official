@@ -6,8 +6,8 @@ import { EmailLayout, emailStyles } from "@/lib/mail/templates/email-layout";
 /**
  * The acknowledgement after an Event Space enquiry.
  *
- * It repeats the date, the head count and what the room is for, because those three are what
- * the reply depends on and a typo in any of them wastes a round trip.
+ * It repeats the date, the head count, the layout and what the room is for, because those are
+ * what the reply depends on and a typo in any of them wastes a round trip.
  *
  * No rate appears here, on the page, or anywhere else. Rates depend on the date, how long
  * the room is needed and the setup, and quoting a figure before those are known would either
@@ -17,6 +17,8 @@ import { EmailLayout, emailStyles } from "@/lib/mail/templates/email-layout";
 export interface EventSpaceReceivedEmailProps {
   name: string;
   eventType: string;
+  /** One of the four layouts, or "Not sure yet". */
+  layout: string;
   /** Already formatted for reading, such as "14 October 2026". */
   preferredDate: string;
   expectedAttendees: number;
@@ -26,6 +28,7 @@ export interface EventSpaceReceivedEmailProps {
 export function EventSpaceReceivedEmail({
   name,
   eventType,
+  layout,
   preferredDate,
   expectedAttendees,
   capacity,
@@ -39,6 +42,8 @@ export function EventSpaceReceivedEmail({
       </Text>
       <Text style={summary}>
         What the room is for: {eventType}
+        <br />
+        Layout: {layout}
         <br />
         Date: {preferredDate}
         <br />
@@ -64,6 +69,7 @@ export function EventSpaceReceivedEmail({
 export function eventSpaceReceivedText({
   name,
   eventType,
+  layout,
   preferredDate,
   expectedAttendees,
   capacity,
@@ -75,6 +81,7 @@ export function eventSpaceReceivedText({
     "free on your date and come back with a rate.",
     "",
     `What the room is for: ${eventType}`,
+    `Layout: ${layout}`,
     `Date: ${preferredDate}`,
     `People expected: ${expectedAttendees}`,
     `Room capacity: ${capacity}`,

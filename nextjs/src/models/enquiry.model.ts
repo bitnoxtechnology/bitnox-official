@@ -18,6 +18,8 @@ import { registerModel, type Timestamped } from "@/models/shared";
 
 export interface IEnquiryDetails {
   eventType?: string;
+  /** How the room should be set out, or "Not sure yet". */
+  layout?: string;
   preferredDate?: Date;
   expectedAttendees?: number;
 }
@@ -39,6 +41,7 @@ export interface IEnquiry extends Timestamped {
 const enquiryDetailsSchema = new Schema<IEnquiryDetails>(
   {
     eventType: { type: String, trim: true, maxlength: 120 },
+    layout: { type: String, trim: true, maxlength: 60 },
     preferredDate: { type: Date },
     expectedAttendees: { type: Number, min: 1, max: 500 },
   },

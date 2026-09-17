@@ -66,6 +66,7 @@ export async function eventSpaceEnquiryAction(
     email: text(formData, "email"),
     phone: text(formData, "phone"),
     eventType: text(formData, "eventType"),
+    layout: text(formData, "layout"),
     preferredDate: text(formData, "preferredDate"),
     expectedAttendees: text(formData, "expectedAttendees"),
     message: text(formData, "message"),
@@ -74,8 +75,17 @@ export async function eventSpaceEnquiryAction(
 
   if (!parsed.ok) return toActionState(parsed);
 
-  const { name, email, phone, eventType, preferredDate, expectedAttendees, message, source } =
-    parsed.data;
+  const {
+    name,
+    email,
+    phone,
+    eventType,
+    layout,
+    preferredDate,
+    expectedAttendees,
+    message,
+    source,
+  } = parsed.data;
 
   const { ip } = await requestMetadata();
 
@@ -102,6 +112,7 @@ export async function eventSpaceEnquiryAction(
     message,
     details: {
       eventType,
+      layout,
       preferredDate: toStoredDate(preferredDate),
       expectedAttendees,
     },
@@ -115,6 +126,7 @@ export async function eventSpaceEnquiryAction(
       to: email,
       name,
       eventType,
+      layout,
       preferredDate: readableDate,
       expectedAttendees,
       capacity: EVENT_SPACE_CAPACITY,
@@ -127,6 +139,7 @@ export async function eventSpaceEnquiryAction(
       phone,
       details: [
         { label: "What the room is for", value: eventType },
+        { label: "Layout", value: layout },
         { label: "Preferred date", value: readableDate },
         { label: "People expected", value: String(expectedAttendees) },
       ],

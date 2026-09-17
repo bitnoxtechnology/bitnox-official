@@ -331,6 +331,7 @@ export interface EnquiryDTO {
   message: string;
   details?: {
     eventType?: string;
+    layout?: string;
     preferredDate?: string;
     expectedAttendees?: number;
   };
@@ -352,6 +353,7 @@ export function toEnquiry(enquiry: IEnquiry): EnquiryDTO {
     details: enquiry.details
       ? {
           eventType: enquiry.details.eventType,
+          layout: enquiry.details.layout,
           preferredDate: iso(enquiry.details.preferredDate),
           expectedAttendees: enquiry.details.expectedAttendees,
         }

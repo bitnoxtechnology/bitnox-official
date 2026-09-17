@@ -59,6 +59,7 @@ export async function sendEventSpaceAcknowledgement(input: {
   to: string;
   name: string;
   eventType: string;
+  layout: string;
   preferredDate: string;
   expectedAttendees: number;
   capacity: number;

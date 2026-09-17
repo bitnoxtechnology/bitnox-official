@@ -51,7 +51,7 @@ export interface RoomLayout {
   setup: string;
 }
 
-export const ROOM_LAYOUTS: readonly RoomLayout[] = [
+export const ROOM_LAYOUTS = [
   {
     name: "Theatre",
     bestFor: "Conferences, seminars, talks and product launches",
@@ -72,7 +72,18 @@ export const ROOM_LAYOUTS: readonly RoomLayout[] = [
     bestFor: "Facilitated sessions, training with discussion, group presentations",
     setup: "Tables in an open U with the presenter at the mouth of it.",
   },
-] as const;
+] as const satisfies readonly RoomLayout[];
+
+export type RoomLayoutName = (typeof ROOM_LAYOUTS)[number]["name"];
+
+/**
+ * The layout names on their own, for the enquiry form's validator. Derived rather than
+ * retyped, so a layout added above is accepted by the form without a second edit.
+ */
+export const ROOM_LAYOUT_NAMES = ROOM_LAYOUTS.map((layout) => layout.name) as [
+  RoomLayoutName,
+  ...RoomLayoutName[],
+];
 
 /**
  * What the room is booked for.

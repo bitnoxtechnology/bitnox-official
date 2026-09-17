@@ -124,6 +124,13 @@ async function Detail({ params }: { params: PageProps<"/admin/enquiries/[id]">["
             </>
           ) : null}
 
+          {enquiry.details.layout ? (
+            <>
+              <dt className="text-muted-foreground">Layout</dt>
+              <dd className="text-foreground">{enquiry.details.layout}</dd>
+            </>
+          ) : null}
+
           {enquiry.details.preferredDate ? (
             <>
               <dt className="text-muted-foreground">Preferred date</dt>
