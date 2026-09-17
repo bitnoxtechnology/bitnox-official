@@ -4,7 +4,6 @@ import { FAQPageSchema } from "@/components/seo/FAQPageSchema";
 import { SectionHeading } from "@/components/site";
 import { ActionButton } from "@/components/site/action-button";
 import { FaqAccordion } from "@/components/site/faq-accordion";
-import { EVENT_SPACE_PHOTOS } from "@/content/event-space-media";
 import { HOME_FAQS } from "@/content/faqs";
 
 /**
@@ -27,7 +26,10 @@ import { HOME_FAQS } from "@/content/faqs";
 export function FaqSection() {
   // The second, not the first: the Event Space section above uses the cover shot, and one
   // photograph appearing twice on a page is what makes a set of real pictures look like stock.
-  const photo = EVENT_SPACE_PHOTOS[1];
+  const photo = {
+    url: "/photo-2.webp",
+    alt: "Lady sitting in Bitnox personal office.",
+  };
 
   return (
     <section className="section-y">

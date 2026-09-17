@@ -29,7 +29,7 @@ export function ServicesGrid() {
         <SectionHeading
           eyebrow="What we do"
           title="Our services, and the work that sits inside each one"
-          description="Most projects start in one of these and end up touching two. The pages below say what each covers, how the work runs and what you get at the end."
+          description="Most projects start in one of these and end up touching two. The section below say what each covers, how the work runs and what you get at the end."
         />
 
         <StaggerGroup asChild className="mt-section-sm grid gap-6 md:grid-cols-2">

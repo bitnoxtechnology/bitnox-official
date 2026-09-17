@@ -39,7 +39,7 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
         <SectionHeading
           eyebrow="The room"
           title="Inside the Event Space"
-          description="Photographs of the room as it is used: laid out for a conference, set for a smaller group, and with a session running. Select any one to see it larger."
+          description="Photographs of the room as it is used: laid out for a conference, set for a smaller group. Select any one to see it larger."
         />
 
         <Gallery

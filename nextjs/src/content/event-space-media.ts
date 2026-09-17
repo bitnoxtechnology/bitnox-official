@@ -54,7 +54,7 @@ export const EVENT_SPACE_PHOTOS: readonly StaticImage[] = [
 
 /** A session running in the space, used where the landing page wants people rather than a room. */
 export const SESSION_PHOTO: StaticImage = {
-  url: "/event-space/image-1.jpg",
-  alt: "A Bitnox session in progress, with an instructor presenting code on a large screen to a seated group",
+  url: "/photo-1.webp",
+  alt: "A staff working on a laptop in the Bitnox Event Space.",
   sortOrder: 0,
 };

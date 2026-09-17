@@ -5,7 +5,6 @@ import { SectionHeading } from "@/components/site";
 import { ActionButton } from "@/components/site/action-button";
 import { Badge } from "@/components/ui/badge";
 import { EVENT_SPACE_PHOTOS } from "@/content/event-space-media";
-import { EVENT_SPACE_CAPACITY } from "@/lib/constants";
 import { getEventSpaceImages } from "@/lib/queries/event-space";
 
 /**
@@ -60,7 +59,7 @@ export async function EventSpaceBand() {
           <div>
             <SectionHeading
               eyebrow="Event Space"
-              title={`A room that seats ${EVENT_SPACE_CAPACITY}, on Lalubu Street`}
+              title={`Comfortable, versatile, and ready for you`}
               description="The Bitnox Event Space is in Oke-Ilewo, Abeokuta, in the same building as the office. Tell us the date, how long you need the room and the layout you want, and we will confirm what is available."
             />
 

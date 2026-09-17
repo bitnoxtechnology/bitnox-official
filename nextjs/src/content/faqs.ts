@@ -24,7 +24,7 @@ export const HOME_FAQS: readonly Faq[] = [
   {
     question: "What does Bitnox Technology Solutions do?",
     answer:
-      "Software development, web development, IT consulting and technology training. We build business management systems, custom applications, websites and online stores, advise on technology decisions, and teach the skills behind all of it. We also run an Event Space that seats 60.",
+      "Software development, web development, IT consulting and technology training. We build business management systems, custom applications, websites and online stores, advise on technology decisions, and teach the skills behind all of it.",
   },
   {
     question: "Can I book the Event Space?",
@@ -39,7 +39,7 @@ export const HOME_FAQS: readonly Faq[] = [
   {
     question: "Where are you based, and do you work with clients elsewhere?",
     answer:
-      "The office is at 24 Last Floor, Majek Kembo Plaza, Lalubu Street, Oke-Ilewo, Abeokuta, Ogun State. Bitnox works with clients in Nigeria, the United Kingdom and further afield, and remote projects are run the same way as local ones: shared boards, scheduled calls and a written record of decisions.",
+      "The office is at Last Floor, Majek Kembo Plaza, Lalubu Street, Oke-Ilewo, Abeokuta, Ogun State. Bitnox works with clients in Nigeria, the United Kingdom and further afield, and remote projects are run the same way as local ones: shared boards, scheduled calls and a written record of decisions.",
   },
   {
     question: "How long does a project take?",

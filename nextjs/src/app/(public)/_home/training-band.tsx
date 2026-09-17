@@ -34,9 +34,9 @@ export function TrainingBand() {
                   The courses are on Bitnox Education
                 </h2>
                 <p className="text-muted-foreground text-lead mt-stack measure">
-                  Software development, data and digital skills, taught in person in Abeokuta and
-                  online. Course listings, dates, fees and enrolment are all handled on the
-                  education site.
+                  Software development, machine learning, data and digital skills, taught in person
+                  in Abeokuta and online. Course listings, dates, fees and enrolment are all handled
+                  on the education site.
                 </p>
               </div>
 
