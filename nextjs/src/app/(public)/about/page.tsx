@@ -10,9 +10,9 @@ import { BreadcrumbListSchema } from "@/components/seo/BreadcrumbListSchema";
 import { OrganizationSchema } from "@/components/seo/OrganizationSchema";
 import { CTABand, InlineLink, SectionHeading } from "@/components/site";
 import { ActionButton } from "@/components/site/action-button";
-import { RichText } from "@/components/site/rich-text";
 import { SERVICE_ICONS } from "@/components/site/service-icons";
 import { SplitSection } from "@/components/site/split-section";
+import { StoryChapters } from "@/components/site/story-chapter";
 import {
   ABOUT_FIRST_STEPS,
   ABOUT_HERO,
@@ -115,23 +115,16 @@ export default function AboutPage() {
               </div>
             </Reveal>
           </div>
-
-          {/*
-           * The real thing under the hero, per the page composition rule. On this page it is
-           * the story itself set at reading measure, because the subject of an about page is
-           * prose and a drawn interface here would be decoration.
-           */}
-          <Reveal delay={0.55}>
-            <div className="border-border mt-section-sm mx-auto max-w-3xl space-y-6 border-t pt-10">
-              {ABOUT_STORY.map((paragraph, index) => (
-                <p key={index} className="text-muted-foreground text-lead">
-                  <RichText text={paragraph} />
-                </p>
-              ))}
-            </div>
-          </Reveal>
         </div>
       </section>
+
+      {/*
+       * The real thing under the hero, per the page composition rule. On this page it is the
+       * story itself, because the subject of an about page is prose and a drawn interface
+       * here would be decoration. It is set as three full screens rather than three
+       * paragraphs, so the copy that decides an enquiry is read rather than scrolled past.
+       */}
+      <StoryChapters chapters={ABOUT_STORY} />
 
       <section className="section-y">
         <div className="container-page">
@@ -150,7 +143,7 @@ export default function AboutPage() {
                   <li key={service.slug} className="border-border border-b">
                     <Link
                       href={servicePath(service.slug)}
-                      className="group hover:bg-muted/40 -mx-4 flex flex-wrap items-baseline gap-x-8 gap-y-2 px-4 py-7 transition-colors sm:flex-nowrap"
+                      className="group hover:bg-muted/40 -mx-4 flex flex-wrap items-baseline gap-x-8 gap-y-2 px-4 py-7 transition-colors max-sm:flex-col sm:flex-nowrap"
                     >
                       <span className="flex min-w-0 items-baseline gap-4 sm:w-2/5">
                         <Icon className="text-primary size-5 shrink-0 translate-y-1" aria-hidden />

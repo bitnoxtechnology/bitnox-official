@@ -35,16 +35,41 @@ export const ABOUT_HERO = {
 } as const;
 
 /**
- * The company in three paragraphs.
+ * The company, one chapter per paragraph.
  *
  * Written in plain terms rather than as a mission statement. Somebody reading this page is
  * deciding whether to send an enquiry, and the thing that decides it is whether the company
  * sounds like it does specific work for specific people.
+ *
+ * Each chapter is a full screen on the page, so it carries a short label and a heading of
+ * its own as well as the paragraph. The heading is a claim taken from the paragraph, not a
+ * name for it: a screen headed "Our story" says nothing the paragraph under it does not.
  */
-export const ABOUT_STORY: readonly string[] = [
-  "Bitnox Technology Solutions is a Nigerian technology company with clients in Nigeria, the United Kingdom and further afield. The work divides into four: [software development](/services/software-development) for businesses that have outgrown their spreadsheets, [web development](/services/web-development) for companies whose website has to earn its keep, [IT consulting](/services/it-consulting) for the decisions in between, and [technology training](/services/technology-training) for the people who will run all of it afterwards.",
-  "Most projects arrive the same way. Something works, but only because one person holds it together, and that has started to cost more than it saves. The first piece of work is usually not building anything. It is writing down what actually happens, which is rarely what the policy says happens, and deciding what the first version will deliberately leave out.",
-  "The Bitnox name also covers two other things. [Bitnox Education](https://edu.bitnoxsolution.com) runs the course catalogue and enrolment, and Bitnox Cleaning covers laundry and cleaning on its own domain. They are separate operations with separate teams, and this site is the technology company.",
+export interface AboutChapter {
+  /** The small label beside the chapter number. Two or three words. */
+  label: string;
+  /** The claim, set large. A newline breaks the line. */
+  title: string;
+  /** The paragraph. Inline links and bold use the `src/lib/inline-text.ts` syntax. */
+  body: string;
+}
+
+export const ABOUT_STORY: readonly AboutChapter[] = [
+  {
+    label: "The company",
+    title: "Four kinds of work, one company behind them.",
+    body: "Bitnox Technology Solutions is a Nigerian technology company with clients in Nigeria, the United Kingdom and further afield. The work divides into four: [software development](/services/software-development) for businesses that have outgrown their spreadsheets, [web development](/services/web-development) for companies whose website has to earn its keep, [IT consulting](/services/it-consulting) for the decisions in between, and [technology training](/services/technology-training) for the people who will run all of it afterwards.",
+  },
+  {
+    label: "How projects start",
+    title: "Most projects begin with one person holding everything together.",
+    body: "Most projects arrive the same way. Something works, but only because one person holds it together, and that has started to cost more than it saves. The first piece of work is usually not building anything. It is writing down what actually happens, which is rarely what the policy says happens, and deciding what the first version will deliberately leave out.",
+  },
+  {
+    label: "The other two names",
+    title: "Three Bitnox names, and this site is the technology one.",
+    body: "The Bitnox name also covers two other things. [Bitnox Education](https://edu.bitnoxsolution.com) runs the course catalogue and enrolment, and Bitnox Cleaning covers laundry and cleaning on its own domain. They are separate operations with separate teams, and this site is the technology company.",
+  },
 ] as const;
 
 /**
