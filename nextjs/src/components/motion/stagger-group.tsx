@@ -24,6 +24,16 @@ type StaggerGroupProps = React.ComponentProps<"div"> & {
    * symmetrical row; wrong for anything the eye reads in order.
    */
   from?: "start" | "center" | "end";
+  /**
+   * How each item arrives.
+   *
+   * `rise` is the default fade-up. `curtain` is for photographs: the item is unmasked from
+   * the bottom edge upward while the picture inside it, marked `data-stagger-media`, settles
+   * from slightly enlarged to its resting size. The two together read as a print being
+   * lifted off a stack, and neither touches opacity, so the image never half-shows through
+   * itself the way a fading photograph does.
+   */
+  effect?: "rise" | "curtain";
   /** Render the child element instead of a wrapping div, so a group can be a `<ul>`. */
   asChild?: boolean;
 };
@@ -43,6 +53,7 @@ export function StaggerGroup({
   duration = ENTER.duration,
   start = ENTER.start,
   from = "start",
+  effect = "rise",
   asChild = false,
   className,
   children,
@@ -65,6 +76,42 @@ export function StaggerGroup({
       const mm = gsap.matchMedia();
 
       mm.add(MOTION_OK, () => {
+        if (effect === "curtain") {
+          const media = items.flatMap((item) =>
+            gsap.utils.toArray<HTMLElement>("[data-stagger-media]", item),
+          );
+
+          // One timeline, one trigger. The mask and the settle start together per item and
+          // the settle runs longer, so the picture is still easing to rest as the next one
+          // starts to open, which is what keeps four of them from reading as a mechanism.
+          gsap
+            .timeline({ delay, scrollTrigger: { trigger: group, start, once: true } })
+            .fromTo(
+              items,
+              { clipPath: "inset(100% 0% 0% 0%)" },
+              {
+                clipPath: "inset(0% 0% 0% 0%)",
+                duration: duration * 1.5,
+                ease: "power4.inOut",
+                stagger: { each: stagger * 2, from },
+              },
+              0,
+            )
+            .fromTo(
+              media,
+              { scale: 1.18 },
+              {
+                scale: 1,
+                duration: duration * 2.2,
+                ease: EASE.enter,
+                stagger: { each: stagger * 2, from },
+              },
+              0,
+            );
+
+          return;
+        }
+
         gsap.from(items, {
           opacity: 0,
           y,
@@ -78,7 +125,7 @@ export function StaggerGroup({
 
       return () => mm.revert();
     },
-    { scope: ref, dependencies: [selector, stagger, delay, y, duration, start, from] },
+    { scope: ref, dependencies: [selector, stagger, delay, y, duration, start, from, effect] },
   );
 
   return (

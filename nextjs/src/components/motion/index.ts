@@ -1,7 +1,7 @@
 /**
  * The motion vocabulary.
  *
- * Five primitives cover every animation on the site. A page composes them; a page never
+ * Six primitives cover every animation on the site. A page composes them; a page never
  * imports `gsap` directly and never checks `prefers-reduced-motion` itself. If something
  * needs movement these do not express, the primitive gets a prop rather than the page
  * reaching for `useGsapEffect` on its own.
@@ -11,6 +11,7 @@ export { StaggerGroup } from "./stagger-group";
 export { Parallax } from "./parallax";
 export { SplitText } from "./split-text";
 export { ScrollScene } from "./scroll-scene";
+export { ScrollIndex } from "./scroll-index";
 
 // `EASE`, `ENTER` and `MOTION_OK` are deliberately not re-exported here. `gsap.ts` is a
 // client module, and every export of a client module becomes a client reference that throws

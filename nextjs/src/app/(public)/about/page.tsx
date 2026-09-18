@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { PlanTimeline } from "@/components/graphics/plan-timeline";
-import { ScopeSheet } from "@/components/graphics/scope-sheet";
 import { GraphicCaption } from "@/components/graphics/window-frame";
 import { Reveal, SplitText, StaggerGroup } from "@/components/motion";
 import { AboutPageSchema } from "@/components/seo/AboutPageSchema";
@@ -13,13 +12,16 @@ import { ActionButton } from "@/components/site/action-button";
 import { SERVICE_ICONS } from "@/components/site/service-icons";
 import { SplitSection } from "@/components/site/split-section";
 import { StoryChapters } from "@/components/site/story-chapter";
+import { TeamGrid } from "@/components/site/team-grid";
+import { ValuesLedger } from "@/components/site/values-ledger";
 import {
   ABOUT_FIRST_STEPS,
   ABOUT_HERO,
   ABOUT_LOCATION,
-  ABOUT_PRINCIPLES,
   ABOUT_SEO,
   ABOUT_STORY,
+  ABOUT_TEAM,
+  ABOUT_VALUES,
 } from "@/content/about";
 import { BUSINESS } from "@/content/business";
 import { EVENT_SPACE_CAPACITY } from "@/lib/constants";
@@ -44,6 +46,13 @@ import { SERVICES, servicePath } from "@/content/services";
  * The two graphics are the signed scope and the order of work, borrowed from the service
  * pages on purpose: they are the two documents this page makes claims about, so the claim
  * and the artefact are on screen together.
+ *
+ * The values and the people are the two sections the legacy page had that the first version
+ * of this one dropped. They are back, rewritten: each value is a claim about the work rather
+ * than a word, and the team is real photographs of real people, which is the one kind of
+ * picture this page is allowed. The values sit before the commitments, since one is what the
+ * company holds and the other is what a client can hold it to; the people sit before the
+ * location, since who and where are the two questions left once the how is answered.
  */
 
 export const metadata: Metadata = {
@@ -163,29 +172,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <SplitSection
-        eyebrow="How we work"
-        title="What you can hold us to"
-        description="Six commitments that can be checked against how an engagement actually runs, rather than six words about our values."
-        media={
-          <figure>
-            <ScopeSheet />
-            <GraphicCaption>
-              An illustrative scope sheet. Every quote arrives with what is included, what is not,
-              and what is deliberately left to a later phase.
-            </GraphicCaption>
-          </figure>
-        }
-      >
-        <dl className="border-border mt-10 border-t">
-          {ABOUT_PRINCIPLES.map((principle) => (
-            <div key={principle.title} className="border-border border-b py-5">
-              <dt className="text-foreground text-base font-medium">{principle.title}</dt>
-              <dd className="text-muted-foreground mt-1.5 text-sm">{principle.body}</dd>
-            </div>
-          ))}
-        </dl>
-      </SplitSection>
+      <ValuesLedger values={ABOUT_VALUES} />
 
       <SplitSection
         reverse
@@ -219,6 +206,8 @@ export default function AboutPage() {
           </ol>
         </StaggerGroup>
       </SplitSection>
+
+      <TeamGrid members={ABOUT_TEAM} />
 
       <section className="section-y">
         <div className="container-page">

@@ -1,4 +1,5 @@
 import { JsonLd } from "@/components/seo/JsonLd";
+import { ABOUT_TEAM } from "@/content/about";
 import { BUSINESS } from "@/content/business";
 import { clientEnv } from "@/lib/env";
 import { absoluteUrl } from "@/lib/urls";
@@ -24,9 +25,13 @@ import { absoluteUrl } from "@/lib/urls";
  *
  * No `foundingDate`, no `numberOfEmployees` and no `aggregateRating`. Structured data is
  * read as fact, and a figure invented to fill a field is a false statement in machine-readable
- * form.
+ * form. `founder` is the one fact about the people that goes in: it is the field a search
+ * engine asks of an organisation, it is checkable, and it is the person shown as such on the
+ * page this block sits on.
  */
 export function OrganizationSchema() {
+  const founder = ABOUT_TEAM.find((member) => member.founder);
+
   return (
     <JsonLd
       data={{
@@ -64,6 +69,16 @@ export function OrganizationSchema() {
           availableLanguage: ["en"],
         },
         sameAs: [clientEnv.NEXT_PUBLIC_EDU_URL, clientEnv.NEXT_PUBLIC_CLEANING_URL],
+        ...(founder
+          ? {
+              founder: {
+                "@type": "Person",
+                name: founder.name,
+                jobTitle: founder.role,
+                image: absoluteUrl(founder.photo.url),
+              },
+            }
+          : {}),
       }}
     />
   );

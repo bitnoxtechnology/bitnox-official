@@ -10,7 +10,7 @@ type SplitTextProps = {
   text: string;
   /** Word by word reads as writing. Character by character reads as a machine. */
   by?: "word" | "char";
-  as?: "h1" | "h2" | "p" | "span" | "div";
+  as?: "h1" | "h2" | "h3" | "p" | "span" | "div";
   /** Seconds before the first item moves. */
   delay?: number;
   /** Play on mount, or wait until the element scrolls into view. Heroes are on mount. */

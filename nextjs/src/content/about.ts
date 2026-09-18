@@ -61,14 +61,9 @@ export const ABOUT_STORY: readonly AboutChapter[] = [
     body: "Bitnox Technology Solutions is a Nigerian technology company with clients in Nigeria, the United Kingdom and further afield. The work divides into four: [software development](/services/software-development) for businesses that have outgrown their spreadsheets, [web development](/services/web-development) for companies whose website has to earn its keep, [IT consulting](/services/it-consulting) for the decisions in between, and [technology training](/services/technology-training) for the people who will run all of it afterwards.",
   },
   {
-    label: "How projects start",
-    title: "Most projects begin with one person holding everything together.",
-    body: "Most projects arrive the same way. Something works, but only because one person holds it together, and that has started to cost more than it saves. The first piece of work is usually not building anything. It is writing down what actually happens, which is rarely what the policy says happens, and deciding what the first version will deliberately leave out.",
-  },
-  {
     label: "The other two names",
     title: "Three Bitnox names, and this site is the technology one.",
-    body: "The Bitnox name also covers two other things. [Bitnox Education](https://edu.bitnoxsolution.com) runs the course catalogue and enrolment, and Bitnox Cleaning covers laundry and cleaning on its own domain. They are separate operations with separate teams, and this site is the technology company.",
+    body: "The Bitnox name also covers two other things. [Bitnox Education](https://edu.bitnoxsolution.com) runs the course catalogue and enrolment, and Bitnox Cleaning covers laundry and cleaning on its own domain. They are separate operations with separate teams.",
   },
 ] as const;
 
@@ -131,3 +126,105 @@ export const ABOUT_FIRST_STEPS: readonly AboutPrinciple[] = [
  */
 export const ABOUT_LOCATION =
   "The office and the Event Space are in the same building on Lalubu Street, Oke-Ilewo, Abeokuta. Local work is done in person where that is useful. Remote projects run the same way as local ones: shared boards, scheduled calls and a written record of every decision, so nothing depends on who was in the room.";
+
+/**
+ * The values, each one stated as the thing a client would notice on a project.
+ *
+ * The legacy page had the same four names over a sentence each of the kind every company
+ * writes ("we continuously push boundaries"). The names stay, because they are the company's
+ * own and a reader arriving from the old site expects them. What sits under each one is
+ * different: a claim about how the work is done, and a paragraph that says what that looks
+ * like in practice, so the value can be checked against an engagement rather than admired.
+ *
+ * The headline under each name is the claim, not the name. A section headed "Innovation" has
+ * said nothing yet; the standards rule out a headline that is a single abstract noun for that
+ * reason.
+ */
+export interface AboutValue {
+  /** The value's name, as a small label. One word. */
+  name: string;
+  /** The claim, set as the heading. A newline breaks the line. */
+  title: string;
+  /** What it looks like on a project. Two or three sentences. */
+  body: string;
+}
+
+export const ABOUT_VALUES: readonly AboutValue[] = [
+  {
+    name: "Innovation",
+    title: "New tools when they earn their place.",
+    body: "We keep up with what is changing in the field and put it to use when it solves the problem in front of us. A technique chosen because it is new, rather than because it is right, is a cost the client pays for later, usually in the person who has to maintain it.",
+  },
+  {
+    name: "Excellence",
+    title: "Finished means tested against real cases.",
+    body: "Work leaves us when it has been run against the awkward records, the month-end rush and the phone with the cracked screen, not when it looks right in a demo. The detail is where a system earns trust or loses it, and it is checked before you see it.",
+  },
+  {
+    name: "Integrity",
+    title: "What we say in the meeting is what the document says.",
+    body: "Scope, schedule and figure are written down, and the written version is the one we are held to. If a project should be smaller, or should not happen at all, we say so before the quote rather than after the invoice.",
+  },
+  {
+    name: "Collaboration",
+    title: "Your team is in the room from the first conversation.",
+    body: "The people who will use the system help build it. They are asked what the day actually looks like, they see the early versions, and they are trained before launch rather than handed a manual after it. A system built around them is one they keep using.",
+  },
+];
+
+/**
+ * The people.
+ *
+ * Real names and real photographs, which is the one kind of picture the standards ask for on
+ * a page like this. The roles are what each person does day to day, in plain words, rather
+ * than titles: somebody reading this page wants to know who will be on their project, not
+ * what is printed on a card.
+ *
+ * `founder` marks the person the `Organization` structured data names as such. It is the one
+ * fact about the team that belongs in machine-readable form, because it is the one a search
+ * engine asks about an organisation and the one that is checkable against the registration.
+ */
+export interface AboutTeamMember {
+  name: string;
+  /** What they do, in sentence case. */
+  role: string;
+  /** A 4:5 portrait in `public/team/`, with alt text a screen reader can use. */
+  photo: { url: string; alt: string };
+  founder?: boolean;
+}
+
+export const ABOUT_TEAM: readonly AboutTeamMember[] = [
+  {
+    name: "Oluwafemi Faleye",
+    role: "Founder and software engineer",
+    photo: {
+      url: "/team/oluwafemi-faleye.webp",
+      alt: "Oluwafemi Faleye, founder and software engineer at Bitnox Technology Solutions.",
+    },
+    founder: true,
+  },
+  {
+    name: "Adefemi Sanyaolu",
+    role: "Cloud and data engineer",
+    photo: {
+      url: "/team/adefemi-sanyaolu.webp",
+      alt: "Adefemi Sanyaolu, cloud and data engineer at Bitnox Technology Solutions.",
+    },
+  },
+  {
+    name: "Bello Oladimeji",
+    role: "Web developer",
+    photo: {
+      url: "/team/bello-oladimeji.webp",
+      alt: "Bello Oladimeji, web developer at Bitnox Technology Solutions.",
+    },
+  },
+  {
+    name: "Tobiloba David",
+    role: "Product designer",
+    photo: {
+      url: "/team/tobiloba-david.webp",
+      alt: "Tobiloba David, product designer at Bitnox Technology Solutions.",
+    },
+  },
+];
