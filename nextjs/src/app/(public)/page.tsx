@@ -8,7 +8,7 @@ import { FaqSection } from "@/app/(public)/_home/faq-section";
 import { Hero } from "@/app/(public)/_home/hero";
 import { LatestPosts } from "@/app/(public)/_home/latest-posts";
 import { PortfolioBand } from "@/app/(public)/_home/portfolio-band";
-import { ServicesGrid } from "@/app/(public)/_home/services-grid";
+import { ServicesShowcase } from "@/app/(public)/_home/services-showcase";
 import { TestimonialsBand } from "@/app/(public)/_home/testimonials-band";
 import { TrainingBand } from "@/app/(public)/_home/training-band";
 import { WhyBitnox } from "@/app/(public)/_home/why-bitnox";
@@ -61,7 +61,7 @@ export default function HomePage() {
       */}
       <WebSiteSchema />
       <Hero />
-      <ServicesGrid />
+      <ServicesShowcase />
       <AboutBand />
       <WhyBitnox />
 
