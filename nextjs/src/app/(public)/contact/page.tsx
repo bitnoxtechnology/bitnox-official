@@ -154,7 +154,7 @@ export default async function ContactPage() {
                   as="h2"
                   eyebrow="Where we are"
                   title="Oke-Ilewo, Abeokuta"
-                  description="The office and the Event Space are in the same building on Lalubu Street, beside the Chicken Republic."
+                  description="The office and the Event Space are in the same building on Lalubu Street, beside Chicken Republic."
                 />
 
                 <dl className="border-border mt-10 border-t">
@@ -225,7 +225,6 @@ export default async function ContactPage() {
                 as="h2"
                 eyebrow="Send an enquiry"
                 title="Five fields, and we take it from there"
-                description="The more concrete the message, the more useful the reply. What has to change, who uses it now, and when you need it."
               />
 
               <ContactForm className="mt-10" />

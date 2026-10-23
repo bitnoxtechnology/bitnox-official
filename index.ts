@@ -8,9 +8,9 @@ concurrently([
     prefixColor: "cyan",
   },
   {
-    name: "client",
+    name: "nextjs",
     command: "npm run dev",
-    cwd: "client",
+    cwd: "nextjs",
     prefixColor: "green",
   },
 ]);

@@ -227,4 +227,12 @@ export const ABOUT_TEAM: readonly AboutTeamMember[] = [
       alt: "Tobiloba David, product designer at Bitnox Technology Solutions.",
     },
   },
+  {
+    name: "Azzim Aina",
+    role: "Cybersecurity analyst",
+    photo: {
+      url: "/team/azzim-aina.webp",
+      alt: "Azzim Aina, cybersecurity analyst at Bitnox Technology Solutions.",
+    },
+  },
 ];

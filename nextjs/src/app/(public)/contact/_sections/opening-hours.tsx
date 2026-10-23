@@ -36,9 +36,7 @@ export async function OpeningHours() {
   if (hours.length === 0) {
     return (
       <p className="text-muted-foreground text-base">
-        The office keeps ordinary working hours, Monday to Friday. Rather than publish times here
-        that could disagree with our Google Business Profile, call before you set out and we will
-        tell you who is in.
+        The office keeps ordinary working hours, Monday to Friday (9AM - 5PM).
       </p>
     );
   }
